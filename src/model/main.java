@@ -14,6 +14,14 @@ public class main {
 		menu.addMenuItem(m2);
 		menu.addMenuItem(m3);
 		
+		
+		
+		menu.deleteMenuItem(2);
+	
+		
+		
+		
+		
 		System.out.println(menu.findAll());
 
 	}

@@ -33,14 +33,22 @@ public class MenuItemRepositoryImpel implements MenuRepository {
 	}
 
 	@Override
-	public void deleteMenuItem(int id) {
-		// TODO Auto-generated method stub
+	public void deleteMenuItem(int itemID) throws IOException {
+		this.menu.remove(new MenuItem(itemID));
+		this.fileManager.write(this.menu);
 		
 	}
 
 	@Override
-	public MenuItem find(int id) {
-		// TODO Auto-generated method stub
+	public MenuItem find(int itemID) {
+		if (this.menu.contains(new MenuItem(itemID))) {
+			for (MenuItem m : menu) {
+				if (m.getItemID() == itemID) {
+					return m;
+				}
+			}
+		}
+		
 		return null;
 	}
 

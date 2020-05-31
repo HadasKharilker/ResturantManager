@@ -9,7 +9,7 @@ public class MenuItem implements Serializable {
 	 * 
 	 */
 	
-	 private Integer itemID;
+	 private int itemID;
 	 private String itemName;
 	 private Double price;
 	 private MenuItemType itemType;

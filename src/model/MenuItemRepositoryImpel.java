@@ -11,9 +11,8 @@ public class MenuItemRepositoryImpel implements MenuRepository {
 	
 	public MenuItemRepositoryImpel() throws IOException, ClassNotFoundException {
 		this.fileManager = new FileManager<MenuItem>(FILENAME);
-		
 		this.menu = this.fileManager.read();
-		
+
 		
 	}
 	

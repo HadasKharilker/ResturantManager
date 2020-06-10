@@ -9,6 +9,8 @@ public interface MenuRepository {
 	void addMenuItem(MenuItem menuItem) throws Exception ;
 	
 	void deleteMenuItem(int id) throws IOException;
+
+	void updateMenuItem(MenuItem menuItem) throws Exception;
 	
 	MenuItem find(int id);
 	

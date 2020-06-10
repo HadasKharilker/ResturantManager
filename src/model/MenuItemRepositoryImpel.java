@@ -38,6 +38,31 @@ public class MenuItemRepositoryImpel implements MenuRepository {
 		
 	}
 
+
+	@Override
+	public void updateMenuItem(MenuItem menuItem) throws Exception {
+		if (menuItem == null) {
+			throw new Exception("must have a value");
+		}
+		if (!(this.menu.contains(menuItem))) {
+				throw new Exception("Item does not exists!");
+			}
+		else
+			{
+				for (MenuItem m : menu) {
+					if (m.getItemID() == menuItem.getItemID()) {
+						m.setName(menuItem.getItemName());
+						m.setPrice(menuItem.getPrice());
+						m.setItemType(menuItem.getItemType());
+
+					}
+				}
+
+			}
+		this.fileManager.write(this.menu);
+
+	}
+
 	@Override
 	public MenuItem find(int itemID) {
 		if (this.menu.contains(new MenuItem(itemID))) {

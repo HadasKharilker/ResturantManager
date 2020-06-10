@@ -13,6 +13,7 @@ public class Main {
 			System.out.println("Welcome!");
 			System.out.println("1. Add new Menu item");
 			System.out.println("2. Print all Menu Items");
+			System.out.println("3. Edit Menu Item");
 			System.out.println("Q. Exit");
 
 			String selectedOption = scanner.nextLine();
@@ -34,6 +35,18 @@ public class Main {
 					for (MenuItem items : menu) {
 						System.out.println(items);
 					}
+					break;
+				case "3":
+					System.out.print("Write menu item id you want to edit (number): ");
+					 id = scanner.nextLine();
+
+					System.out.print("Entr menu item name: ");
+					name = scanner.nextLine();
+					System.out.print("enter menu item price: ");
+					 price= scanner.nextLine();
+					System.out.print("enter menu item type(MAIN,DRINK,ALCOHOL,DESERT:");
+					type= scanner.nextLine();
+					menuRepository.updateMenuItem(new MenuItem(Integer.parseInt(id), name, Double.parseDouble(price),MenuItemType.valueOf(type)));
 					break;
 				case "Q":
 				case "q":

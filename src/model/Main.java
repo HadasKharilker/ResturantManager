@@ -35,7 +35,7 @@ public class Main {
 			{
 
 				//staff.clockIn();
-				//clock in (בתוך staff)
+				//clock in (in staff)
 				MenuRepository menuRepository = new MenuItemRepositoryImpel();
 
 				if (isManager(staff)) {

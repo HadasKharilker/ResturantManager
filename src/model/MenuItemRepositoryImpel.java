@@ -11,9 +11,8 @@ public class MenuItemRepositoryImpel implements MenuRepository {
 	
 	public MenuItemRepositoryImpel() throws IOException, ClassNotFoundException {
 		this.fileManager = new FileManager<MenuItem>(FILENAME);
-		
 		this.menu = this.fileManager.read();
-		
+
 		
 	}
 	
@@ -37,6 +36,31 @@ public class MenuItemRepositoryImpel implements MenuRepository {
 		this.menu.remove(new MenuItem(itemID));
 		this.fileManager.write(this.menu);
 		
+	}
+
+
+	@Override
+	public void updateMenuItem(MenuItem menuItem) throws Exception {
+		if (menuItem == null) {
+			throw new Exception("must have a value");
+		}
+		if (!(this.menu.contains(menuItem))) {
+				throw new Exception("Item does not exists!");
+			}
+		else
+			{
+				for (MenuItem m : menu) {
+					if (m.getItemID() == menuItem.getItemID()) {
+						m.setName(menuItem.getItemName());
+						m.setPrice(menuItem.getPrice());
+						m.setItemType(menuItem.getItemType());
+
+					}
+				}
+
+			}
+		this.fileManager.write(this.menu);
+
 	}
 
 	@Override

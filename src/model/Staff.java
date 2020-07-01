@@ -48,6 +48,18 @@ public class Staff extends Person implements Serializable {
 
 
 
+public boolean isPassowrdCuurect(String password){
+
+       if( this.getUserDetails().getPassword()==password)
+           return true;
+
+           return false;
+
+}
+
+//function clock oin(call repository -> in repository do function that insert current time to file )
+
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

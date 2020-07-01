@@ -14,9 +14,14 @@ public interface StaffRepository {
 
         void editStaffDetails(Staff staff1) throws Exception;
 
-        Staff find(int id);
+        Staff getStaffByID(int id);
 
         Set<Staff> findAll();
+
+
+
+     Staff getStaffByUserName(String userName)throws Exception;
+
         //edit
 
 

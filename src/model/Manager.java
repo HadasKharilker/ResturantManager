@@ -7,7 +7,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 public class Manager extends Staff implements Serializable{
-
+//here2
     private static final Double WAGE=50.0;
     private static final long serialVersionUID = 1L;
 

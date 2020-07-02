@@ -15,7 +15,7 @@ public class StaffRepositoryImpel implements StaffRepository {
     }
 
     @Override
-   public void addStaff(Staff staff) throws Exception {
+    public void addStaff(Staff staff) throws Exception {
         if (staff == null) {
             throw new Exception("must have a value");
         }
@@ -27,7 +27,6 @@ public class StaffRepositoryImpel implements StaffRepository {
         this.staff.add(staff);
         this.fileManager.write(this.staff);
     }
-
 
 
     @Override
@@ -75,10 +74,8 @@ public class StaffRepositoryImpel implements StaffRepository {
         }
         if (!(this.staff.contains(staff1))) {
             throw new Exception("Staff does not exists!");
-        }
-        else
-        {
-            for (Staff s :staff ) {
+        } else {
+            for (Staff s : staff) {
                 if (s.getPersonId() == staff1.getPersonId()) {
                     s.setFirstName(staff1.getFirstName());
                     s.setLastName(staff1.getLastName());
@@ -92,6 +89,7 @@ public class StaffRepositoryImpel implements StaffRepository {
         this.fileManager.write(this.staff);
 
     }
+
     @Override
     public void editStaffDetails(Staff staff1) throws Exception {
         if (staff1 == null) {
@@ -99,10 +97,8 @@ public class StaffRepositoryImpel implements StaffRepository {
         }
         if (!(this.staff.contains(staff1))) {
             throw new Exception("Staff does not exists!");
-        }
-        else
-        {
-            for (Staff s :staff ) {
+        } else {
+            for (Staff s : staff) {
                 if (s.getPersonId() == staff1.getPersonId()) {
                     s.setUserDetails(staff1.getUserDetails());
 
@@ -115,35 +111,33 @@ public class StaffRepositoryImpel implements StaffRepository {
     }
 
 
-
-
     @Override
     public Staff getStaffByID(int id) {
 
-        for (Staff s:staff)
-        {
+        for (Staff s : staff) {
             if (s.getPersonId() == id)
                 return s;
         }
-            return null;
+        return null;
 
 
     }
+
     @Override
-    public Staff getStaffByUserName(String userName)
-    {
-        for (Staff s : staff)
-        {
-            if (s.getUserDetails().getUserName() == userName)
-                return s;
+    public Staff getStaffByUserName(String curUserName) {
+        for (Staff s : staff) {
+            UserDetails userDetails = s.getUserDetails();
+            String userName = userDetails.getUserName();
+
+            if (userDetails != null)
+                if (userName.equals(curUserName))
+                    return s;
 
         }
 
 
-    return null;
+        return null;
     }
-
-
 
 
     @Override
@@ -152,8 +146,6 @@ public class StaffRepositoryImpel implements StaffRepository {
         return this.staff;
 
     }
-
-
 
 
 }

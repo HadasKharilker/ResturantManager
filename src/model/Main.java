@@ -8,294 +8,272 @@ import java.util.Scanner;
 import java.util.Set;
 
 
-
 public class Main {
 
-	public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
+        StaffRepository staffRepository = new StaffRepositoryImpel();
+        MenuRepository menuRepository = new MenuItemRepositoryImpel();
+        Scanner scanner = new Scanner(System.in);
 
-		StaffRepository staffRepository= new StaffRepositoryImpel();
+        while (true) {
+            System.out.println("Welcome!");
+            System.out.println("Enter userName!");
+            String userName = scanner.nextLine();
+            System.out.println("Enter password!");
+            String password = scanner.nextLine();
 
+            boolean isUserCorrect = false;
 
+            Staff staff = staffRepository.getStaffByUserName(userName);
 
-		Scanner scanner = new Scanner(System.in);
-		while (true) {
-			System.out.println("Welcome!");
-			System.out.println("Enter userName!");
-			String userName = scanner.nextLine();
-			System.out.println("Enter password!");
-			String password = scanner.nextLine();
-			boolean isUserCorrect=false;
+            if (staff != null)
+                isUserCorrect = staff.isPassowrdCuurect(password);
 
-			Staff staff=staffRepository.getStaffByUserName(userName);
+            if (isUserCorrect) {
+                //staff.clockIn();
+                //clock in (בתוך staff)
+                while (true) {
+                    if (staff.isManager())
+                        managerQptions(scanner, staffRepository, menuRepository);
 
-			if(staff!=null)
-				 isUserCorrect = staff.isPassowrdCuurect(password);
-
-			if(isUserCorrect)
-			{
-
-				//staff.clockIn();
-				//clock in (בתוך staff)
-				MenuRepository menuRepository = new MenuItemRepositoryImpel();
-
-				if (isManager(staff)) {
-					callManagerQuestions();
-
-					String selectedOption = scanner.nextLine();
-					switch (selectedOption) {
-						case MenuCases.ADD_NEW_MENU_ITEM:
-							System.out.print("Write menu item id (number): ");
-							String id = scanner.nextLine();
-							System.out.print("Entr menu item name: ");
-							String name = scanner.nextLine();
-							System.out.print("enter menu item price: ");
-							String price = scanner.nextLine();
-							System.out.print("enter menu item type(MAIN,DRINK,ALCOHOL,DESERT:");
-							String type = scanner.nextLine();
-
-							menuRepository.addMenuItem(new MenuItem(Integer.parseInt(id), name, Double.parseDouble(price), MenuItemType.valueOf(type)));
-							break;
-						case "2":
-							Set<MenuItem> menu = menuRepository.findAll();
-							for (MenuItem items : menu) {
-								System.out.println(items);
-							}
-							break;
-						case "3":
-							System.out.print("Write menu item id you want to edit (number): ");
-							id = scanner.nextLine();
-
-							System.out.print("Entr menu item name: ");
-							name = scanner.nextLine();
-							System.out.print("enter menu item price: ");
-							price = scanner.nextLine();
-							System.out.print("enter menu item type(MAIN,DRINK,ALCOHOL,DESERT:");
-							type = scanner.nextLine();
-							menuRepository.updateMenuItem(new MenuItem(Integer.parseInt(id), name, Double.parseDouble(price), MenuItemType.valueOf(type)));
-							break;
-						case "4":
-							System.out.print("Enter staff id : ");
-							String staffId = scanner.nextLine();
-							System.out.print("Entr first name : ");
-							String fName = scanner.nextLine();
-							System.out.print("Enter last name : ");
-							String lName = scanner.nextLine();
-							System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
-							String d = scanner.nextLine();
-
-							System.out.print("Enter private house number:");
-							String houseNum = scanner.nextLine();
-							System.out.print("Enter house street:");
-							String houseStreet = scanner.nextLine();
-							System.out.print("Enter city:");
-							String city = scanner.nextLine();
-							System.out.print("Enter state:");
-							String state = scanner.nextLine();
-							System.out.print("Enter role (manager/employee:");
-							String role = scanner.nextLine();
-							System.out.print("Enter User Name:");
-							String username = scanner.nextLine();
-							System.out.print("Enter password:");
-							String staffPassword = scanner.nextLine();
-							//parsing to date format
-
-							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-							LocalDate date = LocalDate.parse(d, formatter);
+                    else
+                        employeeOptions(scanner, staffRepository, menuRepository);
 
 
-							if (role.equals("manager")) {
-								staffRepository.addStaff(new Manager(Integer.parseInt(staffId), fName, lName, date, Integer.parseInt(houseNum), houseStreet, city, state, username, staffPassword, Role.valueOf(role)));
+                }
+            } else {
+                System.out.println("userName or password dos'nt exist!");
+            }
 
-							}
-							if (role.equals("employee")) {
-								staffRepository.addStaff(new Employee(Integer.parseInt(staffId), fName, lName, date, Integer.parseInt(houseNum), houseStreet, city, state, username, staffPassword, Role.valueOf(role)));
-							}
+        }
 
+    }
 
-							break;
-						case "7":
-							Set<Staff> staffSet = staffRepository.findAll();
-							for (Staff s : staffSet) {
+    private static void managerQptions(Scanner scanner, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
+        System.out.println("1. Add new Menu item");
+        System.out.println("2. view all Menu Items");
+        System.out.println("3. Edit Menu Item");
+        System.out.println("3. delete Menu Item");
+        System.out.println("4. Add new Staff member");
+        System.out.println("5. Edit Staff member");
+        System.out.println("6. Delete Staff member");
+        System.out.println("7. view all Staff members");
+        System.out.println("8. view staff hour wage");
+        System.out.println("9. edit order");
+        System.out.println("10. add new order");
+        System.out.println("11. delete order");
+        System.out.println("12. view all order");
+        System.out.println("13. close order");
+        System.out.println("14. view total orders report (only close)");
+        System.out.println("Q. Exit");
 
+        String selectedOption = scanner.nextLine();
+        switch (selectedOption) {
+            case MenuCases.ADD_NEW_MENU_ITEM:
+                addNewMenuItem(scanner, menuRepository);
+                break;
 
-								System.out.println(s);
+            case MenuCases.VIEW_ALL_MENU_ITEMS_MANAGER:
+                viewAllMenuItems(menuRepository);
+                break;
 
-							}
-							break;
+            case MenuCases.EDIT_NEW_MENU_ITEM:
+                editMenuItem(scanner, menuRepository);
+                break;
 
+            case MenuCases.ADD_NEW_STAFF:
+                addNewStaff(scanner, staffRepository);
+                break;
 
-						case "8":
-							System.out.print("Enter staff Id:");
-							String staffID = scanner.nextLine();
+            case MenuCases.EDIT_STAFF:
+                //hadas
+                break;
 
+            case MenuCases.DELETE_STAFF:
+                //hadas
+                break;
 
-							break;
-						case "Q":
-						case "q":
-						default:
-							System.out.println("Goodbye");
-							System.exit(0);
-					}
+            case MenuCases.VIEW_ALL_STAFF:
+                viewAllStaff(staffRepository);
+                break;
 
-				}
+            case MenuCases.VIEW_STAFF_HOUR_WAGE:
+                //hadas
+                viewStaffHoueWadg(scanner);
+                break;
 
-				else {
-					callEmployeeQuestions();
+            case MenuCases.EDIT_ORDER:
+                //YARDEN
+                break;
 
-					String selectedOption = scanner.nextLine();
-					switch (selectedOption) {
-						case MenuCases.ADD_NEW_MENU_ITEM:
-							System.out.print("Write menu item id (number): ");
-							String id = scanner.nextLine();
-							System.out.print("Entr menu item name: ");
-							String name = scanner.nextLine();
-							System.out.print("enter menu item price: ");
-							String price = scanner.nextLine();
-							System.out.print("enter menu item type(MAIN,DRINK,ALCOHOL,DESERT:");
-							String type = scanner.nextLine();
+            case MenuCases.NEW_ORDER:
+                //YARDEN
+                break;
 
-							menuRepository.addMenuItem(new MenuItem(Integer.parseInt(id), name, Double.parseDouble(price), MenuItemType.valueOf(type)));
-							break;
-						case "2":
-							Set<MenuItem> menu = menuRepository.findAll();
-							for (MenuItem items : menu) {
-								System.out.println(items);
-							}
-							break;
-						case "3":
-							System.out.print("Write menu item id you want to edit (number): ");
-							id = scanner.nextLine();
+            case MenuCases.DELETE_ORDER:
+                //YARDEN
+                break;
 
-							System.out.print("Entr menu item name: ");
-							name = scanner.nextLine();
-							System.out.print("enter menu item price: ");
-							price = scanner.nextLine();
-							System.out.print("enter menu item type(MAIN,DRINK,ALCOHOL,DESERT:");
-							type = scanner.nextLine();
-							menuRepository.updateMenuItem(new MenuItem(Integer.parseInt(id), name, Double.parseDouble(price), MenuItemType.valueOf(type)));
-							break;
-						case "4":
-							System.out.print("Enter staff id : ");
-							String staffId = scanner.nextLine();
-							System.out.print("Entr first name : ");
-							String fName = scanner.nextLine();
-							System.out.print("Enter last name : ");
-							String lName = scanner.nextLine();
-							System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
-							String d = scanner.nextLine();
+            case MenuCases.VIEW_ALL_ORDERS:
+                //YARDEN
+                break;
 
-							System.out.print("Enter private house number:");
-							String houseNum = scanner.nextLine();
-							System.out.print("Enter house street:");
-							String houseStreet = scanner.nextLine();
-							System.out.print("Enter city:");
-							String city = scanner.nextLine();
-							System.out.print("Enter state:");
-							String state = scanner.nextLine();
-							System.out.print("Enter role (manager/employee:");
-							String role = scanner.nextLine();
-							System.out.print("Enter User Name:");
-							String username = scanner.nextLine();
-							System.out.print("Enter password:");
-							String staffPassword = scanner.nextLine();
-							//parsing to date format
+            case MenuCases.CLOSE_ORDER:
 
-							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-							LocalDate date = LocalDate.parse(d, formatter);
+                break;
 
+            case MenuCases.TOTAL_ORDER_REPORT:
+                //YARDEN
+                break;
 
-							if (role.equals("manager")) {
-								staffRepository.addStaff(new Manager(Integer.parseInt(staffId), fName, lName, date, Integer.parseInt(houseNum), houseStreet, city, state, username, staffPassword, Role.valueOf(role)));
+            case "Q":
+            case "q":
+            default:
+                System.out.println("Goodbye");
+                System.exit(0);
+        }
+    }
 
-							}
-							if (role.equals("employee")) {
-								staffRepository.addStaff(new Employee(Integer.parseInt(staffId), fName, lName, date, Integer.parseInt(houseNum), houseStreet, city, state, username, staffPassword, Role.valueOf(role)));
-							}
+    private static void employeeOptions(Scanner scanner, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
+        System.out.println("1. view all Menu Items");
+        System.out.println("2. view all Staff members");
+        System.out.println("3. add new order");
+        System.out.println("4. edit my order");
+        System.out.println("5. delete order");
+        System.out.println("6. view my orders");
+        System.out.println("7. close my order");
 
+        System.out.println("Q. Exit");
 
-							break;
-						case "7":
-							Set<Staff> staffSet = staffRepository.findAll();
-							for (Staff s : staffSet) {
+        String selectedOption = scanner.nextLine();
+        switch (selectedOption) {
 
+            case MenuCases.VIEW_ALL_MENU_ITEMS_EMPLOYEE:
+                viewAllMenuItems(menuRepository);
+                break;
 
-								System.out.println(s);
+            case MenuCases.VIEW_ALL_STAFF_EMPLOYEE:
+                viewAllStaff(staffRepository);
+                break;
 
-							}
-							break;
+            case MenuCases.NEW_ORDER_EMPLOYEE:
+                //YARDEN
+                break;
 
+            case MenuCases.EDIT_MY_ORDER:
+                //YARDEN
+                break;
 
-						case "8":
-							System.out.print("Enter staff Id:");
-							String staffID = scanner.nextLine();
+            case MenuCases.DELETE_MY_ORDER:
+                //YARDEN
+                break;
 
+            case MenuCases.VIEW_MY_ORDERS:
+                //YARDEN
+                break;
 
-							break;
-						case "Q":
-						case "q":
-						default:
-							System.out.println("Goodbye");
-							System.exit(0);
-					}
-				}
-			}
+            case MenuCases.CLOSE_MY_ORDER:
+                //YARDEN
+                break;
 
-
-			else
-			{
-				System.out.println("userName or password dos'nt exist!");
-			}
-
-			}
-
-		}
+            case "Q":
+            case "q":
+            default:
+                System.out.println("Goodbye");
+                System.exit(0);
+        }
 
 
-		private static void callManagerQuestions(){
-			System.out.println("1. Add new Menu item");
-			System.out.println("2. view all Menu Items");
-			System.out.println("3. Edit Menu Item");
-			System.out.println("3. delete Menu Item");
-			System.out.println("4. Add new Staff member");
-			System.out.println("5. Edit Staff member");
-			System.out.println("6. Delete Staff member");
-			System.out.println("7. view all Staff members");
-			System.out.println("8. edit order");
-			System.out.println("9. add new order");
-			System.out.println("10. delete order");
-			System.out.println("11. view all order");
-			System.out.println("12. close order");
-			System.out.println("13. view total orders report (only close)");
-			System.out.println("14. view staff hour wage");
+    }
 
-			System.out.println("Q. Exit");
-		}
+    private static void viewStaffHoueWadg(Scanner scanner) throws Exception {
+        System.out.print("Enter staff Id:");
+        String staffID = scanner.nextLine();
+    }
 
-	private static void callEmployeeQuestions(){
-		//manager:
+    private static void viewAllStaff(StaffRepository staffRepository) throws Exception {
+        Set<Staff> staffSet = staffRepository.findAll();
+        for (Staff s : staffSet) {
 
 
-		//emplyee:
+            System.out.println(s);
 
-		System.out.println("1. view all Menu Items");
-		System.out.println("2. view all Staff members");
-		System.out.println("3. add new order");
-		System.out.println("4. edit my order");
-		System.out.println("5. delete order");
-		System.out.println("6. view my orders");
-		System.out.println("7. close my order");
+        }
+    }
 
-		System.out.println("Q. Exit");
+    private static void addNewStaff(Scanner scanner, StaffRepository staffRepository) throws Exception {
+        System.out.print("Enter staff id : ");
+        String staffId = scanner.nextLine();
+        System.out.print("Entr first name : ");
+        String fName = scanner.nextLine();
+        System.out.print("Enter last name : ");
+        String lName = scanner.nextLine();
+        System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
+        String d = scanner.nextLine();
+
+        System.out.print("Enter private house number:");
+        String houseNum = scanner.nextLine();
+        System.out.print("Enter house street:");
+        String houseStreet = scanner.nextLine();
+        System.out.print("Enter city:");
+        String city = scanner.nextLine();
+        System.out.print("Enter state:");
+        String state = scanner.nextLine();
+        System.out.print("Enter role (manager/employee:");
+        String role = scanner.nextLine();
+        System.out.print("Enter User Name:");
+        String username = scanner.nextLine();
+        System.out.print("Enter password:");
+        String staffPassword = scanner.nextLine();
+        //parsing to date format
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
+        LocalDate date = LocalDate.parse(d, formatter);
 
 
-	}
+        if (role.equals("manager")) {
+            staffRepository.addStaff(new Manager(Integer.parseInt(staffId), fName, lName, date, Integer.parseInt(houseNum), houseStreet, city, state, username, staffPassword, Role.valueOf(role)));
 
-	private static boolean isManager(Staff staff)
-	{
-		return staff.getUserDetails().getRole() == Role.manager;
-	}
+        }
+        if (role.equals("employee")) {
+            staffRepository.addStaff(new Employee(Integer.parseInt(staffId), fName, lName, date, Integer.parseInt(houseNum), houseStreet, city, state, username, staffPassword, Role.valueOf(role)));
+        }
 
+    }
 
+    private static void editMenuItem(Scanner scanner, MenuRepository menuRepository) throws Exception {
+        System.out.print("Write menu item id you want to edit (number): ");
+        String id = scanner.nextLine();
+
+        System.out.print("Entr menu item name: ");
+        String name = scanner.nextLine();
+        System.out.print("enter menu item price: ");
+        String price = scanner.nextLine();
+        System.out.print("enter menu item type(MAIN,DRINK,ALCOHOL,DESERT:");
+        String type = scanner.nextLine();
+        menuRepository.updateMenuItem(new MenuItem(Integer.parseInt(id), name, Double.parseDouble(price), MenuItemType.valueOf(type)));
+
+    }
+
+    private static void viewAllMenuItems(MenuRepository menuRepository) throws Exception {
+        Set<MenuItem> menu = menuRepository.findAll();
+        for (MenuItem items : menu) {
+            System.out.println(items);
+        }
+    }
+
+    private static void addNewMenuItem(Scanner scanner, MenuRepository menuRepository) throws Exception {
+        System.out.print("Write menu item id (number): ");
+        String id = scanner.nextLine();
+        System.out.print("Entr menu item name: ");
+        String name = scanner.nextLine();
+        System.out.print("enter menu item price: ");
+        String price = scanner.nextLine();
+        System.out.print("enter menu item type(MAIN,DRINK,ALCOHOL,DESERT:");
+        String type = scanner.nextLine();
+
+        menuRepository.addMenuItem(new MenuItem(Integer.parseInt(id), name, Double.parseDouble(price), MenuItemType.valueOf(type)));
+    }
 
 
 }

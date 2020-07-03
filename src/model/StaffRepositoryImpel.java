@@ -31,6 +31,7 @@ public class StaffRepositoryImpel implements StaffRepository {
 
     @Override
     public void deleteStaff(int id) throws IOException {
+
         this.staff.remove(new Staff(id));
         this.fileManager.write(this.staff);
 

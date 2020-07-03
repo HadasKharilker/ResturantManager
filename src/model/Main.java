@@ -53,18 +53,18 @@ public class Main {
         System.out.println("1. Add new Menu item");
         System.out.println("2. view all Menu Items");
         System.out.println("3. Edit Menu Item");
-        System.out.println("3. delete Menu Item");
-        System.out.println("4. Add new Staff member");
-        System.out.println("5. Edit Staff member");
-        System.out.println("6. Delete Staff member");
-        System.out.println("7. view all Staff members");
-        System.out.println("8. view staff hour wage");
-        System.out.println("9. edit order");
-        System.out.println("10. add new order");
-        System.out.println("11. delete order");
-        System.out.println("12. view all order");
-        System.out.println("13. close order");
-        System.out.println("14. view total orders report (only close)");
+        System.out.println("4. delete Menu Item");
+        System.out.println("5. Add new Staff member");
+        System.out.println("6. Edit Staff member");
+        System.out.println("7. Delete Staff member");
+        System.out.println("8. view all Staff members");
+        System.out.println("9. view staff hour wage");
+        System.out.println("10. edit order");
+        System.out.println("11. add new order");
+        System.out.println("12. delete order");
+        System.out.println("13. view all order");
+        System.out.println("14. close order");
+        System.out.println("15. view total orders report (only close)");
         System.out.println("Q. Exit");
 
         String selectedOption = scanner.nextLine();
@@ -80,6 +80,9 @@ public class Main {
             case MenuCases.EDIT_NEW_MENU_ITEM:
                 editMenuItem(scanner, menuRepository);
                 break;
+            case MenuCases.DELETE_NEW_MENU_ITEM:
+                deleteMenuItem(scanner, menuRepository);
+                break;
 
             case MenuCases.ADD_NEW_STAFF:
                 addNewStaff(scanner, staffRepository);
@@ -90,16 +93,16 @@ public class Main {
                 break;
 
             case MenuCases.DELETE_STAFF:
-                //hadas
+                deleteStaffMember(scanner, staffRepository);
                 break;
 
             case MenuCases.VIEW_ALL_STAFF:
                 viewAllStaff(staffRepository);
                 break;
 
-            case MenuCases.VIEW_STAFF_HOUR_WAGE:
+            case MenuCases.VIEW_STAFF_HOUR_WAGE_REPORT:
                 //hadas
-                viewStaffHoueWadg(scanner);
+                viewStaffHouerWage(scanner);
                 break;
 
             case MenuCases.EDIT_ORDER:
@@ -186,7 +189,7 @@ public class Main {
 
     }
 
-    private static void viewStaffHoueWadg(Scanner scanner) throws Exception {
+    private static void viewStaffHouerWage(Scanner scanner) throws Exception {
         System.out.print("Enter staff Id:");
         String staffID = scanner.nextLine();
     }
@@ -241,6 +244,20 @@ public class Main {
 
     }
 
+    private static void deleteStaffMember(Scanner scanner, StaffRepository staffRepository)throws Exception {
+        System.out.print("Enter Staff id you want to remove (number): ");
+        String id = scanner.nextLine();
+        staffRepository.deleteStaff(Integer.parseInt (id));
+
+    }
+
+
+
+
+
+
+
+
     private static void editMenuItem(Scanner scanner, MenuRepository menuRepository) throws Exception {
         System.out.print("Write menu item id you want to edit (number): ");
         String id = scanner.nextLine();
@@ -273,6 +290,12 @@ public class Main {
         String type = scanner.nextLine();
 
         menuRepository.addMenuItem(new MenuItem(Integer.parseInt(id), name, Double.parseDouble(price), MenuItemType.valueOf(type)));
+    }
+    private static void deleteMenuItem(Scanner scanner,MenuRepository menuRepository) throws Exception{
+        System.out.print("Enter menu item id you want to remove (number): ");
+        String id = scanner.nextLine();
+        menuRepository.deleteMenuItem(Integer.parseInt (id));
+
     }
 
 

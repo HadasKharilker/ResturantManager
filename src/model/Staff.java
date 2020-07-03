@@ -73,8 +73,8 @@ public class Staff extends Person implements Serializable {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
-            return false;
+      //  if (getClass() != obj.getClass())
+        //    return false;
         Staff other = (Staff) obj;
         if (getPersonId() != other.getPersonId())
             return false;

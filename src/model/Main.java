@@ -89,7 +89,9 @@ public class Main {
                 break;
 
             case MenuCases.EDIT_STAFF:
-                //hadas
+                editStaff(scanner, staffRepository);
+
+
                 break;
 
             case MenuCases.DELETE_STAFF:
@@ -250,6 +252,14 @@ public class Main {
         staffRepository.deleteStaff(Integer.parseInt (id));
 
     }
+    private static void editStaff(Scanner scanner, StaffRepository menuRepository) throws Exception {
+        System.out.print("Enter  ");
+        System.out.print("Enter Staff id you want to edit (number): ");
+        String id = scanner.nextLine();
+
+
+    }
+
 
 
 

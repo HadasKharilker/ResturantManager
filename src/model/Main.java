@@ -3,6 +3,7 @@ package model;
 import javax.swing.*;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
@@ -13,6 +14,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
         StaffRepository staffRepository = new StaffRepositoryImpel();
         MenuRepository menuRepository = new MenuItemRepositoryImpel();
+        OrderRepository orderRepository = new OrderRepositoryImpel();
+
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -34,7 +37,7 @@ public class Main {
                 //clock in (בתוך staff)
                 while (true) {
                     if (staff.isManager())
-                        managerQptions(scanner, staffRepository, menuRepository);
+                        managerQptions(scanner, staff, orderRepository, staffRepository, menuRepository);
 
                     else
                         employeeOptions(scanner, staffRepository, menuRepository);
@@ -49,7 +52,7 @@ public class Main {
 
     }
 
-    private static void managerQptions(Scanner scanner, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
+    private static void managerQptions(Scanner scanner, Staff staff, OrderRepository orderRepository, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
         System.out.println("1. Add new Menu item");
         System.out.println("2. view all Menu Items");
         System.out.println("3. Edit Menu Item");
@@ -110,7 +113,7 @@ public class Main {
                 break;
 
             case MenuCases.NEW_ORDER:
-                //YARDEN
+                addNewOrder(scanner, staff, orderRepository, menuRepository);
                 break;
 
             case MenuCases.DELETE_ORDER:
@@ -118,7 +121,7 @@ public class Main {
                 break;
 
             case MenuCases.VIEW_ALL_ORDERS:
-                //YARDEN
+                viewAllOrders(orderRepository);
                 break;
 
             case MenuCases.CLOSE_ORDER:
@@ -135,6 +138,47 @@ public class Main {
                 System.out.println("Goodbye");
                 System.exit(0);
         }
+    }
+
+    private static void viewAllOrders(OrderRepository orderRepository) throws Exception {
+        Set<Order> orders = orderRepository.getAllOrders();
+
+        for (Order o : orders) {
+            System.out.println(o);
+
+        }
+    }
+    private static void addNewOrder(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
+
+        int staffId = staff.getPersonId();
+        System.out.println("choose menu items ID from list : enter -1 to finish ");
+        viewAllMenuItems(menuRepository);
+
+        int indexMenuItem = 1;
+        Set<MenuItemOrder> menuItems = new HashSet<MenuItemOrder>();
+
+        System.out.print("menu item " + indexMenuItem++ + ".");
+        String menuItemID = scanner.nextLine();
+
+        System.out.print("enter number of item: ");
+        String numberOfItem = scanner.nextLine();
+
+        while (!menuItemID.equals("-1")) {
+            MenuItem menuItem = menuRepository.find(Integer.parseInt(menuItemID));
+            MenuItemOrder menuItemOrder=new MenuItemOrder(menuItem,Integer.parseInt(numberOfItem));
+            menuItems.add(menuItemOrder);
+
+            System.out.print("menu item " + indexMenuItem++ + ".");
+            menuItemID = scanner.nextLine();
+
+            if(!menuItemID.equals("-1")){
+            System.out.print("enter number of item: ");
+            numberOfItem = scanner.nextLine();}
+        }
+
+        Order newOrder = new Order(staffId, menuItems);
+        orderRepository.addOrder(newOrder);
+
     }
 
     private static void employeeOptions(Scanner scanner, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
@@ -244,18 +288,12 @@ public class Main {
 
     }
 
-    private static void deleteStaffMember(Scanner scanner, StaffRepository staffRepository)throws Exception {
+    private static void deleteStaffMember(Scanner scanner, StaffRepository staffRepository) throws Exception {
         System.out.print("Enter Staff id you want to remove (number): ");
         String id = scanner.nextLine();
-        staffRepository.deleteStaff(Integer.parseInt (id));
+        staffRepository.deleteStaff(Integer.parseInt(id));
 
     }
-
-
-
-
-
-
 
 
     private static void editMenuItem(Scanner scanner, MenuRepository menuRepository) throws Exception {
@@ -291,10 +329,11 @@ public class Main {
 
         menuRepository.addMenuItem(new MenuItem(Integer.parseInt(id), name, Double.parseDouble(price), MenuItemType.valueOf(type)));
     }
-    private static void deleteMenuItem(Scanner scanner,MenuRepository menuRepository) throws Exception{
+
+    private static void deleteMenuItem(Scanner scanner, MenuRepository menuRepository) throws Exception {
         System.out.print("Enter menu item id you want to remove (number): ");
         String id = scanner.nextLine();
-        menuRepository.deleteMenuItem(Integer.parseInt (id));
+        menuRepository.deleteMenuItem(Integer.parseInt(id));
 
     }
 

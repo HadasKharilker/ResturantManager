@@ -13,6 +13,7 @@ public class MenuItem implements Serializable {
 	 private String itemName;
 	 private Double price;
 	 private MenuItemType itemType;
+
 	 private static final long serialVersionUID = 1L;
 	 
 	 

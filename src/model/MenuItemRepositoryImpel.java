@@ -30,11 +30,17 @@ public class MenuItemRepositoryImpel implements MenuRepository {
 	}
 
 	@Override
-	public void deleteMenuItem(int itemID) throws IOException {
-		this.menu.remove(new MenuItem(itemID));
-		this.fileManager.write(this.menu);
+	public void deleteMenuItem(int itemID) throws Exception {
+
+
+		if (!(this.menu.contains(new MenuItem(itemID)))) {
+			throw new Exception("item does'nt exists!");
+		}
+			this.menu.remove(new MenuItem(itemID));
+			this.fileManager.write(this.menu);
+		}
 		
-	}
+
 
 
 	@Override

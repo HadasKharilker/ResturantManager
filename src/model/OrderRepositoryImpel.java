@@ -5,14 +5,36 @@ import java.util.Set;
 
 public class OrderRepositoryImpel implements OrderRepository {
 
+    //for singelton
+    private static OrderRepositoryImpel INSTANCE ;
+    private static Object lockObject = new Object();
+
     private final String FILENAME = "order";
     private Set<Order> orders;
     private FileManager<Order> fileManager;
 
-    public OrderRepositoryImpel() throws IOException, ClassNotFoundException {
+    //singelton has a private constructor
+    private OrderRepositoryImpel() throws IOException, ClassNotFoundException {
         this.fileManager = new FileManager<Order>(FILENAME);
         this.orders = this.fileManager.read();
     }
+
+    //for singelton use
+    public static OrderRepositoryImpel getInstance() throws Exception{
+        if( INSTANCE == null) {
+            synchronized (lockObject) {
+                if (INSTANCE == null) {
+                    INSTANCE = new OrderRepositoryImpel();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+
+
+
+
 
     @Override
     public void addOrder(Order order) throws Exception {

@@ -1,19 +1,33 @@
 package model;
 
+import java.awt.*;
 import java.io.IOException;
 
 import java.util.Set;
 
 public class MenuItemRepositoryImpel implements MenuRepository {
+	private static MenuItemRepositoryImpel INSTANCE ;
+	private static Object lockObject = new Object();
 	private final String FILENAME = "menu";
 	private Set<MenuItem> menu;
 	private FileManager<MenuItem> fileManager;
 	
-	public MenuItemRepositoryImpel() throws IOException, ClassNotFoundException {
+	private MenuItemRepositoryImpel() throws IOException, ClassNotFoundException {
 		this.fileManager = new FileManager<MenuItem>(FILENAME);
 		this.menu = this.fileManager.read();
 	}
-	
+	//for singelton use
+	public static MenuItemRepositoryImpel getInstance() throws Exception{
+		if( INSTANCE == null) {
+			synchronized (lockObject) {
+				if (INSTANCE == null) {
+					INSTANCE = new MenuItemRepositoryImpel();
+				}
+			}
+		}
+		return INSTANCE;
+	}
+
 	@Override
 	public void addMenuItem(MenuItem menuItem) throws Exception {
 		if (menuItem == null) {

@@ -36,10 +36,10 @@ public class Main {
                 //clock in (בתוך staff)
                 while (true) {
                     if (staff.isManager())
-                        managerQptions(scanner, staff, orderRepository, staffRepository, menuRepository);
+                        managerOptions(scanner, staff, orderRepository, staffRepository, menuRepository);
 
                     else
-                        employeeOptions(scanner, staffRepository, menuRepository);
+                        employeeOptions(scanner, staff, orderRepository, staffRepository, menuRepository);
 
 
                 }
@@ -51,7 +51,8 @@ public class Main {
 
     }
 
-    private static void managerQptions(Scanner scanner, Staff staff, OrderRepository orderRepository, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
+    private static void managerOptions(Scanner scanner, Staff staff, OrderRepository orderRepository, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
+        System.out.println("");
         System.out.println("1. Add new Menu item");
         System.out.println("2. view all Menu Items");
         System.out.println("3. Edit Menu Item");
@@ -114,7 +115,7 @@ public class Main {
                 break;
 
             case MenuCases.EDIT_ORDER:
-                //YARDEN
+                editOrderAllList(scanner, staff, orderRepository, menuRepository);
                 break;
 
             case MenuCases.NEW_ORDER:
@@ -122,19 +123,19 @@ public class Main {
                 break;
 
             case MenuCases.DELETE_ORDER:
-                //YARDEN
+                deleteOrder(scanner, orderRepository);
                 break;
 
             case MenuCases.VIEW_ALL_ORDERS:
-                viewAllOrders(orderRepository);
+                viewAllOpenOrders(orderRepository);
                 break;
 
             case MenuCases.CLOSE_ORDER:
-
+                closeOrderAllList(scanner, orderRepository);
                 break;
 
             case MenuCases.TOTAL_ORDER_REPORT:
-                //YARDEN
+                totalOrderReport(orderRepository);
                 break;
 
             case "Q":
@@ -145,15 +146,179 @@ public class Main {
         }
     }
 
-    private static void viewAllOrders(OrderRepository orderRepository) throws Exception {
-        Set<Order> orders = orderRepository.getAllOrders();
+    private static void employeeOptions(Scanner scanner, Staff staff, OrderRepository orderRepository, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
+        System.out.println("1. view all Menu Items");
+        System.out.println("2. add new order");
+        System.out.println("3. edit my order");
+        System.out.println("4. delete order");
+        System.out.println("5. view my orders");
+        System.out.println("6. close my order");
+
+        System.out.println("Q. Exit");
+
+        String selectedOption = scanner.nextLine();
+        switch (selectedOption) {
+
+            case MenuCases.VIEW_ALL_MENU_ITEMS_EMPLOYEE:
+                viewAllMenuItems(menuRepository);
+                break;
+
+
+            case MenuCases.NEW_ORDER_EMPLOYEE:
+                addNewOrder(scanner, staff, orderRepository, menuRepository);
+                break;
+
+            case MenuCases.EDIT_MY_ORDER:
+                editOrderStaffList(scanner, staff, orderRepository, menuRepository);
+                break;
+
+            case MenuCases.DELETE_MY_ORDER:
+                deleteOrderByStaff(scanner, staff, orderRepository);
+                break;
+
+            case MenuCases.VIEW_MY_ORDERS:
+                viewAllOpenOrdersByStaff(staff.getPersonId(), orderRepository);
+                break;
+
+            case MenuCases.CLOSE_MY_ORDER:
+                closeOrderByStaff(scanner, staff, orderRepository);
+                break;
+
+            case "Q":
+            case "q":
+            default:
+                System.out.println("Goodbye");
+                System.exit(0);
+        }
+
+
+    }
+
+    private static void totalOrderReport(OrderRepository orderRepository) throws Exception {
+
+        Set<Order> orders = orderRepository.getAllClosedOrders();
+        double sumReport = 0;
 
         for (Order o : orders) {
             System.out.println(o);
+            sumReport += o.getTotalOrderPrice();
 
         }
+        System.out.println("total orders price:" + sumReport);
+
     }
-    private static void addNewOrder(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
+
+    private static void closeOrderAllList(Scanner scanner, OrderRepository orderRepository) throws Exception {
+        System.out.println("choose order ID to close from list:  ");
+        viewAllOpenOrders(orderRepository);
+
+        closeOrder(scanner, orderRepository);
+    }
+
+
+    private static void closeOrderByStaff(Scanner scanner, Staff staff, OrderRepository orderRepository) throws Exception {
+        System.out.println("choose order ID to close from list:  ");
+        viewAllOpenOrdersByStaff(staff.getPersonId(), orderRepository);
+
+        closeOrder(scanner, orderRepository);
+    }
+
+    private static void closeOrder(Scanner scanner, OrderRepository orderRepository) throws Exception {
+        System.out.print("order ID: ");
+        String orderID = scanner.nextLine();
+
+        Order orderToClose = orderRepository.getOrder(Integer.parseInt(orderID));
+        System.out.println("Total Order price: " + orderToClose.getTotalOrderPrice());
+
+        System.out.println("press 1 to close , 0 to cancel:  ");
+        String toClose = scanner.nextLine();
+
+        if (Integer.parseInt(toClose) == 1) {
+            orderRepository.closeOrder(orderToClose);
+            System.out.println("Order Closed Successfully");
+        } else
+            System.out.println("Canceled");
+
+    }
+
+    private static void deleteOrder(Scanner scanner, OrderRepository orderRepository) throws Exception {
+        System.out.println("choose order ID to delete:");
+
+        int sizeOrder = viewAllOpenOrders(orderRepository);
+
+        if (sizeOrder != 0) {
+            System.out.print("order ID:");
+            String orderID = scanner.nextLine();
+
+            orderRepository.deleteOrder(Integer.parseInt(orderID));
+
+        } else {
+            System.out.print("no order to delete");
+        }
+    }
+
+    private static void deleteOrderByStaff(Scanner scanner, Staff staff, OrderRepository orderRepository) throws Exception {
+        System.out.println("choose order ID to delete:");
+
+        int sizeOrder = viewAllOpenOrdersByStaff(staff.getPersonId(), orderRepository);
+
+        if (sizeOrder != 0) {
+            System.out.print("order ID:");
+            String orderID = scanner.nextLine();
+
+            orderRepository.deleteOrder(Integer.parseInt(orderID));
+
+        } else {
+            System.out.print("no order to delete");
+        }
+    }
+
+    private static void editOrderStaffList(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
+        System.out.println("choose order ID from list to edit:  ");
+        viewAllOpenOrdersByStaff(staff.getPersonId(), orderRepository);
+
+        editOrder(scanner, staff, orderRepository, menuRepository);
+
+    }
+
+    private static void editOrder(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
+        System.out.print("order ID: ");
+        String orderID = scanner.nextLine();
+
+        Order editOrder = getOrderFromUser(scanner, staff, orderRepository, menuRepository);
+        editOrder.setOrderID(Integer.parseInt(orderID));
+        orderRepository.updateOrder(editOrder);
+    }
+
+
+    private static void editOrderAllList(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
+        System.out.println("choose order ID from list to edit:  ");
+        viewAllOpenOrders(orderRepository);
+
+        editOrder(scanner, staff, orderRepository, menuRepository);
+    }
+
+    private static int viewAllOpenOrdersByStaff(int staffID, OrderRepository orderRepository) throws Exception {
+        Set<Order> orders = orderRepository.getAllStaffOpenOrders(staffID);
+
+        for (Order o : orders) {
+            System.out.println(o);
+        }
+
+        return orders.size();
+    }
+
+    private static int viewAllOpenOrders(OrderRepository orderRepository) throws Exception {
+        Set<Order> orders = orderRepository.getAllOpenOrders();
+
+        for (Order o : orders) {
+            System.out.println(o);
+        }
+
+        return orders.size();
+    }
+
+    private static Order getOrderFromUser(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
 
         int staffId = staff.getPersonId();
         System.out.println("choose menu items ID from list : enter -1 to finish ");
@@ -170,73 +335,30 @@ public class Main {
 
         while (!menuItemID.equals("-1")) {
             MenuItem menuItem = menuRepository.find(Integer.parseInt(menuItemID));
-            MenuItemOrder menuItemOrder=new MenuItemOrder(menuItem,Integer.parseInt(numberOfItem));
+            MenuItemOrder menuItemOrder = new MenuItemOrder(menuItem, Integer.parseInt(numberOfItem));
             menuItems.add(menuItemOrder);
 
             System.out.print("menu item " + indexMenuItem++ + ".");
             menuItemID = scanner.nextLine();
 
-            if(!menuItemID.equals("-1")){
-            System.out.print("enter number of item: ");
-            numberOfItem = scanner.nextLine();}
+            if (!menuItemID.equals("-1")) {
+                System.out.print("enter number of item: ");
+                numberOfItem = scanner.nextLine();
+            }
         }
 
-        Order newOrder = new Order(staffId, menuItems);
+        Order orderFromUser = new Order(staffId, menuItems);
+
+        return orderFromUser;
+    }
+
+    private static void addNewOrder(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
+
+        Order newOrder = getOrderFromUser(scanner, staff, orderRepository, menuRepository);
         orderRepository.addOrder(newOrder);
 
     }
 
-    private static void employeeOptions(Scanner scanner, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
-        System.out.println("1. view all Menu Items");
-        System.out.println("2. view all Staff members");
-        System.out.println("3. add new order");
-        System.out.println("4. edit my order");
-        System.out.println("5. delete order");
-        System.out.println("6. view my orders");
-        System.out.println("7. close my order");
-
-        System.out.println("Q. Exit");
-
-        String selectedOption = scanner.nextLine();
-        switch (selectedOption) {
-
-            case MenuCases.VIEW_ALL_MENU_ITEMS_EMPLOYEE:
-                viewAllMenuItems(menuRepository);
-                break;
-
-            case MenuCases.VIEW_ALL_STAFF_EMPLOYEE:
-                viewAllStaff(staffRepository);
-                break;
-
-            case MenuCases.NEW_ORDER_EMPLOYEE:
-                //YARDEN
-                break;
-
-            case MenuCases.EDIT_MY_ORDER:
-                //YARDEN
-                break;
-
-            case MenuCases.DELETE_MY_ORDER:
-                //YARDEN
-                break;
-
-            case MenuCases.VIEW_MY_ORDERS:
-                //YARDEN
-                break;
-
-            case MenuCases.CLOSE_MY_ORDER:
-                //YARDEN
-                break;
-
-            case "Q":
-            case "q":
-            default:
-                System.out.println("Goodbye");
-                System.exit(0);
-        }
-
-
-    }
 
     private static void viewStaffHouerWage(Scanner scanner) throws Exception {
         System.out.print("Enter staff Id:");

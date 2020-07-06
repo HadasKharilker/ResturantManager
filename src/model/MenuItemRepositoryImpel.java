@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Set;
 
 public class MenuItemRepositoryImpel implements MenuRepository {
+
 	private static MenuItemRepositoryImpel INSTANCE ;
 	private static Object lockObject = new Object();
 	private final String FILENAME = "menu";

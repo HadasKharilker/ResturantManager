@@ -11,9 +11,9 @@ import java.util.Set;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        StaffRepository staffRepository = new StaffRepositoryImpel();
-        MenuRepository menuRepository = new MenuItemRepositoryImpel();
-        OrderRepository orderRepository = new OrderRepositoryImpel();
+        StaffRepository staffRepository = StaffRepositoryImpel.getInstance();
+        MenuRepository menuRepository =  MenuItemRepositoryImpel.getInstance();
+        OrderRepository orderRepository = OrderRepositoryImpel.getInstance();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -29,7 +29,7 @@ public class Main {
             Staff staff = staffRepository.getStaffByUserName(userName);
 
             if (staff != null)
-                isUserCorrect = staff.isPassowrdCuurect(password);
+                isUserCorrect = staff.isPasswordCorrect(password);
 
             if (isUserCorrect) {
                 //staff.clockIn();
@@ -58,16 +58,17 @@ public class Main {
         System.out.println("3. Edit Menu Item");
         System.out.println("4. delete Menu Item");
         System.out.println("5. Add new Staff member");
-        System.out.println("6. Edit Staff member");
-        System.out.println("7. Delete Staff member");
-        System.out.println("8. view all Staff members");
-        System.out.println("9. view staff hour wage");
-        System.out.println("10. edit order");
-        System.out.println("11. add new order");
-        System.out.println("12. delete order");
-        System.out.println("13. view all order");
-        System.out.println("14. close order");
-        System.out.println("15. view total orders report (only close)");
+        System.out.println("6. Edit Staff personal details");
+        System.out.println("7. Edit Staff user details");
+        System.out.println("8. Delete Staff member");
+        System.out.println("9. view all Staff members");
+        System.out.println("10. view staff hour wage");
+        System.out.println("11. edit order");
+        System.out.println("12. add new order");
+        System.out.println("13. delete order");
+        System.out.println("14. view all order");
+        System.out.println("15. close order");
+        System.out.println("16. view total orders report (only close)");
         System.out.println("Q. Exit");
 
         String selectedOption = scanner.nextLine();
@@ -91,8 +92,13 @@ public class Main {
                 addNewStaff(scanner, staffRepository);
                 break;
 
-            case MenuCases.EDIT_STAFF:
-                //hadas
+            case MenuCases.EDIT_STAFF_PERSONAL_DETAILS:
+                editStaffPersonalDetails(scanner, staffRepository);
+                break;
+            case MenuCases.EDIT_STAFF_USER_DETAILS_DETAILS:
+                editStaffUserDetails(scanner, staffRepository);
+
+
                 break;
 
             case MenuCases.DELETE_STAFF:
@@ -359,7 +365,7 @@ public class Main {
         String staffID = scanner.nextLine();
     }
 
-    private static void viewAllStaff(StaffRepository staffRepository) throws Exception {
+    private static void viewAllStaff(StaffRepository staffRepository)  {
         Set<Staff> staffSet = staffRepository.findAll();
         for (Staff s : staffSet) {
 
@@ -415,13 +421,76 @@ public class Main {
         staffRepository.deleteStaff(Integer.parseInt(id));
 
     }
+    private static void editStaffPersonalDetails(Scanner scanner, StaffRepository staffRepository) throws Exception {
+
+
+            System.out.print("Enter Staff id you want to edit (number): ");
+
+            String id = scanner.nextLine();
+
+            if(staffRepository.isExist(Integer.parseInt(id))==false) {
+                throw new Exception("Staff does not exists!");
+
+            }
+            else {
+            System.out.print("Entr first name : ");
+            String fName = scanner.nextLine();
+            System.out.print("Enter last name : ");
+            String lName = scanner.nextLine();
+            System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
+            String d = scanner.nextLine();
+
+            System.out.print("Enter private house number:");
+            String houseNum = scanner.nextLine();
+            System.out.print("Enter house street:");
+            String houseStreet = scanner.nextLine();
+            System.out.print("Enter city:");
+            String city = scanner.nextLine();
+            System.out.print("Enter state:");
+            String state = scanner.nextLine();
+
+
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
+            LocalDate date = LocalDate.parse(d, formatter);
+
+            staffRepository.editPersonDetails(new Staff((Integer.parseInt(id)), fName, lName, date, Integer.parseInt(houseNum), houseStreet, city, state));
+
+
+
+        }
+
+
+    }
+    private static void editStaffUserDetails(Scanner scanner, StaffRepository staffRepository) throws Exception{
+        System.out.print("Enter Staff id you want to edit (number): ");
+
+        String id = scanner.nextLine();
+
+        if(staffRepository.isExist(Integer.parseInt(id))==false) {
+            throw new Exception("Staff does not exists!");
+        }
+        else{
+            System.out.print("Enter role (manager/employee):");
+            String role = scanner.nextLine();
+            System.out.print("Enter User Name:");
+            String username = scanner.nextLine();
+            System.out.print("Enter password:");
+            String staffPassword = scanner.nextLine();
+            staffRepository.editStaffDetails(new Staff(Integer.parseInt(id),username, staffPassword, Role.valueOf(role)));
+
+
+        }
+
+
+    }
 
 
     private static void editMenuItem(Scanner scanner, MenuRepository menuRepository) throws Exception {
         System.out.print("Write menu item id you want to edit (number): ");
         String id = scanner.nextLine();
 
-        System.out.print("Entr menu item name: ");
+        System.out.print("Enter menu item name: ");
         String name = scanner.nextLine();
         System.out.print("enter menu item price: ");
         String price = scanner.nextLine();
@@ -433,6 +502,10 @@ public class Main {
 
     private static void viewAllMenuItems(MenuRepository menuRepository) throws Exception {
         Set<MenuItem> menu = menuRepository.findAll();
+        if(menu==null){
+            throw new Exception("menu is empty exists!");
+
+        }
         for (MenuItem items : menu) {
             System.out.println(items);
         }

@@ -4,15 +4,31 @@ import java.io.IOException;
 import java.util.Set;
 
 public class StaffRepositoryImpel implements StaffRepository {
+    private static StaffRepositoryImpel INSTANCE ;
+    private static Object lockObject = new Object();
     private final String FILENAME = "staff";
     private Set<Staff> staff;
     private FileManager<Staff> fileManager;
 
-    public StaffRepositoryImpel() throws IOException, ClassNotFoundException {
+    //singelton needs a private constructor
+    private StaffRepositoryImpel() throws IOException, ClassNotFoundException {
         this.fileManager = new FileManager<Staff>(FILENAME);
         this.staff = this.fileManager.read();
-        System.out.println(this.staff);
+
     }
+
+    //for singelton use
+    public static StaffRepositoryImpel getInstance() throws Exception{
+       if( INSTANCE == null) {
+           synchronized (lockObject) {
+               if (INSTANCE == null) {
+                   INSTANCE = new StaffRepositoryImpel();
+               }
+           }
+       }
+        return INSTANCE;
+    }
+
 
     @Override
     public void addStaff(Staff staff) throws Exception {
@@ -30,42 +46,16 @@ public class StaffRepositoryImpel implements StaffRepository {
 
 
     @Override
-    public void deleteStaff(int id) throws IOException {
+    public void deleteStaff(int id) throws Exception {
+        if (!(this.staff.contains(new Staff(id)))) {
+            throw new Exception("staff member does'nt exists!");
+        }
 
         this.staff.remove(new Staff(id));
         this.fileManager.write(this.staff);
 
     }
-/*
-    @Override
-    public void updateStaff(Staff curStaff) throws Exception
-    {
-        if (curStaff == null) {
-            throw new Exception("must have a value");
-        }
-        if (!(this.staff.contains(curStaff))) {
-            throw new Exception("staff does not exists!");
-        }
-        else
-        {
-            for (Staff s : staff) {
-                if (s.getPersonId() == curStaff.getPersonId())
-                {
-                    s.setAddress(curStaff.getAddress());
-                    s.set(curStaff.getAddress());
-                    s.setAddress(curStaff.getAddress());
 
-                    s.setName(menuItem.getItemName());
-                    s.setPrice(menuItem.getPrice());
-                    s.setItemType(menuItem.getItemType());
-
-                }
-            }
-
-        }
-        this.fileManager.write(this.menu);
-
-    }*/
 
 
     @Override
@@ -148,6 +138,14 @@ public class StaffRepositoryImpel implements StaffRepository {
 
     }
 
+    @Override
+    public boolean  isExist(int id){
+        return staff.contains(new Staff(id));
+
+
+
+
+    }
 
 }
 

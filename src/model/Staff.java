@@ -14,6 +14,16 @@ public class Staff extends Person implements Serializable {
         this.userDetails = new UserDetails(userName, password, role);
 
     }
+    public Staff(Integer personId, String firstName, String lastName, LocalDate birthDate, Integer houseNumber, String street, String city, String state) {
+        super(personId, firstName, lastName, birthDate, houseNumber, street, city, state);
+    }
+    public Staff(Integer personId,String userName, String password, Role role) {
+        super(personId);
+        this.userDetails = new UserDetails(userName, password, role);
+    }
+
+
+
 
     public Staff(Integer id) {
         super(id);
@@ -24,6 +34,8 @@ public class Staff extends Person implements Serializable {
     public Staff() {
         super();
     }
+
+
 
 
     public UserDetails getUserDetails() {
@@ -53,7 +65,7 @@ public class Staff extends Person implements Serializable {
 
     }
 
-    public boolean isPassowrdCuurect(String curPassword) {
+    public boolean isPasswordCorrect(String curPassword) {
         UserDetails userDetails = this.getUserDetails();
         String password = userDetails.getPassword();
 

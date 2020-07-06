@@ -7,7 +7,7 @@ import java.util.Set;
 public class OrderRepositoryImpel implements OrderRepository {
 
     //for singelton
-    private static OrderRepositoryImpel INSTANCE ;
+    private static OrderRepositoryImpel INSTANCE;
     private static Object lockObject = new Object();
 
     private final String FILENAME = "order";
@@ -23,8 +23,8 @@ public class OrderRepositoryImpel implements OrderRepository {
     }
 
     //for singelton use
-    public static OrderRepositoryImpel getInstance() throws Exception{
-        if( INSTANCE == null) {
+    public static OrderRepositoryImpel getInstance() throws Exception {
+        if (INSTANCE == null) {
             synchronized (lockObject) {
                 if (INSTANCE == null) {
                     INSTANCE = new OrderRepositoryImpel();
@@ -35,25 +35,28 @@ public class OrderRepositoryImpel implements OrderRepository {
     }
 
 
-
-
-
-
     @Override
     public void addOrder(Order order) throws Exception {
         if (order == null) {
             throw new Exception("must have a value");
         }
 
+        int newOrderID = getNewOrderID();
+        order.setOrderID(newOrderID);
+
+        this.openOrders.add(order);
+        this.fileManager.write(this.openOrders);
+    }
+
+    private int getNewOrderID() {
         int maxOrderID = 0;
         for (Order orderItem : openOrders) {
             if (orderItem.getOrderID() > maxOrderID)
                 maxOrderID = orderItem.getOrderID();
         }
-        order.setOrderID(maxOrderID + 1);
 
-        this.openOrders.add(order);
-        this.fileManager.write(this.openOrders);
+        return maxOrderID + 1;
+
     }
 
     @Override

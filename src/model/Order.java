@@ -8,6 +8,8 @@ public class Order implements Serializable {
     private int staffID;
     private Set<MenuItemOrder> menuItems;
     private double totalOrderPrice;
+    private boolean isClosed;
+
     private static final long serialVersionUID = 1L;
 
     public Order(int orderID, int staffID, Set<MenuItemOrder> menuItems, double totalOrderPrice) {
@@ -17,9 +19,19 @@ public class Order implements Serializable {
     public Order(int staffID, Set<MenuItemOrder> menuItems) {
         this.staffID = staffID;
         this.menuItems = menuItems;
-        this.totalOrderPrice=getTotalPriceOrder();
+        this.totalOrderPrice = getTotalPriceOrder();
+        this.isClosed = false;
 
     }
+
+    public boolean getClosed() {
+        return this.isClosed;
+    }
+
+    public void setClosed(boolean closed) {
+        isClosed = closed;
+    }
+
 
     private double getTotalPriceOrder() {
 
@@ -36,6 +48,22 @@ public class Order implements Serializable {
 
     }
 
+    public int getStaffID() {
+        return staffID;
+    }
+
+    public void setTotalOrderPrice(double totalOrderPrice) {
+        this.totalOrderPrice = totalOrderPrice;
+    }
+
+    public double getTotalOrderPrice() {
+        return totalOrderPrice;
+    }
+
+    public Set<MenuItemOrder> getMenuItems() {
+        return menuItems;
+    }
+
     public int getOrderID() {
         return orderID;
     }
@@ -44,16 +72,21 @@ public class Order implements Serializable {
         this.orderID = orderID;
     }
 
+    public void setMenuItems(Set<MenuItemOrder> menuItems) {
+        this.menuItems = menuItems;
+    }
+
+
     @Override
     public String toString() {
-        String toPrint= "[orderID=" + orderID + ", staffID=" + staffID +", ";
+        String toPrint = "[orderID=" + orderID + ", staffID=" + staffID + ", ";
 
-        toPrint+="items in order: ";
-        for (MenuItemOrder menuItemOrder: menuItems) {
-            toPrint+= menuItemOrder.toString();
+        toPrint += "items in order: ";
+        for (MenuItemOrder menuItemOrder : menuItems) {
+            toPrint += menuItemOrder.toString();
         }
 
-        toPrint+= "total price=" + totalOrderPrice + "]";
+        toPrint += "total price=" + totalOrderPrice + "]";
 
         return toPrint;
 

@@ -20,10 +20,9 @@ public class MenuCases
     public static final String TOTAL_ORDER_REPORT="15";
     //employee
     public static final String VIEW_ALL_MENU_ITEMS_EMPLOYEE="1";
-    public static final String VIEW_ALL_STAFF_EMPLOYEE="2";
-    public static final String NEW_ORDER_EMPLOYEE="3";
-    public static final String EDIT_MY_ORDER="4";
-    public static final String DELETE_MY_ORDER="5";
-    public static final String VIEW_MY_ORDERS="6";
-    public static final String CLOSE_MY_ORDER="7";
+    public static final String NEW_ORDER_EMPLOYEE="2";
+    public static final String EDIT_MY_ORDER="3";
+    public static final String DELETE_MY_ORDER="4";
+    public static final String VIEW_MY_ORDERS="5";
+    public static final String CLOSE_MY_ORDER="6";
 }

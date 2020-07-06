@@ -11,9 +11,9 @@ import java.util.Set;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        StaffRepository staffRepository = new StaffRepositoryImpel();
-        MenuRepository menuRepository = new MenuItemRepositoryImpel();
-        OrderRepository orderRepository = new OrderRepositoryImpel();
+        StaffRepository staffRepository = StaffRepositoryImpel.getInstance();
+        MenuRepository menuRepository =  MenuItemRepositoryImpel.getInstance();
+        OrderRepository orderRepository = OrderRepositoryImpel.getInstance();
 
         Scanner scanner = new Scanner(System.in);
 

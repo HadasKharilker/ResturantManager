@@ -4,15 +4,31 @@ import java.io.IOException;
 import java.util.Set;
 
 public class StaffRepositoryImpel implements StaffRepository {
+    private static StaffRepositoryImpel INSTANCE ;
+    private static Object lockObject = new Object();
     private final String FILENAME = "staff";
     private Set<Staff> staff;
     private FileManager<Staff> fileManager;
 
-    public StaffRepositoryImpel() throws IOException, ClassNotFoundException {
+    //singelton needs a private constructor
+    private StaffRepositoryImpel() throws IOException, ClassNotFoundException {
         this.fileManager = new FileManager<Staff>(FILENAME);
         this.staff = this.fileManager.read();
 
     }
+
+    //for singelton use
+    public static StaffRepositoryImpel getInstance() throws Exception{
+       if( INSTANCE == null) {
+           synchronized (lockObject) {
+               if (INSTANCE == null) {
+                   INSTANCE = new StaffRepositoryImpel();
+               }
+           }
+       }
+        return INSTANCE;
+    }
+
 
     @Override
     public void addStaff(Staff staff) throws Exception {

@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 
-public class Staff extends Person implements Serializable {
+public abstract class Staff extends Person implements Serializable {
     private UserDetails userDetails;
     private static final long serialVersionUID = 1L;
 
+    public abstract  double getWage();
 
     public Staff(Integer personId, String firstName, String lastName, LocalDate birthDate, Integer houseNumber, String street, String city, String state, String userName, String password, Role role) {
         super(personId, firstName, lastName, birthDate, houseNumber, street, city, state);
@@ -24,19 +25,13 @@ public class Staff extends Person implements Serializable {
 
 
 
-
     public Staff(Integer id) {
         super(id);
-
-
     }
 
     public Staff() {
         super();
     }
-
-
-
 
     public UserDetails getUserDetails() {
         return userDetails;
@@ -50,19 +45,19 @@ public class Staff extends Person implements Serializable {
         this.userDetails = userDetails;
     }
 
+
+    public boolean isManager() {
+
+        return userDetails.getRole().equals(Role.manager);
+
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + getPersonId();
         return result;
-    }
-
-
-    public boolean isManager() {
-
-        return userDetails.getRole().equals(Role.manager);
-
     }
 
     public boolean isPasswordCorrect(String curPassword) {
@@ -75,9 +70,6 @@ public class Staff extends Person implements Serializable {
         return false;
 
     }
-
-//function clock oin(call repository -> in repository do function that insert current time to file )
-
 
     @Override
     public boolean equals(Object obj) {

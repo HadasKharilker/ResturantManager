@@ -242,17 +242,18 @@ public class Main {
     private static void printStaffHourList(Set<StaffHour> staffHours) throws Exception {
         int totalHours = 0;
         int totalMin = 0;
+        double totalSalary = 0;
 
-        for (StaffHour staffHour : staffHours)
-        {
+        for (StaffHour staffHour : staffHours) {
             System.out.println(staffHour);
             totalHours += getHoursDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
             totalMin += getMinDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
 
-            System.out.println("salary for hour: " + totalHours + " Minutes: " + totalMin);
+            totalSalary += totalHours * (staffHour.getStaff().getWage());
+
         }
         System.out.println("total hours: " + totalHours + " Minutes: " + totalMin);
-
+        System.out.println("total salary: " + totalSalary);
     }
 
 
@@ -523,18 +524,29 @@ public class Main {
 
         System.out.print("Enter Staff id you want to edit (number): ");
 
-        String id = scanner.nextLine();
+        String staffID = scanner.nextLine();
 
-        if (staffRepository.isExist(Integer.parseInt(id)) == false) {
+        if (staffRepository.isExist(Integer.parseInt(staffID)) == false) {
             throw new Exception("Staff does not exists!");
 
         } else {
+            Staff staff = staffRepository.getStaffByID(Integer.parseInt(staffID));
+
             System.out.print("Entr first name : ");
             String fName = scanner.nextLine();
+            staff.setFirstName(fName);
+
             System.out.print("Enter last name : ");
             String lName = scanner.nextLine();
+            staff.setFirstName(lName);
+
             System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
             String d = scanner.nextLine();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
+            LocalDate date = LocalDate.parse(d, formatter);
+
+            staff.setBirthDate(date);
 
             System.out.print("Enter private house number:");
             String houseNum = scanner.nextLine();
@@ -544,13 +556,10 @@ public class Main {
             String city = scanner.nextLine();
             System.out.print("Enter state:");
             String state = scanner.nextLine();
+            Address newAddress = new Address(Integer.parseInt(houseNum), houseStreet, city, state);
+            staff.setAddress(newAddress);
 
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-            LocalDate date = LocalDate.parse(d, formatter);
-
-            staffRepository.editPersonDetails(new Staff((Integer.parseInt(id)), fName, lName, date, Integer.parseInt(houseNum), houseStreet, city, state));
-
+            staffRepository.editPersonDetails(staff);
 
         }
 
@@ -560,18 +569,23 @@ public class Main {
     private static void editStaffUserDetails(Scanner scanner, StaffRepository staffRepository) throws Exception {
         System.out.print("Enter Staff id you want to edit (number): ");
 
-        String id = scanner.nextLine();
+        String staffID = scanner.nextLine();
 
-        if (staffRepository.isExist(Integer.parseInt(id)) == false) {
+        if (staffRepository.isExist(Integer.parseInt(staffID)) == false) {
             throw new Exception("Staff does not exists!");
         } else {
             System.out.print("Enter role (manager/employee):");
             String role = scanner.nextLine();
-            System.out.print("Enter User Name:");
+
+            if (role.equals("manager"))
+
+                System.out.print("Enter User Name:");
             String username = scanner.nextLine();
             System.out.print("Enter password:");
             String staffPassword = scanner.nextLine();
-            staffRepository.editStaffDetails(new Staff(Integer.parseInt(id), username, staffPassword, Role.valueOf(role)));
+
+            UserDetails newUseretails = new UserDetails(username, staffPassword, Role.valueOf(role));
+            staffRepository.editStaffDetails(Integer.parseInt(staffID), newUseretails);
 
 
         }

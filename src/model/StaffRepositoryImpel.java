@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Set;
 
 public class StaffRepositoryImpel implements StaffRepository {
-    private static StaffRepositoryImpel INSTANCE ;
+    private static StaffRepositoryImpel INSTANCE;
     private static Object lockObject = new Object();
     private final String FILENAME = "staff";
     private Set<Staff> staff;
@@ -18,14 +18,14 @@ public class StaffRepositoryImpel implements StaffRepository {
     }
 
     //for singelton use
-    public static StaffRepositoryImpel getInstance() throws Exception{
-       if( INSTANCE == null) {
-           synchronized (lockObject) {
-               if (INSTANCE == null) {
-                   INSTANCE = new StaffRepositoryImpel();
-               }
-           }
-       }
+    public static StaffRepositoryImpel getInstance() throws Exception {
+        if (INSTANCE == null) {
+            synchronized (lockObject) {
+                if (INSTANCE == null) {
+                    INSTANCE = new StaffRepositoryImpel();
+                }
+            }
+        }
         return INSTANCE;
     }
 
@@ -47,15 +47,16 @@ public class StaffRepositoryImpel implements StaffRepository {
 
     @Override
     public void deleteStaff(int id) throws Exception {
-        if (!(this.staff.contains(new Staff(id)))) {
+        Staff staff=getStaffByID(id);
+
+        if (!(this.staff.contains(staff))) {
             throw new Exception("staff member does'nt exists!");
         }
 
-        this.staff.remove(new Staff(id));
+        this.staff.remove(staff);
         this.fileManager.write(this.staff);
 
     }
-
 
 
     @Override
@@ -82,24 +83,19 @@ public class StaffRepositoryImpel implements StaffRepository {
     }
 
     @Override
-    public void editStaffDetails(Staff staff1) throws Exception {
-        if (staff1 == null) {
-            throw new Exception("must have a value");
-        }
-        if (!(this.staff.contains(staff1))) {
-            throw new Exception("Staff does not exists!");
-        } else {
-            for (Staff s : staff) {
-                if (s.getPersonId() == staff1.getPersonId()) {
-                    s.setUserDetails(staff1.getUserDetails());
+    public void editStaffDetails(int staffID, UserDetails userDetails) throws Exception {
 
-                }
+        for (Staff s : staff) {
+            if (s.getPersonId() == staffID) {
+                s.setUserDetails(userDetails);
+
             }
-
         }
+
+
         this.fileManager.write(this.staff);
 
-    }
+}
 
 
     @Override
@@ -139,10 +135,10 @@ public class StaffRepositoryImpel implements StaffRepository {
     }
 
     @Override
-    public boolean  isExist(int id){
-        return staff.contains(new Staff(id));
+    public boolean isExist(int id) {
+        Staff staffInstance=getStaffByID(id);
 
-
+        return staff.contains(staffInstance);
 
 
     }

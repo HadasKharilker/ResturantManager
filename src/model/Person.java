@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Person implements Serializable {
+public abstract class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,9 +14,6 @@ public class Person implements Serializable {
     private Address address;
 
     //c'tor
-
-
-
     public Person(Integer personId, String firstName, String lastName, LocalDate birthDate, Integer houseNumber, String street, String city, String state){
         super();
         this.personId = personId;
@@ -24,8 +21,6 @@ public class Person implements Serializable {
         this.lastName  = lastName;
         this.birthDate= birthDate;
         this.address=new Address( houseNumber,street,city,state);
-
-
     }
 
     public Person(Integer personId) {

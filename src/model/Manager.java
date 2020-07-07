@@ -17,6 +17,11 @@ public class Manager extends Staff implements Serializable {
 
     }
 
+    @Override
+    public double getWage() {
+        return WAGE;
+    }
+
     public Manager(Integer id) {
         super(id);
     }

@@ -46,6 +46,6 @@ public class StaffHour implements Serializable {
     public String toString() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-        return "[staff ID=" + this.staff.getPersonId() + "staff Name=" + this.staff.getFirstName() + "" + this.staff.getLastName() + ", shift Num=" + this.shiftNum + ", clock In =" + formatter.format(this.clockInDate) + ", clock out =" + formatter.format(this.clockOutDate) + "]";
+        return "[staff ID=" + this.staff.getPersonId() + " staff Name=" + this.staff.getFirstName() + "" + this.staff.getLastName() + ", shift Num=" + this.shiftNum + ", clock In =" + formatter.format(this.clockInDate) + ", clock out =" + formatter.format(this.clockOutDate) + "]";
     }
 }

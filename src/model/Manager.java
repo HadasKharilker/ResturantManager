@@ -21,6 +21,9 @@ public class Manager extends Staff implements Serializable {
         super(id);
     }
 
+    public static Double getWAGE() {
+        return WAGE;
+    }
 
     public Manager() {
         super();

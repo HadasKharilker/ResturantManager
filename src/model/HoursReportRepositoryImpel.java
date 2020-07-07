@@ -2,7 +2,6 @@ package model;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashSet;
@@ -35,10 +34,10 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
     }
 
     @Override
-    public int clockIn(int staffID) throws IOException {
+    public int clockIn(Staff staff) throws IOException {
 
-        int shiftNum = getNewShiftNumTo(staffID);
-        StaffHour staffHour = new StaffHour(staffID, shiftNum, new Date());
+        int shiftNum = getNewShiftNumTo(staff.getPersonId());
+        StaffHour staffHour = new StaffHour(staff, shiftNum, new Date());
 
         this.staffHours.add(staffHour);
         this.fileManager.write(this.staffHours);
@@ -51,7 +50,7 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
 
         int maxShiftNum = 0;
         for (StaffHour staffHour : staffHours) {
-            if (staffHour.getStaffID() == staffID) {
+            if (staffHour.getStaff().getPersonId() == staffID) {
                 if (staffHour.getShiftNum() > maxShiftNum)
                     maxShiftNum = staffHour.getShiftNum();
             }
@@ -61,10 +60,10 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
     }
 
     @Override
-    public void clockOut(int staffID, int numberShift) throws IOException {
+    public void clockOut(Staff staff, int numberShift) throws IOException {
 
         for (StaffHour staffHour : staffHours) {
-            if (staffHour.getStaffID() == staffID && staffHour.getShiftNum() == numberShift) {
+            if (staffHour.getStaff().getPersonId() == staff.getPersonId() && staffHour.getShiftNum() == numberShift) {
                 staffHour.setClockOutDate(new Date());
             }
         }
@@ -94,7 +93,7 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
         Set<StaffHour> spesificStaffHour = new HashSet<StaffHour>();
 
         for (StaffHour staffHour : staffHours) {
-            if (staffHour.getStaffID() == staffID)
+            if (staffHour.getStaff().getPersonId() == staffID)
                 spesificStaffHour.add(staffHour);
         }
 

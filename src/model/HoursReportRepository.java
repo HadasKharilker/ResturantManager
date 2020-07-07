@@ -5,9 +5,9 @@ import java.time.Month;
 import java.util.Set;
 
 public interface HoursReportRepository {
-    int clockIn(int staffID) throws IOException;
+    int clockIn(Staff staff) throws IOException;
 
-    void clockOut(int staffID, int numberShift) throws IOException;
+    void clockOut(Staff staff, int numberShift) throws IOException;
 
     Set<StaffHour> getAllStaffHour(int month) throws IOException;
 

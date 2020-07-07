@@ -21,7 +21,7 @@ public class Main {
 
         while (true) {
 
-            currentDateTime();
+
             System.out.println("Welcome!");
             System.out.println("Enter userName!");
             String userName = scanner.nextLine();
@@ -37,7 +37,7 @@ public class Main {
 
             if (isUserCorrect) {
                 isClockOut = false;
-                shiftNum = hoursReportRepository.clockIn(staff.getPersonId());
+                shiftNum = hoursReportRepository.clockIn(staff);
                 System.out.println("Clock in");
 
                 while (!isClockOut) {
@@ -55,23 +55,6 @@ public class Main {
 
         }
 
-    }
-
-    private static Date currentDateTime() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();
-        Date a = Calendar.getInstance().getTime();
-        String now = formatter.format(date);
-
-        try {
-
-            Date date1 = formatter.parse(now);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return date;
     }
 
     private static void managerOptions(Scanner scanner, int shiftNum, HoursReportRepository hoursReportRepository, Staff staff, OrderRepository orderRepository, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
@@ -237,6 +220,17 @@ public class Main {
 
     }
 
+    private static void viewStaffHouerWage(Scanner scanner, HoursReportRepository hoursReportRepository) throws Exception {
+        System.out.println("Enter staff Id:");
+        String staffID = scanner.nextLine();
+
+
+        Set<StaffHour> staffHours = hoursReportRepository.getStaffHourBy(Integer.parseInt(staffID));
+        printStaffHourList(staffHours);
+
+
+    }
+
     private static void viewAllStaffHoursReports(Scanner scanner, HoursReportRepository hoursReportRepository) throws Exception {
         System.out.println("Enter month to watch:");
         String month = scanner.nextLine();
@@ -245,15 +239,17 @@ public class Main {
         printStaffHourList(staffHours);
     }
 
-    private static void printStaffHourList(Set<StaffHour> staffHours ) throws Exception {
+    private static void printStaffHourList(Set<StaffHour> staffHours) throws Exception {
         int totalHours = 0;
         int totalMin = 0;
 
-        for (StaffHour staffHour : staffHours) {
+        for (StaffHour staffHour : staffHours)
+        {
             System.out.println(staffHour);
             totalHours += getHoursDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
             totalMin += getMinDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
 
+            System.out.println("salary for hour: " + totalHours + " Minutes: " + totalMin);
         }
         System.out.println("total hours: " + totalHours + " Minutes: " + totalMin);
 
@@ -266,16 +262,6 @@ public class Main {
         printStaffHourList(staffHours);
     }
 
-    private static void viewStaffHouerWage(Scanner scanner, HoursReportRepository hoursReportRepository) throws Exception {
-        System.out.println("Enter staff Id:");
-        String staffID = scanner.nextLine();
-
-
-        Set<StaffHour> staffHours = hoursReportRepository.getStaffHourBy(Integer.parseInt(staffID));
-        printStaffHourList(staffHours);
-
-
-    }
 
     private static long getMinDifference(Date date1, Date date2) {
 
@@ -303,7 +289,7 @@ public class Main {
 
     private static void clockOut(Staff staff, int shiftNum, HoursReportRepository hoursReportRepository) throws Exception {
 
-        hoursReportRepository.clockOut(staff.getPersonId(), shiftNum);
+        hoursReportRepository.clockOut(staff, shiftNum);
         isClockOut = true;
         System.out.println("Clocked out");
 

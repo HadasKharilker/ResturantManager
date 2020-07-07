@@ -19,6 +19,10 @@ public class Employee extends Staff implements Serializable{
 
     }
 
+    public static Double getWAGE() {
+        return WAGE;
+    }
+
     @Override
     public String toString() {
         return "[id=" + this.getPersonId() + ", first name=" + this.getFirstName() + ", last name =" + this.getLastName() +", userName =" + this.getUserDetails().getUserName() + ", password =" + this.getUserDetails().getPassword() +", birth date = "+ this.getBirthDate() +", address = " + this.getAddress() +", role = " + this.getRole()+"]";

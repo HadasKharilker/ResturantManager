@@ -5,14 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class StaffHour implements Serializable {
-    private int staffID;
+    private Staff staff;
     private int shiftNum;
     private Date clockInDate;
     private Date clockOutDate;
 
 
-    public StaffHour(int staffID, int shiftID, Date clockIn) {
-        this.staffID = staffID;
+    public StaffHour(Staff staff, int shiftID, Date clockIn) {
+        this.staff = staff;
         this.clockInDate = clockIn;
         this.clockOutDate = clockIn;
         this.shiftNum = shiftID;
@@ -38,14 +38,14 @@ public class StaffHour implements Serializable {
         return shiftNum;
     }
 
-    public int getStaffID() {
-        return staffID;
+    public Staff getStaff() {
+        return staff;
     }
 
     @Override
     public String toString() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-        return "[staffID=" + this.staffID + ", shiftNum=" + this.shiftNum + ", clock In =" + formatter.format(this.clockInDate) + ", clock out =" + formatter.format(this.clockOutDate) + "]";
-   }
+        return "[staff ID=" + this.staff.getPersonId() + "staff Name=" + this.staff.getFirstName() + "" + this.staff.getLastName() + ", shift Num=" + this.shiftNum + ", clock In =" + formatter.format(this.clockInDate) + ", clock out =" + formatter.format(this.clockOutDate) + "]";
+    }
 }

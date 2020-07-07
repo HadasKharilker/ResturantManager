@@ -4,6 +4,6 @@ public enum MenuItemType {
 	MAIN,
 	DRINK,
 	ALCOHOL,
-	DESERT;
+	DESERT
 
 }

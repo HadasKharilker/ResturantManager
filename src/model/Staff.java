@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 
+
+
 public class Staff extends Person implements Serializable {
     private UserDetails userDetails;
     private static final long serialVersionUID = 1L;
@@ -50,6 +52,8 @@ public class Staff extends Person implements Serializable {
         this.userDetails = userDetails;
     }
 
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -62,6 +66,11 @@ public class Staff extends Person implements Serializable {
     public boolean isManager() {
 
         return userDetails.getRole().equals(Role.manager);
+
+    }
+    public boolean isEmployee() {
+
+        return userDetails.getRole().equals(Role.employee);
 
     }
 

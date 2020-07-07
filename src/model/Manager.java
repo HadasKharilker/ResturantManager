@@ -1,12 +1,12 @@
 package model;
 
+
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.util.Locale;
 
 import java.util.Date;
 import java.io.Serializable;
-
 public class Manager extends Staff implements Serializable {
     //here2
     private static final Double WAGE = 50.0;

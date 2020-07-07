@@ -77,6 +77,7 @@ public class StaffRepositoryImpel implements StaffRepository {
             }
 
         }
+
         this.fileManager.write(this.staff);
 
     }

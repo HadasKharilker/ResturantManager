@@ -4,17 +4,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 
-
-public class Staff extends Person implements Serializable {
-
 public abstract class Staff extends Person implements Serializable {
-
     private UserDetails userDetails;
     private static final long serialVersionUID = 1L;
 
     public abstract  double getWage();
 
-     public Staff(Integer personId, String firstName, String lastName, LocalDate birthDate, Integer houseNumber, String street, String city, String state, String userName, String password, Role role) {
+    public Staff(Integer personId, String firstName, String lastName, LocalDate birthDate, Integer houseNumber, String street, String city, String state, String userName, String password, Role role) {
         super(personId, firstName, lastName, birthDate, houseNumber, street, city, state);
         this.userDetails = new UserDetails(userName, password, role);
 
@@ -26,6 +22,7 @@ public abstract class Staff extends Person implements Serializable {
         super(personId);
         this.userDetails = new UserDetails(userName, password, role);
     }
+
 
 
     public Staff(Integer id) {
@@ -62,19 +59,6 @@ public abstract class Staff extends Person implements Serializable {
         result = prime * result + getPersonId();
         return result;
     }
-
-
-    public boolean isManager() {
-
-        return userDetails.getRole().equals(Role.manager);
-
-    }
-    public boolean isEmployee() {
-
-        return userDetails.getRole().equals(Role.employee);
-
-    }
-
 
     public boolean isPasswordCorrect(String curPassword) {
         UserDetails userDetails = this.getUserDetails();

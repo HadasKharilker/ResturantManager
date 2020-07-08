@@ -35,14 +35,21 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
 
     @Override
     public int clockIn(Staff staff) throws IOException {
+        try {
+            if (staff == null)
+                new IOException("staff not exist - clock in");
 
-        int shiftNum = getNewShiftNumTo(staff.getPersonId());
-        StaffHour staffHour = new StaffHour(staff, shiftNum, new Date());
+            int shiftNum = getNewShiftNumTo(staff.getPersonId());
+            StaffHour staffHour = new StaffHour(staff, shiftNum, new Date());
 
-        this.staffHours.add(staffHour);
-        this.fileManager.write(this.staffHours);
+            this.staffHours.add(staffHour);
+            this.fileManager.write(this.staffHours);
 
-        return shiftNum;
+            return shiftNum;
+
+        } catch (Exception ex) {
+            throw new IOException("error in clockIn");
+        }
 
     }
 
@@ -61,43 +68,56 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
 
     @Override
     public void clockOut(Staff staff, int numberShift) throws IOException {
-
-        for (StaffHour staffHour : staffHours) {
-            if (staffHour.getStaff().getPersonId() == staff.getPersonId() && staffHour.getShiftNum() == numberShift) {
-                staffHour.setClockOutDate(new Date());
+        try {
+            for (StaffHour staffHour : staffHours) {
+                if (staffHour.getStaff().getPersonId() == staff.getPersonId() && staffHour.getShiftNum() == numberShift) {
+                    staffHour.setClockOutDate(new Date());
+                }
             }
+            this.fileManager.write(this.staffHours);
+
+        } catch (Exception ex) {
+            throw new IOException("error in clockOut");
         }
-        this.fileManager.write(this.staffHours);
 
     }
 
 
     @Override
     public Set<StaffHour> getAllStaffHour(int month) throws IOException {
+        try {
+            Set<StaffHour> spesificStaffHour = new HashSet<StaffHour>();
 
-        Set<StaffHour> spesificStaffHour = new HashSet<StaffHour>();
+            for (StaffHour staffHour : staffHours) {
+                LocalDate localDate = staffHour.getClockInDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                int shMonth = localDate.getMonthValue();
 
-        for (StaffHour staffHour : staffHours) {
-            LocalDate localDate = staffHour.getClockInDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            int shMonth = localDate.getMonthValue();
+                if (shMonth == month)
+                    spesificStaffHour.add(staffHour);
+            }
 
-            if (shMonth == month)
-                spesificStaffHour.add(staffHour);
+            return spesificStaffHour;
+
+        } catch (Exception ex) {
+            throw new IOException("fail to get all staff hour");
         }
-
-        return spesificStaffHour;
     }
 
     @Override
     public Set<StaffHour> getStaffHourBy(int staffID) throws IOException {
-        Set<StaffHour> spesificStaffHour = new HashSet<StaffHour>();
+        try {
+            Set<StaffHour> spesificStaffHour = new HashSet<StaffHour>();
 
-        for (StaffHour staffHour : staffHours) {
-            if (staffHour.getStaff().getPersonId() == staffID)
-                spesificStaffHour.add(staffHour);
+            for (StaffHour staffHour : staffHours) {
+                if (staffHour.getStaff().getPersonId() == staffID)
+                    spesificStaffHour.add(staffHour);
+            }
+
+            return spesificStaffHour;
+
+        } catch (Exception ex) {
+            throw new IOException("fail to get hour by staff");
         }
-
-        return spesificStaffHour;
     }
 
 

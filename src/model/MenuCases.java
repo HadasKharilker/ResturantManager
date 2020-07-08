@@ -20,6 +20,13 @@ public class MenuCases {
     public static final String TOTAL_ORDER_REPORT = "16";
     public static final String CLOCK_OUT_MANAGER = "17";
     public static final String TOTAL_STAFF_HOURS_REPORT_BY_MONTH = "18";
+    public static final String PAY_SALARY = "19";
+    public static final String ADD_CLIENT = "20";
+    public static final String DELETE_CLIENT = "21";
+    public static final String UPDATE_CLIENT = "22";
+    public static final String VIEW_CLIENT_LIST = "23";
+    public static final String SEND_CLIENT_PUSH = "24";
+
 
     //employee
     public static final String VIEW_ALL_MENU_ITEMS_EMPLOYEE = "1";
@@ -30,4 +37,8 @@ public class MenuCases {
     public static final String CLOSE_MY_ORDER = "6";
     public static final String CLOCK_OUT_EMPLOYEE = "7";
     public static final String MY_HOURS_REPORT = "8";
+    public static final String ADD_CLIENT_EMPLOYEE = "9";
+    public static final String DELETE_CLIENT_EMPLOYEE = "10";
+    public static final String UPDATE_CLIENT_EMPLOYEE = "11";
+    public static final String VIEW_CLIENT_LIST_EMPLOYEE = "12";
 }

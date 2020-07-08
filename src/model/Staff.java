@@ -11,7 +11,7 @@ public abstract class Staff extends Person implements Serializable {
     public abstract  double getWage();
 
     public Staff(Integer personId, String firstName, String lastName, LocalDate birthDate, Integer houseNumber, String street, String city, String state, String userName, String password, Role role) {
-        super(personId, firstName, lastName, birthDate, houseNumber, street, city, state);
+        super(personId, firstName, lastName, birthDate, houseNumber, street, city, state,);
         this.userDetails = new UserDetails(userName, password, role);
 
     }

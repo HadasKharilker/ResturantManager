@@ -1,18 +1,9 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 
-
-
-@Builder
-@AllArgsConstructor
-
 public abstract class Person implements Serializable {
-
 
     private static final long serialVersionUID = 1L;
 
@@ -20,18 +11,20 @@ public abstract class Person implements Serializable {
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
+    private String mailAddress;
     private Address address;
 
-
-    public Person(Integer personId, String firstName, String lastName, LocalDate birthDate, Address address){
+    //c'tor
+    public Person(Integer personId, String firstName, String lastName, LocalDate birthDate, Address address, String mailAddress) {
         super();
         this.personId = personId;
         this.firstName = firstName;
-        this.lastName  = lastName;
-        this.birthDate= birthDate;
-        this.address=address;
-
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.address = address;
+        this.mailAddress = mailAddress;
     }
+
 
     public Person(Integer personId) {
         super();
@@ -43,7 +36,14 @@ public abstract class Person implements Serializable {
     }
 
 
-// getter's and setter's
+    // getter's and setter's
+    public void setMailAddress(String mailAddress) {
+        this.mailAddress = mailAddress;
+    }
+
+    public String getMailAddress() {
+        return mailAddress;
+    }
 
     public int getPersonId() {
         return personId;
@@ -51,6 +51,10 @@ public abstract class Person implements Serializable {
 
     public void setPersonId(int personId) {
         this.personId = personId;
+    }
+
+    public String getName() {
+        return firstName + " " + lastName;
     }
 
     public String getFirstName() {

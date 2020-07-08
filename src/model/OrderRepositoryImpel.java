@@ -7,7 +7,7 @@ import java.util.Set;
 public class OrderRepositoryImpel implements OrderRepository {
 
     //for singelton
-    private static OrderRepositoryImpel INSTANCE ;
+    private static OrderRepositoryImpel INSTANCE;
     private static Object lockObject = new Object();
 
     private final String FILENAME = "order";
@@ -23,8 +23,8 @@ public class OrderRepositoryImpel implements OrderRepository {
     }
 
     //for singelton use
-    public static OrderRepositoryImpel getInstance() throws Exception{
-        if( INSTANCE == null) {
+    public static OrderRepositoryImpel getInstance() throws Exception {
+        if (INSTANCE == null) {
             synchronized (lockObject) {
                 if (INSTANCE == null) {
                     INSTANCE = new OrderRepositoryImpel();
@@ -35,45 +35,69 @@ public class OrderRepositoryImpel implements OrderRepository {
     }
 
 
-
-
-
-
     @Override
     public void addOrder(Order order) throws Exception {
-        if (order == null) {
-            throw new Exception("must have a value");
-        }
+        try {
+            if (order == null) {
+                throw new Exception("must have a value");
+            }
 
+            int newOrderID = getNewOrderID();
+            order.setOrderID(newOrderID);
+
+            this.openOrders.add(order);
+            this.fileManager.write(this.openOrders);
+
+        } catch (Exception ex) {
+            throw new Exception("error in add order");
+        }
+    }
+
+    private int getNewOrderID() {
         int maxOrderID = 0;
         for (Order orderItem : openOrders) {
             if (orderItem.getOrderID() > maxOrderID)
                 maxOrderID = orderItem.getOrderID();
         }
-        order.setOrderID(maxOrderID + 1);
 
-        this.openOrders.add(order);
-        this.fileManager.write(this.openOrders);
+        return maxOrderID + 1;
+
     }
 
     @Override
     public void deleteOrder(int orderID) throws IOException {
-        for (Order o : openOrders) {
-            if (o.getOrderID() == orderID) {
-                this.openOrders.remove(o);
-                break;
-            }
+        try {
+            Order order = getOrder(orderID);
 
+            if (order == null)
+                throw new IOException("order not exist!");
+
+            openOrders.remove(order);
+            this.fileManager.write(this.openOrders);
+
+        } catch (IOException ex) {
+            throw new IOException("error in delete order");
         }
-
-        this.fileManager.write(this.openOrders);
     }
 
     @Override
-    public void closeOrder(Order order) throws IOException {
+    public void closeOrder(Order order, Client clientOrder) throws Exception {
+        try {
+        if (order == null)
+            throw new IOException("order not exist!");
+
+        if (clientOrder != null) {
+            String messageClosed = "order closed , total price:" + order.getTotalPriceOrder();
+            messageClosed += "credit details :" + clientOrder.getCreditDetails().toString();
+            Mail.sendMail(messageClosed, clientOrder.getMailAddress());
+        }
+
         deleteOrder(order.getOrderID());
         addOrderToClosedList(order);
 
+        } catch (IOException ex) {
+            throw new IOException("error in close order");
+        }
     }
 
     private void addOrderToClosedList(Order order) throws IOException {
@@ -83,6 +107,7 @@ public class OrderRepositoryImpel implements OrderRepository {
 
     @Override
     public Order getOrder(int orderID) {
+
         for (Order o : openOrders) {
             if (o.getOrderID() == orderID) {
                 return o;
@@ -126,8 +151,10 @@ public class OrderRepositoryImpel implements OrderRepository {
         } else {
             for (Order o : openOrders) {
                 if (o.getOrderID() == order.getOrderID()) {
-                    o.setMenuItems(order.getMenuItems());
-                    o.setTotalOrderPrice(order.getTotalOrderPrice());
+                    deleteOrder(o.getOrderID());
+                    addOrder(o);
+                    //o.setMenuItems(order.getMenuItems());
+                    //o.setTotalOrderPrice(order.getTotalOrderPrice());
                 }
             }
 

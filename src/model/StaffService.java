@@ -37,9 +37,9 @@ public class StaffService {
         }
     }
 
-    public boolean editStaffPersonalDetails(Staff staff) {
+    public boolean editStaff(Staff staff) {
         try {
-            this.staffRepository.editPersonDetails(staff);
+            this.staffRepository.editStaff(staff);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,14 +47,18 @@ public class StaffService {
         }
 
     }
-    public boolean editStaffUserDetails(Staff staff) {
+
+
+    public Staff getStaffByID(int id) {
+
         try {
-            this.staffRepository.editStaffDetails(staff);
-            return true;
+            return this.staffRepository.getStaffByID(id);
+
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
+
 
     }
 

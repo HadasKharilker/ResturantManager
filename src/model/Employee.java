@@ -1,21 +1,31 @@
 package model;
-
-import java.io.Serializable;
+import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
+import java.util.Locale;
+import java.io.Serializable;
 
 public class Employee extends Staff implements Serializable{
 
-    private static final Double WAGE=28.8;
+    private static final double WAGE=28.8;
     private static final long serialVersionUID = 1L;
 
 
-    public Employee(Integer personId, String firstName, String lastName, LocalDate birthDate, Integer houseNumber, String street, String city, String state, String userName, String password, Role role) {
-        super(personId, firstName, lastName, birthDate, houseNumber, street, city, state, userName, password, role);
+    @Override
+    public double getWage() {
+        return WAGE;
+    }
+
+    public Employee(Integer personId, String firstName, String lastName, LocalDate birthDate, Address address, UserDetails userDetails, BankDetails bankDetails, String mailAddress) {
+        super(personId, firstName, lastName, birthDate, address, userDetails, bankDetails, mailAddress);
 
     }
     public Employee(Integer id) {
         super(id);
 
+    }
+
+    public static Double getWAGE() {
+        return WAGE;
     }
 
     @Override

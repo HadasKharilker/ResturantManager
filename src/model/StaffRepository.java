@@ -10,9 +10,9 @@ public interface StaffRepository {
 
         void deleteStaff(int id) throws Exception;
 
-        void editPersonDetails(Staff staff) throws Exception;
+        void editStaff(Staff staff) throws Exception;
 
-        void editStaffDetails(Staff staff1) throws Exception;
+        void editStaffUserDetails(int staffID, UserDetails userDetails) throws Exception;
 
         Staff getStaffByID(int id);
 
@@ -21,6 +21,7 @@ public interface StaffRepository {
         boolean isExist(int id);
 
         Staff getStaffByUserName(String userName)throws Exception;
+
 
         //edit
 

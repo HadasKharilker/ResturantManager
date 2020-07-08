@@ -1,12 +1,13 @@
 package Controller;
+
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Set;
+
 import model.Manager;
 import model.Employee;
-import model.Role;
+
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDate;
 
 import model.*;
 
@@ -36,18 +37,18 @@ public class StaffController {
     }
 
 
-    public boolean addNewStaff(String personId, String firstName, String lastName, String birthDate, String houseNumber, String street, String city, String state, String userName, String password, String role) {
+    public boolean addNewStaff(String personId, String firstName, String lastName, String birthDate, Address address, UserDetails userDetails, BankDetails bankDetails, String mailAddress) {
         // validations
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
         LocalDate date = LocalDate.parse(birthDate, formatter);
 
 
-        if (role.equals("manager")) {
-            Manager staff = new Manager(Integer.parseInt(personId), firstName, lastName, date, Integer.parseInt(houseNumber), street, city, state, userName, password, Role.valueOf(role));
+        if (userDetails.getRole().equals("manager")) {
+            Manager staff = new Manager(Integer.parseInt(personId), firstName, lastName, date, address, userDetails, bankDetails, mailAddress);
             return this.staffService.addNewStaff(staff);
         }
-        if (role.equals("employee")) {
-            Employee staff = new Employee(Integer.parseInt(personId), firstName, lastName, date, Integer.parseInt(houseNumber), street, city, state, userName, password, Role.valueOf(role));
+        if (userDetails.getRole().equals("employee")) {
+            Employee staff = new Employee(Integer.parseInt(personId), firstName, lastName, date, address, userDetails, bankDetails, mailAddress);
             return this.staffService.addNewStaff(staff);
         }
         return false;
@@ -66,34 +67,20 @@ public class StaffController {
 
     }
 
-    public boolean editStaffPersonalDetails(String personId, String firstName, String lastName, String birthDate, String houseNumber, String street, String city, String state) {
-        // validations
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-        LocalDate date = LocalDate.parse(birthDate, formatter);
+    public boolean editStaff(Staff staff) {
 
-        Staff staff = new Staff((Integer.parseInt(personId)), firstName, lastName, date, Integer.parseInt(houseNumber), street, city, state);
-
-        return this.staffService.editStaffPersonalDetails(staff);
-
+        return this.staffService.editStaff(staff);
 
 
     }
 
-    public boolean editStaffUserDetails(String id, String username, String password, String role) {
-        // validations
 
-        Staff staff = new Staff((Integer.parseInt(id)),username, password, Role.valueOf(role));
+    public Staff getStaffByID(int id) {
 
-        return this.staffService.editStaffUserDetails(staff);
+        return this.staffService.getStaffByID(id);
+
 
     }
-
-
-
-
-
-
-
 
 
     public boolean isExist(Integer id) {
@@ -101,12 +88,6 @@ public class StaffController {
         return this.staffService.isExist(id);
 
     }
-
-
-
-
-
-
 
 
 

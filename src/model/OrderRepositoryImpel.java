@@ -61,13 +61,8 @@ public class OrderRepositoryImpel implements OrderRepository {
 
     @Override
     public void deleteOrder(int orderID) throws IOException {
-        for (Order o : openOrders) {
-            if (o.getOrderID() == orderID) {
-                this.openOrders.remove(o);
-                break;
-            }
-
-        }
+        Order order = getOrder(orderID);
+        openOrders.remove(order);
 
         this.fileManager.write(this.openOrders);
     }

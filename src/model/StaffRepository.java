@@ -12,7 +12,7 @@ public interface StaffRepository {
 
         void editPersonDetails(Staff staff) throws Exception;
 
-        void editStaffDetails(Staff staff1) throws Exception;
+        void editStaffDetails(int staffID, UserDetails userDetails) throws Exception;
 
         Staff getStaffByID(int id);
 

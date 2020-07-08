@@ -1,40 +1,32 @@
-package View;
-import model.*;
-import model.MenuItem;
-import model.MenuItemType;
+package model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.Set;
-
+import java.util.*;
 
 
 public class Main {
+    public static boolean isClockOut = false;
 
     public static void main(String[] args) throws Exception {
+
 
         RestaurantView resturantView = new RestaurantView();
         resturantView.start();
 
-
-
-
-
-
-
-
-
         StaffRepository staffRepository = StaffRepositoryImpel.getInstance();
-        MenuRepository menuRepository =  MenuItemRepositoryImpel.getInstance();
+        MenuRepository menuRepository = MenuItemRepositoryImpel.getInstance();
         OrderRepository orderRepository = OrderRepositoryImpel.getInstance();
-
-
+        HoursReportRepository hoursReportRepository = HoursReportRepositoryImpel.getInstance();
         Scanner scanner = new Scanner(System.in);
+        int shiftNum;
+
 
         while (true) {
+
+
             System.out.println("Welcome!");
             System.out.println("Enter userName!");
             String userName = scanner.nextLine();
@@ -49,14 +41,16 @@ public class Main {
                 isUserCorrect = staff.isPasswordCorrect(password);
 
             if (isUserCorrect) {
-                //staff.clockIn();
-                //clock in (בתוך staff)
-                while (true) {
+                isClockOut = false;
+                shiftNum = hoursReportRepository.clockIn(staff);
+                System.out.println("Clock in");
+
+                while (!isClockOut) {
                     if (staff.isManager())
-                        managerOptions(scanner, staff, orderRepository, staffRepository, menuRepository);
+                        managerOptions(scanner, shiftNum, hoursReportRepository, staff, orderRepository, staffRepository, menuRepository);
 
                     else
-                        employeeOptions(scanner, staff, orderRepository, staffRepository, menuRepository);
+                        employeeOptions(scanner, shiftNum, hoursReportRepository, staff, orderRepository, staffRepository, menuRepository);
 
 
                 }
@@ -68,7 +62,7 @@ public class Main {
 
     }
 
-    private static void managerOptions(Scanner scanner, Staff staff, OrderRepository orderRepository, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
+    private static void managerOptions(Scanner scanner, int shiftNum, HoursReportRepository hoursReportRepository, Staff staff, OrderRepository orderRepository, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
         System.out.println("");
         System.out.println("1. Add new Menu item");
         System.out.println("2. view all Menu Items");
@@ -86,6 +80,8 @@ public class Main {
         System.out.println("14. view all order");
         System.out.println("15. close order");
         System.out.println("16. view total orders report (only close)");
+        System.out.println("17. clock out");
+        System.out.println("18. view total staff hours report by month");
         System.out.println("Q. Exit");
 
         String selectedOption = scanner.nextLine();
@@ -127,8 +123,7 @@ public class Main {
                 break;
 
             case MenuCases.VIEW_STAFF_HOUR_WAGE_REPORT:
-                //hadas
-                viewStaffHouerWage(scanner);
+                viewStaffHouerWage(scanner, hoursReportRepository);
                 break;
 
             case MenuCases.EDIT_ORDER:
@@ -155,6 +150,15 @@ public class Main {
                 totalOrderReport(orderRepository);
                 break;
 
+            case MenuCases.CLOCK_OUT_MANAGER:
+                clockOut(staff, shiftNum, hoursReportRepository);
+                break;
+
+            case MenuCases.TOTAL_STAFF_HOURS_REPORT_BY_MONTH:
+                viewAllStaffHoursReports(scanner, hoursReportRepository);
+                break;
+
+
             case "Q":
             case "q":
             default:
@@ -163,13 +167,15 @@ public class Main {
         }
     }
 
-    private static void employeeOptions(Scanner scanner, Staff staff, OrderRepository orderRepository, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
+    private static void employeeOptions(Scanner scanner, int shiftNum, HoursReportRepository hoursReportRepository, Staff staff, OrderRepository orderRepository, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
         System.out.println("1. view all Menu Items");
         System.out.println("2. add new order");
         System.out.println("3. edit my order");
         System.out.println("4. delete order");
         System.out.println("5. view my orders");
         System.out.println("6. close my order");
+        System.out.println("7. clock out");
+        System.out.println("8. view my hours report");
 
         System.out.println("Q. Exit");
 
@@ -201,6 +207,14 @@ public class Main {
                 closeOrderByStaff(scanner, staff, orderRepository);
                 break;
 
+            case MenuCases.CLOCK_OUT_EMPLOYEE:
+                clockOut(staff, shiftNum, hoursReportRepository);
+                break;
+
+            case MenuCases.MY_HOURS_REPORT:
+                viewMyHoursReport(staff, hoursReportRepository);
+                break;
+
             case "Q":
             case "q":
             default:
@@ -208,6 +222,82 @@ public class Main {
                 System.exit(0);
         }
 
+
+    }
+
+    private static void viewStaffHouerWage(Scanner scanner, HoursReportRepository hoursReportRepository) throws Exception {
+        System.out.println("Enter staff Id:");
+        String staffID = scanner.nextLine();
+
+
+        Set<StaffHour> staffHours = hoursReportRepository.getStaffHourBy(Integer.parseInt(staffID));
+        printStaffHourList(staffHours);
+
+
+    }
+
+    private static void viewAllStaffHoursReports(Scanner scanner, HoursReportRepository hoursReportRepository) throws Exception {
+        System.out.println("Enter month to watch:");
+        String month = scanner.nextLine();
+
+        Set<StaffHour> staffHours = hoursReportRepository.getAllStaffHour(Integer.parseInt(month));
+        printStaffHourList(staffHours);
+    }
+
+    private static void printStaffHourList(Set<StaffHour> staffHours) throws Exception {
+        int totalHours = 0;
+        int totalMin = 0;
+        double totalSalary = 0;
+
+        for (StaffHour staffHour : staffHours) {
+            System.out.println(staffHour);
+            totalHours += getHoursDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
+            totalMin += getMinDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
+
+            totalSalary += totalHours * (staffHour.getStaff().getWage());
+
+        }
+        System.out.println("total hours: " + totalHours + " Minutes: " + totalMin);
+        System.out.println("total salary: " + totalSalary);
+    }
+
+
+    private static void viewMyHoursReport(Staff staff, HoursReportRepository hoursReportRepository) throws Exception {
+
+        Set<StaffHour> staffHours = hoursReportRepository.getStaffHourBy(staff.getPersonId());
+        printStaffHourList(staffHours);
+    }
+
+
+    private static long getMinDifference(Date date1, Date date2) {
+
+        long diff = date2.getTime() - date1.getTime();
+
+        long diffMinutes = diff / (60 * 1000) % 60;
+        long diffHours = diff / (60 * 60 * 1000) % 24;
+
+        return diffMinutes;
+
+    }
+
+    private static long getHoursDifference(Date date1, Date date2) {
+
+        long diff = date2.getTime() - date1.getTime();
+
+        long diffMinutes = diff / (60 * 1000) % 60;
+        long diffHours = diff / (60 * 60 * 1000) % 24;
+
+        String hoursMinString = "hours: " + diffHours + "Minutes: " + diffMinutes;
+
+        return diffHours;
+
+    }
+
+    private static void clockOut(Staff staff, int shiftNum, HoursReportRepository hoursReportRepository) throws Exception {
+
+        hoursReportRepository.clockOut(staff, shiftNum);
+        isClockOut = true;
+        System.out.println("Clocked out");
 
     }
 
@@ -377,12 +467,7 @@ public class Main {
     }
 
 
-    private static void viewStaffHouerWage(Scanner scanner) throws Exception {
-        System.out.print("Enter staff Id:");
-        String staffID = scanner.nextLine();
-    }
-
-    private static void viewAllStaff(StaffRepository staffRepository)  {
+    private static void viewAllStaff(StaffRepository staffRepository) {
         Set<Staff> staffSet = staffRepository.findAll();
         for (Staff s : staffSet) {
 
@@ -438,24 +523,35 @@ public class Main {
         staffRepository.deleteStaff(Integer.parseInt(id));
 
     }
+
     private static void editStaffPersonalDetails(Scanner scanner, StaffRepository staffRepository) throws Exception {
 
 
-            System.out.print("Enter Staff id you want to edit (number): ");
+        System.out.print("Enter Staff id you want to edit (number): ");
 
-            String id = scanner.nextLine();
+        String staffID = scanner.nextLine();
 
-            if(staffRepository.isExist(Integer.parseInt(id))==false) {
-                throw new Exception("Staff does not exists!");
+        if (staffRepository.isExist(Integer.parseInt(staffID)) == false) {
+            throw new Exception("Staff does not exists!");
 
-            }
-            else {
+        } else {
+            Staff staff = staffRepository.getStaffByID(Integer.parseInt(staffID));
+
             System.out.print("Entr first name : ");
             String fName = scanner.nextLine();
+            staff.setFirstName(fName);
+
             System.out.print("Enter last name : ");
             String lName = scanner.nextLine();
+            staff.setFirstName(lName);
+
             System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
             String d = scanner.nextLine();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
+            LocalDate date = LocalDate.parse(d, formatter);
+
+            staff.setBirthDate(date);
 
             System.out.print("Enter private house number:");
             String houseNum = scanner.nextLine();
@@ -465,36 +561,36 @@ public class Main {
             String city = scanner.nextLine();
             System.out.print("Enter state:");
             String state = scanner.nextLine();
+            Address newAddress = new Address(Integer.parseInt(houseNum), houseStreet, city, state);
+            staff.setAddress(newAddress);
 
-
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-            LocalDate date = LocalDate.parse(d, formatter);
-
-            staffRepository.editPersonDetails(new Staff((Integer.parseInt(id)), fName, lName, date, Integer.parseInt(houseNum), houseStreet, city, state));
-
-
+            staffRepository.editPersonDetails(staff);
 
         }
 
 
     }
-    private static void editStaffUserDetails(Scanner scanner, StaffRepository staffRepository) throws Exception{
+
+    private static void editStaffUserDetails(Scanner scanner, StaffRepository staffRepository) throws Exception {
         System.out.print("Enter Staff id you want to edit (number): ");
 
-        String id = scanner.nextLine();
+        String staffID = scanner.nextLine();
 
-        if(staffRepository.isExist(Integer.parseInt(id))==false) {
+        if (staffRepository.isExist(Integer.parseInt(staffID)) == false) {
             throw new Exception("Staff does not exists!");
-        }
-        else{
+        } else {
             System.out.print("Enter role (manager/employee):");
             String role = scanner.nextLine();
-            System.out.print("Enter User Name:");
+
+            if (role.equals("manager"))
+
+                System.out.print("Enter User Name:");
             String username = scanner.nextLine();
             System.out.print("Enter password:");
             String staffPassword = scanner.nextLine();
-            staffRepository.editStaffDetails(new Staff(Integer.parseInt(id),username, staffPassword, Role.valueOf(role)));
+
+            UserDetails newUseretails = new UserDetails(username, staffPassword, Role.valueOf(role));
+            staffRepository.editStaffDetails(Integer.parseInt(staffID), newUseretails);
 
 
         }
@@ -519,8 +615,8 @@ public class Main {
 
     private static void viewAllMenuItems(MenuRepository menuRepository) throws Exception {
         Set<MenuItem> menu = menuRepository.findAll();
-        if(menu==null){
-            throw new Exception("menu is empty !");
+        if (menu == null) {
+            throw new Exception("menu is empty exists!");
 
         }
         for (MenuItem items : menu) {
@@ -550,4 +646,3 @@ public class Main {
 
 
 }
-

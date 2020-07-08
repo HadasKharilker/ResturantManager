@@ -7,9 +7,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 
+
 @Builder
 @AllArgsConstructor
 public class Person implements Serializable {
+
+public abstract class Person implements Serializable {
+
 
     private static final long serialVersionUID = 1L;
 
@@ -19,13 +23,15 @@ public class Person implements Serializable {
     private LocalDate birthDate;
     private Address address;
 
-    //c'tor
-    public Person(Integer personId, String firstName, String lastName, LocalDate birthDate, Integer houseNumber, String street, String city, String state) {
+
+    public Person(Integer personId, String firstName, String lastName, LocalDate birthDate, Address address){
+        super();
         this.personId = personId;
         this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.address = new Address(houseNumber, street, city, state);
+        this.lastName  = lastName;
+        this.birthDate= birthDate;
+        this.address=address;
+
     }
 
     public Person(Integer personId) {

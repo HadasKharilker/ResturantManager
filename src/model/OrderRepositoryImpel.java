@@ -37,15 +37,20 @@ public class OrderRepositoryImpel implements OrderRepository {
 
     @Override
     public void addOrder(Order order) throws Exception {
-        if (order == null) {
-            throw new Exception("must have a value");
+        try {
+            if (order == null) {
+                throw new Exception("must have a value");
+            }
+
+            int newOrderID = getNewOrderID();
+            order.setOrderID(newOrderID);
+
+            this.openOrders.add(order);
+            this.fileManager.write(this.openOrders);
+
+        } catch (Exception ex) {
+            throw new Exception("error in add order");
         }
-
-        int newOrderID = getNewOrderID();
-        order.setOrderID(newOrderID);
-
-        this.openOrders.add(order);
-        this.fileManager.write(this.openOrders);
     }
 
     private int getNewOrderID() {
@@ -61,23 +66,38 @@ public class OrderRepositoryImpel implements OrderRepository {
 
     @Override
     public void deleteOrder(int orderID) throws IOException {
-        Order order = getOrder(orderID);
-        openOrders.remove(order);
+        try {
+            Order order = getOrder(orderID);
 
-        this.fileManager.write(this.openOrders);
+            if (order == null)
+                throw new IOException("order not exist!");
+
+            openOrders.remove(order);
+            this.fileManager.write(this.openOrders);
+
+        } catch (IOException ex) {
+            throw new IOException("error in delete order");
+        }
     }
 
     @Override
-    public void closeOrder(Order order) throws IOException {
+    public void closeOrder(Order order, Client clientOrder) throws Exception {
+        try {
+        if (order == null)
+            throw new IOException("order not exist!");
 
-        if (order.getClient() != null) {
-            String messageClosed = "order closed , total price:" + order.getTotalOrderPrice();
-            Mail.sendMail(messageClosed, order.getClient().getMailAddress());
+        if (clientOrder != null) {
+            String messageClosed = "order closed , total price:" + order.getTotalPriceOrder();
+            messageClosed += "credit details :" + clientOrder.getCreditDetails().toString();
+            Mail.sendMail(messageClosed, clientOrder.getMailAddress());
         }
 
         deleteOrder(order.getOrderID());
         addOrderToClosedList(order);
 
+        } catch (IOException ex) {
+            throw new IOException("error in close order");
+        }
     }
 
     private void addOrderToClosedList(Order order) throws IOException {
@@ -87,6 +107,7 @@ public class OrderRepositoryImpel implements OrderRepository {
 
     @Override
     public Order getOrder(int orderID) {
+
         for (Order o : openOrders) {
             if (o.getOrderID() == orderID) {
                 return o;

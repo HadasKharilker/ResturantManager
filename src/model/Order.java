@@ -7,9 +7,8 @@ public class Order implements Serializable {
     private int orderID;
     private int staffID;
     private Set<MenuItemOrder> menuItems;
-    private double totalOrderPrice;
     private boolean isClosed;
-    private Client client;
+    private int clientID;
 
     private static final long serialVersionUID = 1L;
 
@@ -17,17 +16,16 @@ public class Order implements Serializable {
 
     }
 
-    public Order(int staffID, Set<MenuItemOrder> menuItems, Client client) {
+    public Order(int staffID, Set<MenuItemOrder> menuItems, int clientID) {
         this.staffID = staffID;
         this.menuItems = menuItems;
-        this.totalOrderPrice = getTotalPriceOrder();
         this.isClosed = false;
-        this.client = client;
+        this.clientID = clientID;
 
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientID(int clientID) {
+        this.clientID = clientID;
     }
 
     public void setClosed(boolean closed) {
@@ -35,7 +33,7 @@ public class Order implements Serializable {
     }
 
 
-    private double getTotalPriceOrder() {
+    public double getTotalPriceOrder() {
 
         double totalPrice = 0;
         for (MenuItemOrder menuItemOrder : menuItems) {
@@ -54,13 +52,6 @@ public class Order implements Serializable {
         return staffID;
     }
 
-    public void setTotalOrderPrice(double totalOrderPrice) {
-        this.totalOrderPrice = totalOrderPrice;
-    }
-
-    public double getTotalOrderPrice() {
-        return totalOrderPrice;
-    }
 
     public Set<MenuItemOrder> getMenuItems() {
         return menuItems;
@@ -78,23 +69,23 @@ public class Order implements Serializable {
         this.menuItems = menuItems;
     }
 
-    public Client getClient() {
-        return client;
+    public int getClientID() {
+        return clientID;
     }
 
     @Override
     public String toString() {
         String toPrint = "[orderID=" + orderID + ", staffID=" + staffID;
 
-        if (this.client != null)
-            toPrint += ", " + " client ID= " + this.client.getPersonId() + " ,client name= " + this.client.getFirstName() + " " + this.client.getLastName();
+        if (this.clientID != 0)
+            toPrint += ", " + " client ID= " + this.clientID;
 
         toPrint += " ,items in order: ";
         for (MenuItemOrder menuItemOrder : menuItems) {
             toPrint += menuItemOrder.toString();
         }
 
-        toPrint += " total price=" + totalOrderPrice + "]";
+        toPrint += " total price=" + getTotalPriceOrder() + "]";
 
         return toPrint;
 

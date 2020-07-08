@@ -18,7 +18,9 @@ public class Client extends Person implements Serializable {
         this.creditDetails = creditDetails;
     }
 
-
+    public CreditDetails getCreditDetails() {
+        return creditDetails;
+    }
 
     public void setPushOn(boolean pushOn) {
         this.pushOn = pushOn;

@@ -48,7 +48,7 @@ public class Main {
                         managerOptions(scanner, shiftNum, clientRepository, hoursReportRepository, staff, orderRepository, staffRepository, menuRepository);
 
                     else
-                        employeeOptions(scanner, shiftNum, clientRepository, hoursReportRepository, staff, orderRepository, staffRepository, menuRepository);
+                        employeeOptions(scanner, shiftNum, clientRepository, hoursReportRepository, staff, orderRepository, menuRepository);
 
 
                 }
@@ -155,7 +155,7 @@ public class Main {
                 break;
 
             case MenuCases.CLOSE_ORDER:
-                closeOrderAllList(scanner, orderRepository);
+                closeOrderAllList(scanner, orderRepository, clientRepository);
                 break;
 
             case MenuCases.TOTAL_ORDER_REPORT:
@@ -415,7 +415,7 @@ public class Main {
     }
 
 
-    private static void employeeOptions(Scanner scanner, int shiftNum, ClientRepository clientRepository, HoursReportRepository hoursReportRepository, Staff staff, OrderRepository orderRepository, StaffRepository staffRepository, MenuRepository menuRepository) throws Exception {
+    private static void employeeOptions(Scanner scanner, int shiftNum, ClientRepository clientRepository, HoursReportRepository hoursReportRepository, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
         System.out.println("1. view all Menu Items");
         System.out.println("2. add new order");
         System.out.println("3. edit my order");
@@ -456,7 +456,7 @@ public class Main {
                 break;
 
             case MenuCases.CLOSE_MY_ORDER:
-                closeOrderByStaff(scanner, staff, orderRepository);
+                closeOrderByStaff(scanner, staff, orderRepository, clientRepository);
                 break;
 
             case MenuCases.CLOCK_OUT_EMPLOYEE:
@@ -591,40 +591,41 @@ public class Main {
 
         for (Order o : orders) {
             System.out.println(o);
-            sumReport += o.getTotalOrderPrice();
+            sumReport += o.getTotalPriceOrder();
 
         }
         System.out.println("total orders price:" + sumReport);
 
     }
 
-    private static void closeOrderAllList(Scanner scanner, OrderRepository orderRepository) throws Exception {
+    private static void closeOrderAllList(Scanner scanner, OrderRepository orderRepository, ClientRepository clientRepository) throws Exception {
         System.out.println("choose order ID to close from list:  ");
         viewAllOpenOrders(orderRepository);
 
-        closeOrder(scanner, orderRepository);
+        closeOrder(scanner, orderRepository, clientRepository);
     }
 
 
-    private static void closeOrderByStaff(Scanner scanner, Staff staff, OrderRepository orderRepository) throws Exception {
+    private static void closeOrderByStaff(Scanner scanner, Staff staff, OrderRepository orderRepository, ClientRepository clientRepository) throws Exception {
         System.out.println("choose order ID to close from list:  ");
         viewAllOpenOrdersByStaff(staff.getPersonId(), orderRepository);
 
-        closeOrder(scanner, orderRepository);
+        closeOrder(scanner, orderRepository, clientRepository);
     }
 
-    private static void closeOrder(Scanner scanner, OrderRepository orderRepository) throws Exception {
+    private static void closeOrder(Scanner scanner, OrderRepository orderRepository, ClientRepository clientRepository) throws Exception {
         System.out.print("order ID: ");
         String orderID = scanner.nextLine();
 
         Order orderToClose = orderRepository.getOrder(Integer.parseInt(orderID));
-        System.out.println("Total Order price: " + orderToClose.getTotalOrderPrice());
+        System.out.println("Total Order price: " + orderToClose.getTotalPriceOrder());
 
         System.out.println("press 1 to close , 0 to cancel:  ");
         String toClose = scanner.nextLine();
 
         if (Integer.parseInt(toClose) == 1) {
-            orderRepository.closeOrder(orderToClose);
+            Client client = clientRepository.getClient(orderToClose.getClientID());
+            orderRepository.closeOrder(orderToClose, client);
             System.out.println("Order Closed Successfully");
         } else
             System.out.println("Canceled");
@@ -690,7 +691,7 @@ public class Main {
 
             case "2":
                 Client client = getClientByClientIDFromUser(scanner, clientRepository);
-                editOrder.setClient(client);
+                editOrder.setClientID(client.getPersonId());
                 break;
 
         }
@@ -734,7 +735,7 @@ public class Main {
         Set<MenuItemOrder> menuItems = getMenuItemsFromUser(scanner, menuRepository);
         Client client = getClientByClientIDFromUser(scanner, clientRepository);
 
-        Order orderFromUser = new Order(staffId, menuItems, client);
+        Order orderFromUser = new Order(staffId, menuItems, client.getPersonId());
 
         return orderFromUser;
     }

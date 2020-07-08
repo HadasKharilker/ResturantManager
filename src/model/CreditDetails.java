@@ -14,4 +14,13 @@ public class CreditDetails implements Serializable {
         this.period = period;
         this.identificationCode = identificationCode;
     }
+
+    @Override
+    public String toString() {
+        return "CreditDetails{" +
+                "creditID='" + creditID + '\'' +
+                ", period=" + period +
+                ", identificationCode=" + identificationCode +
+                '}';
+    }
 }

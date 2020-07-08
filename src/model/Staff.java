@@ -27,6 +27,10 @@ public abstract class Staff extends Person implements Serializable {
 
     public abstract double getWage();
 
+    public void setBankDetails(BankDetails bankDetails) {
+        this.bankDetails = bankDetails;
+    }
+
     public Staff(Integer id) {
         super(id);
     }

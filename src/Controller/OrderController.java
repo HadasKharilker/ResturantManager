@@ -1,4 +1,5 @@
 package Controller;
+
 import model.*;
 
 import java.util.HashSet;
@@ -30,15 +31,31 @@ public class OrderController {
         return INSTANCE;
     }
 
+    public Boolean closeOrder(Order order, Client clientOrder) throws Exception {
+        return this.orderService.closeOrder(order, clientOrder);
+    }
+
+    public Order getOrder(int orderID) {
+        return this.orderService.getOrder(orderID);
+    }
 
     public Set<Order> getAllOpenOrders() {
         Set<Order> order = this.orderService.getAllOpenOrders();
         return order;
     }
 
+    public Set<Order> getAllClosedOrders() {
+        return this.orderService.getAllClosedOrders();
+    }
 
     public boolean addOrder(Order newOrder) {
         return this.orderService.addNewOrder(newOrder);
+
+
+    }
+
+    public boolean deleteOrder(int orderID) {
+        return this.orderService.deleteOrder(orderID);
 
 
     }

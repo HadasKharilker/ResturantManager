@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.Set;
 
 public class StaffView {
 
@@ -65,6 +66,15 @@ public class StaffView {
         System.out.println();
     }
 
+    public void viewAllStaff() {
+
+        Set<Staff> staffSet = this.staffController.getAllStaff();
+        System.out.println("List of Staff members:");
+        for (Staff s : staffSet) {
+            System.out.println(s);
+
+        }
+    }
 
     public void deleteStaff(Scanner scanner) {
         System.out.print("Enter staff id you want to remove (number): ");
@@ -107,6 +117,16 @@ public class StaffView {
             System.out.print("Enter state:");
             String state = scanner.nextLine();
 
+            System.out.println("BankDetails:");
+            System.out.println("enter bank Account Number:");
+            String bankAccountNumber = scanner.nextLine();
+
+            System.out.println("brunch Number:");
+            String brunchNumber = scanner.nextLine();
+
+
+
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
             LocalDate date = LocalDate.parse(birthDate, formatter);
 
@@ -116,7 +136,9 @@ public class StaffView {
 
             Address address = new Address(Integer.parseInt(houseNum), houseStreet, city, state);
             staff.setAddress(address);
-            
+            BankDetails bankDetails = new BankDetails(bankAccountNumber, Integer.parseInt(brunchNumber));
+            staff.setBankDetails(bankDetails);
+
             boolean success = this.staffController.editStaff(staff);
             if (success) {
                 System.out.println("Staff " + fName + " updated successfully");
@@ -160,7 +182,6 @@ public class StaffView {
             }
 
             System.out.println();
-
 
 
         }

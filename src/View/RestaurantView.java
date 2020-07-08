@@ -5,18 +5,13 @@ import java.util.Scanner;
 import java.util.Set;
 
 
-import Controller.LoginController;
-import Controller.OrderController;
-import Controller.StaffController;
-import model.MenuCases;
-import Controller.MenuController;
-import model.MenuItem;
-import model.Order;
-import model.Staff;
+import Controller.*;
+import model.*;
 
 public class RestaurantView {
 
-
+    private boolean isClockOut = false;
+    private int shiftNum;
     private final LoginController loginController;
     private final MenuController menuController;
     private final MenuView menuView;
@@ -32,6 +27,13 @@ public class RestaurantView {
     private final OrderView orderView;
 
 
+    //Client
+    private final ClientController clientController;
+    private final ClientView clientView;
+
+    //hour report
+    private final HoursReportController hoursReportController;
+    private final HoursReportView hoursReportView;
     //להשלים
     //private final EmployeeView employeeView;
 
@@ -42,12 +44,15 @@ public class RestaurantView {
         this.menuView = new MenuView();
         this.staffView = new StaffView();
         this.orderView = new OrderView();
+        this.clientView = new ClientView();
+        this.hoursReportView = new HoursReportView();
 
         //this.employeeView = new EmployeeView(); לשנות להזמנות, עובדים ועוד...
         this.menuController = MenuController.getInstance();
         this.staffController = StaffController.getInstance();
         this.orderController = OrderController.getInstance();
-
+        this.clientController = ClientController.getInstance();
+        this.hoursReportController = HoursReportController.getInstance();
         // this.employeeController = EmployeeController.getInstance();לשנות להזמנות, עובדים ועוד...
         this.loginController = LoginController.getInstance();
 
@@ -90,7 +95,12 @@ public class RestaurantView {
 
         if (staff != null)
             isUserCorrect = staff.isPasswordCorrect(password);
+
         if (isUserCorrect) {
+            isClockOut = false;
+
+            shiftNum = hoursReportView.clockIn(staff);
+
             if (staff.isManager()) {
                 System.out.println("You are now logged in as manager");
                 this.manager(scanner, staff);
@@ -105,44 +115,50 @@ public class RestaurantView {
 
             }
             */
-        }
-        else
+        } else
             System.out.println("userName or password dos'nt exist!");
 
     }
 
 
-
-
-    public void manager(Scanner scanner, Staff staff) {
+    public void manager(Scanner scanner, Staff staff) throws Exception {
         boolean stayInManager = true;
 
-        while (stayInManager) {
+        while (stayInManager && !isClockOut) {
 
-            //MenuView
             System.out.println("");
+            //menu item
             System.out.println("1. Add new Menu item");
             System.out.println("2. view all Menu Items");
             System.out.println("3. Edit Menu Item");
             System.out.println("4. delete Menu Item");
 
-            //StaffView
+            //staff
             System.out.println("5. Add new Staff member");
             System.out.println("6. Edit Staff personal details");
             System.out.println("7. Edit Staff user details");
             System.out.println("8. Delete Staff member");
             System.out.println("9. view all Staff members");
             System.out.println("10. view staff hour wage");
+            System.out.println("18. view total staff hours report by month");
 
-            //OrderView
-
+            //order
             System.out.println("11. edit order");
             System.out.println("12. add new order");
             System.out.println("13. delete order");
-            System.out.println("14. view all orders");//
+            System.out.println("14. view all open order");
             System.out.println("15. close order");
-
             System.out.println("16. view total orders report (only close)");
+
+            System.out.println("17. clock out");
+
+            System.out.println("19. pay salary to staff id");
+            //client:
+            System.out.println("20. add new client");
+            System.out.println("21. delete client");
+            System.out.println("22.update client ");
+            System.out.println("23.view all Clients ");
+            System.out.println("24.send client push ");
             System.out.println("Q. Exit");
 
             String userSelection = scanner.nextLine();
@@ -153,12 +169,8 @@ public class RestaurantView {
                     break;
 
                 case MenuCases.VIEW_ALL_MENU_ITEMS_MANAGER:
-                    Set<MenuItem> menu = this.menuController.getAllMenuItems();
-                    System.out.println("Available Dishes in Menu:");
-                    for (MenuItem item : menu) {
-                        System.out.println(item);
-                    }
-                    System.out.println();
+                    this.menuView.viewAllMenuItems();
+
                     break;
 
                 case MenuCases.EDIT_NEW_MENU_ITEM:
@@ -187,34 +199,70 @@ public class RestaurantView {
 
 
                 case MenuCases.VIEW_ALL_STAFF:
-                    Set<Staff> staffs = this.staffController.getAllStaff();
-                    System.out.println("List of Staff members:");
-                    for (Staff s : staffs) {
-                        System.out.println(s);
-                    }
-                    System.out.println();
+                    this.staffView.viewAllStaff();
                     break;
 
                 case MenuCases.NEW_ORDER:
-                    this.orderView.addNewOrder(scanner, staff,menuController);
+                    this.orderView.addNewOrder(scanner, staff, menuView, menuController, clientController);
                     break;
 
                 case MenuCases.EDIT_ORDER:
-                    this.orderView.editOrderAllList(scanner, staff,menuController);
+                    this.orderView.editOrderAllList(scanner, staff, menuView, menuController, clientController);
                     break;
 
-
+                case MenuCases.DELETE_ORDER:
+                    this.orderView.deleteOrder(scanner);
+                    break;
 
 
                 case MenuCases.VIEW_ALL_ORDERS:
-                    Set<Order> orders = this.orderController.getAllOpenOrders();
-                    System.out.println("List of orders members:");
-                    for (Order s : orders) {
-                        System.out.println(s);
-                    }
-                    System.out.println();
+                    this.orderView.viewAllOpenOrders();
                     break;
 
+                case MenuCases.CLOSE_ORDER:
+                    this.orderView.closeOrderAllList(scanner, clientController);
+                    break;
+
+                case MenuCases.TOTAL_ORDER_REPORT:
+                    this.orderView.viewTotalOrderReport();
+                    break;
+
+                case MenuCases.CLOCK_OUT_MANAGER:
+                    this.hoursReportView.clockOut(staff, shiftNum);
+                    isClockOut = true;
+                    break;
+
+                case MenuCases.ADD_CLIENT:
+                    this.clientView.addNewClient(scanner);
+                    break;
+
+                case MenuCases.DELETE_CLIENT:
+                    this.clientView.deleteClient(scanner);
+                    break;
+
+                case MenuCases.UPDATE_CLIENT:
+                    this.clientView.updateClient(scanner);
+                    break;
+
+                case MenuCases.VIEW_CLIENT_LIST:
+                    this.clientView.viewAllClients();
+                    break;
+
+                case MenuCases.SEND_CLIENT_PUSH:
+                    this.clientView.sendClientPush(scanner);
+                    break;
+
+                case MenuCases.VIEW_STAFF_HOUR_WAGE_REPORT:
+                    this.hoursReportView.viewStaffHouerWage(scanner);
+                    break;
+
+                case MenuCases.TOTAL_STAFF_HOURS_REPORT_BY_MONTH:
+                    this.hoursReportView.viewAllStaffHoursReports(scanner);
+                    break;
+
+                case MenuCases.PAY_SALARY:
+                    this.hoursReportView.paySalaryToStaffID(scanner, staffView, staffController);
+                    break;
 
 
                 case "q":
@@ -228,11 +276,7 @@ public class RestaurantView {
     }
 
 
-
     //add  public void employee(Scanner scanner){}
-
-
-
 
 
 }

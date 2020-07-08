@@ -25,12 +25,13 @@ public class Main {
 
         ResturantView resturantView = new ResturantView();
         resturantView.start();
+
+
     }
 }
-
-
-
 /*
+
+
 
 
         StaffRepository staffRepository = StaffRepositoryImpel.getInstance();

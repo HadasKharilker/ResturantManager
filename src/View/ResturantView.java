@@ -6,6 +6,7 @@ import java.util.Set;
 
 
 import Controller.LoginController;
+import Controller.StaffController;
 import model.MenuCases;
 import Controller.MenuController;
 import model.MenuItem;
@@ -16,8 +17,11 @@ public class ResturantView {
 
     private final LoginController loginController;
     private final MenuController menuController;
-    private final StaffController staffController;
     private final MenuView menuView;
+
+    //now
+    private final StaffController staffController;
+    private final StaffView staffView;
     //להשלים
     //private final EmployeeView employeeView;
 
@@ -26,8 +30,12 @@ public class ResturantView {
 
     public ResturantView() throws Exception {
         this.menuView = new MenuView();
+        this.staffView=new StaffView();
+
         //this.employeeView = new EmployeeView(); לשנות להזמנות, עובדים ועוד...
         this.menuController = MenuController.getInstance();
+        this.staffController = StaffController.getInstance();
+
         // this.employeeController = EmployeeController.getInstance();לשנות להזמנות, עובדים ועוד...
         this.loginController = LoginController.getInstance();
 
@@ -136,6 +144,37 @@ public class ResturantView {
 
                 case MenuCases.DELETE_NEW_MENU_ITEM:
                     this.menuView.deleteMenuItem(scanner);
+                    break;
+
+                case MenuCases.ADD_NEW_STAFF:
+                    this.staffView.addNewStaff(scanner);
+                    break;
+
+                case MenuCases.EDIT_STAFF_PERSONAL_DETAILS:
+                    this.staffView.editStaffPersonalDetails(scanner);
+                    break;
+
+                case MenuCases.EDIT_STAFF_USER_DETAILS_DETAILS:
+                    this.staffView.editStaffUserDetails(scanner);
+                    break;
+
+
+
+
+
+
+                case MenuCases.DELETE_STAFF:
+                    this.staffView.deleteStaff(scanner);
+                    break;
+
+
+                case MenuCases.VIEW_ALL_STAFF:
+                    Set<Staff> staff = this.staffController.getAllStaff();
+                    System.out.println("List of Staff members:");
+                    for (Staff s : staff) {
+                        System.out.println(s);
+                    }
+                    System.out.println();
                     break;
 
 

@@ -1,9 +1,8 @@
 package Controller;
-import model.MenuItem;
-import model.MenuService;
-import model.Order;
-import model.OrderService;
+import model.*;
 
+import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 
 public class OrderController {
@@ -38,5 +37,15 @@ public class OrderController {
     }
 
 
+    public boolean addOrder(Order newOrder) {
+        return this.orderService.addNewOrder(newOrder);
 
+
+    }
+
+    public boolean editOrder(Order editOrder, String orderID) {
+        editOrder.setOrderID(Integer.parseInt(orderID));
+        return this.orderService.updateOrder(editOrder);
+
+    }
 }

@@ -59,7 +59,9 @@ public class MenuController {
     }
 
 
-
+    public MenuItem find(int itemID) {
+        return  this.menuService.find(itemID);
+    }
 }
 
 

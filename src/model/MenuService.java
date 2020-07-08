@@ -50,5 +50,10 @@ public class MenuService {
 
     }
 
+    public MenuItem find(int itemID){
+        return this.menuRepository.find(itemID);
+
+    }
+
 }
 

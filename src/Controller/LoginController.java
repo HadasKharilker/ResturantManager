@@ -1,6 +1,7 @@
 package Controller;
 
 import model.LoginService;
+import model.Staff;
 
 //singelton
 public class LoginController {
@@ -30,6 +31,12 @@ public class LoginController {
         }
 
         return INSTANCE;
+    }
+
+    public Staff getStaffByUserName(String username) throws Exception{
+        return loginService.getStaffByUserName(username);
+
+
     }
 
 

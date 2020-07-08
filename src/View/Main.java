@@ -20,13 +20,6 @@ public class Main {
         resturantView.start();
 
 
-
-
-
-
-
-
-
         StaffRepository staffRepository = StaffRepositoryImpel.getInstance();
         MenuRepository menuRepository =  MenuItemRepositoryImpel.getInstance();
         OrderRepository orderRepository = OrderRepositoryImpel.getInstance();

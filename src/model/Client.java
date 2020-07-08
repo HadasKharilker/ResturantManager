@@ -9,7 +9,7 @@ public class Client extends Person implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public Client(Integer personId, String firstName, String lastName, LocalDate birthDate, Address address,String mailAddress ,CreditDetails creditDetails, boolean pushOn) {
-        super(personId, firstName, lastName, birthDate, address,mailAddress);
+        super(personId, firstName, lastName, birthDate, address);
         this.creditDetails = creditDetails;
         this.pushOn = pushOn;
     }

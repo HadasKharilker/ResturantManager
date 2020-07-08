@@ -10,7 +10,6 @@ import java.time.LocalDate;
 
 @Builder
 @AllArgsConstructor
-public class Person implements Serializable {
 
 public abstract class Person implements Serializable {
 

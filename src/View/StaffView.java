@@ -1,14 +1,13 @@
 package View;
 
-import Controller.MenuController;
 import Controller.StaffController;
-import model.MenuItemType;
-import model.Role;
+import model.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Scanner;
+
 public class StaffView {
 
     private final StaffController staffController;
@@ -19,14 +18,18 @@ public class StaffView {
 
 
     public void addNewStaff(Scanner scanner) {
+        //yarden-main
         System.out.print("Enter staff id : ");
         String staffId = scanner.nextLine();
-        System.out.print("Enter first name : ");
+        System.out.print("Entr first name : ");
         String fName = scanner.nextLine();
         System.out.print("Enter last name : ");
         String lName = scanner.nextLine();
+        System.out.print("Enter mail address : ");
+        String mailAddress = scanner.nextLine();
         System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
-        String date = scanner.nextLine();
+        String birthDate = scanner.nextLine();
+
         System.out.print("Enter private house number:");
         String houseNum = scanner.nextLine();
         System.out.print("Enter house street:");
@@ -35,16 +38,25 @@ public class StaffView {
         String city = scanner.nextLine();
         System.out.print("Enter state:");
         String state = scanner.nextLine();
-        System.out.print("Enter role (manager/employee):");
+        System.out.print("Enter role (manager/employee:");
         String role = scanner.nextLine();
         System.out.print("Enter User Name:");
         String username = scanner.nextLine();
         System.out.print("Enter password:");
         String staffPassword = scanner.nextLine();
-        //parsing to date format
 
+        System.out.println("BankDetails:");
+        System.out.println("enter bank Account Number:");
+        String bankAccountNumber = scanner.nextLine();
 
-        boolean success = this.staffController.addNewStaff(staffId, fName, lName, date, houseNum, houseStreet, city, state, username, staffPassword, role);
+        System.out.println("brunch Number:");
+        String brunchNumber = scanner.nextLine();
+
+        Address address = new Address(Integer.parseInt(houseNum), houseStreet, city, state);
+        UserDetails userDetails = new UserDetails(username, staffPassword, Role.valueOf(role));
+        BankDetails bankDetails = new BankDetails(bankAccountNumber, Integer.parseInt(brunchNumber));
+
+        boolean success = this.staffController.addNewStaff(staffId, fName, lName, birthDate, address, userDetails, bankDetails, mailAddress);
         if (success) {
             System.out.println("Staff " + fName + " added successfully");
         } else {
@@ -71,10 +83,11 @@ public class StaffView {
     public void editStaffPersonalDetails(Scanner scanner) {
 
         System.out.print("Enter Staff id you want to edit (number): ");
-
         String id = scanner.nextLine();
 
-        if (staffController.isExist(Integer.parseInt(id)) == false) {
+        Staff staff = this.staffController.getStaffByID(Integer.parseInt(id));
+
+        if (staff == null) {
             System.out.print("Staff does not exists!");
 
         } else {
@@ -83,7 +96,7 @@ public class StaffView {
             System.out.print("Enter last name : ");
             String lName = scanner.nextLine();
             System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
-            String date = scanner.nextLine();
+            String birthDate = scanner.nextLine();
 
             System.out.print("Enter private house number:");
             String houseNum = scanner.nextLine();
@@ -94,8 +107,17 @@ public class StaffView {
             System.out.print("Enter state:");
             String state = scanner.nextLine();
 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
+            LocalDate date = LocalDate.parse(birthDate, formatter);
 
-            boolean success = this.staffController.editStaffPersonalDetails(id, fName, lName, date, houseNum, houseStreet, city, state);
+            staff.setFirstName(fName);
+            staff.setLastName(lName);
+            staff.setBirthDate(date);
+
+            Address address = new Address(Integer.parseInt(houseNum), houseStreet, city, state);
+            staff.setAddress(address);
+            
+            boolean success = this.staffController.editStaff(staff);
             if (success) {
                 System.out.println("Staff " + fName + " updated successfully");
             } else {
@@ -109,28 +131,34 @@ public class StaffView {
     public void editStaffUserDetails(Scanner scanner) {
 
         System.out.print("Enter Staff id you want to edit (number): ");
-
         String id = scanner.nextLine();
 
-        if (staffController.isExist(Integer.parseInt(id)) == false) {
+        Staff staffEdit = staffController.getStaffByID(Integer.parseInt(id));
+
+        if (staffEdit == null) {
             System.out.print("Staff does not exists!");
 
         } else {
             System.out.print("Enter role (manager/employee):");
             String role = scanner.nextLine();
+
             System.out.print("Enter User Name:");
             String username = scanner.nextLine();
+
             System.out.print("Enter password:");
             String staffPassword = scanner.nextLine();
 
+            UserDetails userDetails = new UserDetails(username, staffPassword, Role.valueOf(role));
+            staffEdit.setUserDetails(userDetails);
 
-            boolean success = this.staffController.editStaffUserDetails(id, username, staffPassword, role);
+            boolean success = this.staffController.editStaff(staffEdit);
 
             if (success) {
                 System.out.println("Staff " + id + " updated successfully");
             } else {
                 System.out.println("Failed to update " + id);
             }
+
             System.out.println();
         }
     }

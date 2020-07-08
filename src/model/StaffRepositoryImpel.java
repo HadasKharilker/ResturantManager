@@ -7,13 +7,13 @@ public class StaffRepositoryImpel implements StaffRepository {
     private static StaffRepositoryImpel INSTANCE;
     private static Object lockObject = new Object();
     private final String FILENAME = "staff";
-    private Set<Staff> staff;
+    private Set<Staff> staffSet;
     private FileManager<Staff> fileManager;
 
     //singelton needs a private constructor
     private StaffRepositoryImpel() throws IOException, ClassNotFoundException {
         this.fileManager = new FileManager<Staff>(FILENAME);
-        this.staff = this.fileManager.read();
+        this.staffSet = this.fileManager.read();
 
     }
 
@@ -36,12 +36,12 @@ public class StaffRepositoryImpel implements StaffRepository {
             throw new Exception("must have a value");
         }
 
-        if (this.staff.contains(staff)) {
+        if (this.staffSet.contains(staff)) {
             throw new Exception("Already exists!");
         }
 
-        this.staff.add(staff);
-        this.fileManager.write(this.staff);
+        this.staffSet.add(staff);
+        this.fileManager.write(this.staffSet);
     }
 
 
@@ -49,18 +49,47 @@ public class StaffRepositoryImpel implements StaffRepository {
     public void deleteStaff(int id) throws Exception {
         Staff staff=getStaffByID(id);
 
-        if (!(this.staff.contains(staff))) {
+        if (!(this.staffSet.contains(staff))) {
             throw new Exception("staff member does'nt exists!");
         }
 
-        this.staff.remove(staff);
-        this.fileManager.write(this.staff);
+        this.staffSet.remove(staff);
+        this.fileManager.write(this.staffSet);
 
     }
 
 
     @Override
-    public void editPersonDetails(Staff staff1) throws Exception {
+    public void editStaff(Staff staff1) throws Exception {
+        if (staff1 == null) {
+            throw new Exception("must have a value");
+        }
+        if (!(this.staffSet.contains(staff1))) {
+            throw new Exception("Staff does not exists!");
+        } else {
+            for (Staff s : staffSet) {
+                if (s.getPersonId() == staff1.getPersonId()) {
+                    staffSet.remove(s);
+                    staffSet.add(s);
+
+                }
+            }
+
+        }
+
+        this.fileManager.write(this.staffSet);
+
+    }
+
+    @Override
+    public void editStaffUserDetails(int staffID, UserDetails userDetails) throws Exception {
+
+    }
+
+
+    /*
+    @Override
+    public void editStaff(Staff staff1) throws Exception {
         if (staff1 == null) {
             throw new Exception("must have a value");
         }
@@ -69,40 +98,22 @@ public class StaffRepositoryImpel implements StaffRepository {
         } else {
             for (Staff s : staff) {
                 if (s.getPersonId() == staff1.getPersonId()) {
-                    s.setFirstName(staff1.getFirstName());
-                    s.setLastName(staff1.getLastName());
-                    s.setBirthDate(staff1.getBirthDate());
-                    s.setAddress(staff1.getAddress());
+                    s.setUserDetails(staff1.getUserDetails());
 
                 }
             }
 
         }
-
         this.fileManager.write(this.staff);
 
     }
-
-    @Override
-    public void editStaffDetails(int staffID, UserDetails userDetails) throws Exception {
-
-        for (Staff s : staff) {
-            if (s.getPersonId() == staffID) {
-                s.setUserDetails(userDetails);
-
-            }
-        }
-
-
-        this.fileManager.write(this.staff);
-
-}
+*/
 
 
     @Override
     public Staff getStaffByID(int id) {
 
-        for (Staff s : staff) {
+        for (Staff s : staffSet) {
             if (s.getPersonId() == id)
                 return s;
         }
@@ -113,7 +124,7 @@ public class StaffRepositoryImpel implements StaffRepository {
 
     @Override
     public Staff getStaffByUserName(String curUserName) {
-        for (Staff s : staff) {
+        for (Staff s : staffSet) {
             UserDetails userDetails = s.getUserDetails();
             String userName = userDetails.getUserName();
 
@@ -131,7 +142,7 @@ public class StaffRepositoryImpel implements StaffRepository {
     @Override
     public Set<Staff> findAll() {
 
-        return this.staff;
+        return this.staffSet;
 
     }
 
@@ -139,7 +150,7 @@ public class StaffRepositoryImpel implements StaffRepository {
     public boolean isExist(int id) {
         Staff staffInstance=getStaffByID(id);
 
-        return staff.contains(staffInstance);
+        return staffSet.contains(staffInstance);
 
 
     }

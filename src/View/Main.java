@@ -1,7 +1,6 @@
-package model;
+package View;
+import model.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.util.*;
@@ -11,7 +10,10 @@ public class Main {
     public static boolean isClockOut = false;
 
     public static void main(String[] args) throws Exception {
-
+        RestaurantView resturantView = new RestaurantView();
+        resturantView.start();
+    }}
+/*
         StaffRepository staffRepository = StaffRepositoryImpel.getInstance();
         MenuRepository menuRepository = MenuItemRepositoryImpel.getInstance();
         OrderRepository orderRepository = OrderRepositoryImpel.getInstance();
@@ -864,8 +866,6 @@ public class Main {
     }
 
     private static void editStaffPersonalDetails(Scanner scanner, StaffRepository staffRepository) throws Exception {
-
-
         System.out.print("Enter Staff id you want to edit (number): ");
 
         String staffID = scanner.nextLine();
@@ -903,7 +903,7 @@ public class Main {
             Address newAddress = new Address(Integer.parseInt(houseNum), houseStreet, city, state);
             staff.setAddress(newAddress);
 
-            staffRepository.editPersonDetails(staff);
+            staffRepository.editStaff(staff);
 
         }
 
@@ -929,7 +929,7 @@ public class Main {
             String staffPassword = scanner.nextLine();
 
             UserDetails newUseretails = new UserDetails(username, staffPassword, Role.valueOf(role));
-            staffRepository.editStaffDetails(Integer.parseInt(staffID), newUseretails);
+           // staffRepository.editStaff(Integer.parseInt(staffID), newUseretails);
 
 
         }
@@ -985,3 +985,4 @@ public class Main {
 
 
 }
+*/

@@ -1,11 +1,7 @@
 package model;
 
-
-
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDate;
-import java.util.Locale;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class Employee extends Staff implements Serializable{
 

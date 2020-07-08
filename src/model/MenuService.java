@@ -24,5 +24,30 @@ public class MenuService {
     public Set<MenuItem> getAllMenuItems() {
         return this.menuRepository.findAll();
     }
+
+
+    public boolean editMenuItem(MenuItem item) {
+        try {
+            this.menuRepository.updateMenuItem(item);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+
+    public boolean deleteMenuItem(Integer item) {
+        try {
+            this.menuRepository.deleteMenuItem(item);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
 }
 

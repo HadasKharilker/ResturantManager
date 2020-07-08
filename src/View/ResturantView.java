@@ -9,15 +9,18 @@ import Controller.LoginController;
 import model.MenuCases;
 import Controller.MenuController;
 import model.MenuItem;
+import model.Staff;
 
 public class ResturantView {
 
 
     private final LoginController loginController;
+    private final MenuController menuController;
+    private final StaffController staffController;
     private final MenuView menuView;
     //להשלים
     //private final EmployeeView employeeView;
-    private final MenuController menuController;
+
     //להשלים
     //private final EmployeeController employeeController;
 
@@ -86,17 +89,23 @@ public class ResturantView {
         boolean stayInManager = true;
 
         while (stayInManager) {
+
+            //MenuView
             System.out.println("");
             System.out.println("1. Add new Menu item");
             System.out.println("2. view all Menu Items");
             System.out.println("3. Edit Menu Item");
             System.out.println("4. delete Menu Item");
+
+            //StaffView
             System.out.println("5. Add new Staff member");
             System.out.println("6. Edit Staff personal details");
             System.out.println("7. Edit Staff user details");
             System.out.println("8. Delete Staff member");
             System.out.println("9. view all Staff members");
             System.out.println("10. view staff hour wage");
+
+            //OrderView
             System.out.println("11. edit order");
             System.out.println("12. add new order");
             System.out.println("13. delete order");
@@ -107,11 +116,12 @@ public class ResturantView {
 
             String userSelection = scanner.nextLine();
             switch (userSelection) {
+
                 case MenuCases.ADD_NEW_MENU_ITEM:
                     this.menuView.addNewMenuItem(scanner);
                     break;
-                case MenuCases.VIEW_ALL_MENU_ITEMS_MANAGER:
 
+                case MenuCases.VIEW_ALL_MENU_ITEMS_MANAGER:
                     Set<MenuItem> menu = this.menuController.getAllMenuItems();
                     System.out.println("Available Dishes in Menu:");
                     for (MenuItem item : menu) {
@@ -119,6 +129,15 @@ public class ResturantView {
                     }
                     System.out.println();
                     break;
+
+                case MenuCases.EDIT_NEW_MENU_ITEM:
+                    this.menuView.editMenuItem(scanner);
+                    break;
+
+                case MenuCases.DELETE_NEW_MENU_ITEM:
+                    this.menuView.deleteMenuItem(scanner);
+                    break;
+
 
 
                 case "q":

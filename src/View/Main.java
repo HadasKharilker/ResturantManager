@@ -2,7 +2,7 @@ package View;
 
 
 
-/*
+
 import model.*;
 import model.MenuItem;
 import model.MenuItemType;
@@ -14,7 +14,9 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
 
- */
+
+
+
 
 
 public class Main {
@@ -23,16 +25,14 @@ public class Main {
 
         ResturantView resturantView = new ResturantView();
         resturantView.start();
-
     }
 }
 
 
 
+/*
 
 
-
-        /* יש להחזיר במידה ולא עובד
         StaffRepository staffRepository = StaffRepositoryImpel.getInstance();
         MenuRepository menuRepository =  MenuItemRepositoryImpel.getInstance();
         OrderRepository orderRepository = OrderRepositoryImpel.getInstance();

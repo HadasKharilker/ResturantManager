@@ -91,7 +91,7 @@ public class StaffView {
             System.out.print("Staff does not exists!");
 
         } else {
-            System.out.print("Entr first name : ");
+            System.out.print("Enter first name : ");
             String fName = scanner.nextLine();
             System.out.print("Enter last name : ");
             String lName = scanner.nextLine();
@@ -160,6 +160,9 @@ public class StaffView {
             }
 
             System.out.println();
+
+
+
         }
     }
 }

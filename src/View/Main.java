@@ -12,8 +12,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         RestaurantView resturantView = new RestaurantView();
         resturantView.start();
-    }}
-/*
+
         StaffRepository staffRepository = StaffRepositoryImpel.getInstance();
         MenuRepository menuRepository = MenuItemRepositoryImpel.getInstance();
         OrderRepository orderRepository = OrderRepositoryImpel.getInstance();

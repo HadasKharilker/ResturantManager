@@ -10,6 +10,15 @@ public class LoginService {
         staffRepository = StaffRepositoryImpel.getInstance();
     }
 
+    public Staff getStaffByUserName(String userName) throws Exception{
+        return staffRepository.getStaffByUserName(userName);
+
+
+    }
+
+
+
+
     public Integer typeOfLogin(String userName, String password) throws Exception {
 
         Staff staff = staffRepository.getStaffByUserName(userName);

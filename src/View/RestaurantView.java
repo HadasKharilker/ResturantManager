@@ -32,7 +32,6 @@ public class RestaurantView {
     private final OrderView orderView;
 
 
-
     //להשלים
     //private final EmployeeView employeeView;
 
@@ -41,13 +40,13 @@ public class RestaurantView {
 
     public RestaurantView() throws Exception {
         this.menuView = new MenuView();
-        this.staffView=new StaffView();
-        this.orderView=new OrderView();
+        this.staffView = new StaffView();
+        this.orderView = new OrderView();
 
         //this.employeeView = new EmployeeView(); לשנות להזמנות, עובדים ועוד...
         this.menuController = MenuController.getInstance();
         this.staffController = StaffController.getInstance();
-        this.orderController= OrderController.getInstance();
+        this.orderController = OrderController.getInstance();
 
         // this.employeeController = EmployeeController.getInstance();לשנות להזמנות, עובדים ועוד...
         this.loginController = LoginController.getInstance();
@@ -86,27 +85,36 @@ public class RestaurantView {
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
-        Integer typeOfLogin = loginController.login(username, password);
+        boolean isUserCorrect = false;
+        Staff staff = loginController.getStaffByUserName(username);
 
-        //manager View
-        if (typeOfLogin == 1) {
-            System.out.println("You are now logged in as manager");
-            this.manager(scanner);
-
-
+        if (staff != null)
+            isUserCorrect = staff.isPasswordCorrect(password);
+        if (isUserCorrect) {
+            if (staff.isManager()) {
+                System.out.println("You are now logged in as manager");
+                this.manager(scanner, staff);
+            }
+            //else
+            //     {
             //employeeView
                 /*
             } else if (typeOfLogin == 0) {
                 System.out.println("You are now logged in as employee");
-                this.employee(scanner);
-*/
+                this.employee(scanner, staff);
 
-        } else
+            }
+            */
+        }
+        else
             System.out.println("userName or password dos'nt exist!");
+
     }
 
 
-    public void manager(Scanner scanner) {
+
+
+    public void manager(Scanner scanner, Staff staff) {
         boolean stayInManager = true;
 
         while (stayInManager) {
@@ -127,11 +135,13 @@ public class RestaurantView {
             System.out.println("10. view staff hour wage");
 
             //OrderView
+
             System.out.println("11. edit order");
             System.out.println("12. add new order");
             System.out.println("13. delete order");
-            System.out.println("14. view all orders");
+            System.out.println("14. view all orders");//
             System.out.println("15. close order");
+
             System.out.println("16. view total orders report (only close)");
             System.out.println("Q. Exit");
 
@@ -177,15 +187,21 @@ public class RestaurantView {
 
 
                 case MenuCases.VIEW_ALL_STAFF:
-                    Set<Staff> staff = this.staffController.getAllStaff();
+                    Set<Staff> staffs = this.staffController.getAllStaff();
                     System.out.println("List of Staff members:");
-                    for (Staff s : staff) {
+                    for (Staff s : staffs) {
                         System.out.println(s);
                     }
                     System.out.println();
                     break;
 
+                case MenuCases.NEW_ORDER:
+                    this.orderView.addNewOrder(scanner, staff,menuController);
+                    break;
 
+                case MenuCases.EDIT_ORDER:
+                    this.orderView.editOrderAllList(scanner, staff,menuController);
+                    break;
 
 
 

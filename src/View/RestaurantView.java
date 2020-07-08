@@ -6,35 +6,48 @@ import java.util.Set;
 
 
 import Controller.LoginController;
+import Controller.OrderController;
 import Controller.StaffController;
 import model.MenuCases;
 import Controller.MenuController;
 import model.MenuItem;
+import model.Order;
 import model.Staff;
 
-public class ResturantView {
+public class RestaurantView {
 
 
     private final LoginController loginController;
     private final MenuController menuController;
     private final MenuView menuView;
 
-    //now
+
+    //Staff View
     private final StaffController staffController;
     private final StaffView staffView;
+
+
+    //Order
+    private final OrderController orderController;
+    private final OrderView orderView;
+
+
+
     //להשלים
     //private final EmployeeView employeeView;
 
     //להשלים
     //private final EmployeeController employeeController;
 
-    public ResturantView() throws Exception {
+    public RestaurantView() throws Exception {
         this.menuView = new MenuView();
         this.staffView=new StaffView();
+        this.orderView=new OrderView();
 
         //this.employeeView = new EmployeeView(); לשנות להזמנות, עובדים ועוד...
         this.menuController = MenuController.getInstance();
         this.staffController = StaffController.getInstance();
+        this.orderController= OrderController.getInstance();
 
         // this.employeeController = EmployeeController.getInstance();לשנות להזמנות, עובדים ועוד...
         this.loginController = LoginController.getInstance();
@@ -117,7 +130,7 @@ public class ResturantView {
             System.out.println("11. edit order");
             System.out.println("12. add new order");
             System.out.println("13. delete order");
-            System.out.println("14. view all order");
+            System.out.println("14. view all orders");
             System.out.println("15. close order");
             System.out.println("16. view total orders report (only close)");
             System.out.println("Q. Exit");
@@ -158,11 +171,6 @@ public class ResturantView {
                     this.staffView.editStaffUserDetails(scanner);
                     break;
 
-
-
-
-
-
                 case MenuCases.DELETE_STAFF:
                     this.staffView.deleteStaff(scanner);
                     break;
@@ -179,6 +187,20 @@ public class ResturantView {
 
 
 
+
+
+
+                case MenuCases.VIEW_ALL_ORDERS:
+                    Set<Order> orders = this.orderController.getAllOpenOrders();
+                    System.out.println("List of orders members:");
+                    for (Order s : orders) {
+                        System.out.println(s);
+                    }
+                    System.out.println();
+                    break;
+
+
+
                 case "q":
                 case "Q":
                     stayInManager = false;
@@ -188,6 +210,13 @@ public class ResturantView {
             }
         }
     }
+
+
+
+    //add  public void employee(Scanner scanner){}
+
+
+
 
 
 }

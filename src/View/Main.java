@@ -1,8 +1,4 @@
 package View;
-
-
-
-
 import model.*;
 import model.MenuItem;
 import model.MenuItemType;
@@ -16,20 +12,17 @@ import java.util.Set;
 
 
 
-
-
-
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        ResturantView resturantView = new ResturantView();
+        RestaurantView resturantView = new RestaurantView();
         resturantView.start();
 
 
-    }
-}
-/*
+
+
+
 
 
 
@@ -557,4 +550,4 @@ public class Main {
 
 
 }
-*/
+

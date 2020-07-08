@@ -53,6 +53,10 @@ public abstract class Person implements Serializable {
         this.personId = personId;
     }
 
+    public String getName() {
+        return firstName + " " + lastName;
+    }
+
     public String getFirstName() {
         return firstName;
     }

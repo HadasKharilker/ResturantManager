@@ -139,11 +139,11 @@ public class Main {
                 break;
 
             case MenuCases.EDIT_ORDER:
-                editOrderAllList(scanner, staff, orderRepository, menuRepository);
+                editOrderAllList(scanner, staff, orderRepository, menuRepository, clientRepository);
                 break;
 
             case MenuCases.NEW_ORDER:
-                addNewOrder(scanner, staff, orderRepository, menuRepository);
+                addNewOrder(scanner, staff, orderRepository, menuRepository, clientRepository);
                 break;
 
             case MenuCases.DELETE_ORDER:
@@ -214,9 +214,7 @@ public class Main {
         double totalSalary = getTotalSalary(staff, Integer.parseInt(month), hoursReportRepository);
         String message = "hello " + staff.getFirstName() + " your salary from month " + month + " is " + totalSalary;
 
-        Set<String> mail = new HashSet<String>();
-        mail.add(staff.getMailAddress());
-        Mail.sendMail(message, mail);
+        Mail.sendMail(message, staff.getMailAddress());
     }
 
     private static void sendClientPush(Scanner scanner, ClientRepository clientRepository) throws Exception {
@@ -442,11 +440,11 @@ public class Main {
 
 
             case MenuCases.NEW_ORDER_EMPLOYEE:
-                addNewOrder(scanner, staff, orderRepository, menuRepository);
+                addNewOrder(scanner, staff, orderRepository, menuRepository, clientRepository);
                 break;
 
             case MenuCases.EDIT_MY_ORDER:
-                editOrderStaffList(scanner, staff, orderRepository, menuRepository);
+                editOrderStaffList(scanner, staff, orderRepository, menuRepository, clientRepository);
                 break;
 
             case MenuCases.DELETE_MY_ORDER:
@@ -665,29 +663,48 @@ public class Main {
         }
     }
 
-    private static void editOrderStaffList(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
+    private static void editOrderStaffList(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository, ClientRepository clientRepository) throws Exception {
         System.out.println("choose order ID from list to edit:  ");
         viewAllOpenOrdersByStaff(staff.getPersonId(), orderRepository);
+        String orderID = scanner.nextLine();
 
-        editOrder(scanner, staff, orderRepository, menuRepository);
+        editOrder(orderID, scanner, orderRepository, menuRepository, clientRepository);
 
     }
 
-    private static void editOrder(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
-        System.out.print("order ID: ");
-        String orderID = scanner.nextLine();
 
-        Order editOrder = getOrderFromUser(scanner, staff, orderRepository, menuRepository);
-        editOrder.setOrderID(Integer.parseInt(orderID));
+    private static void editOrder(String orderID, Scanner scanner, OrderRepository orderRepository, MenuRepository menuRepository, ClientRepository clientRepository) throws Exception {
+        Order editOrder = orderRepository.getOrder(Integer.parseInt(orderID));
+        System.out.println("choose what you want to edit: ");
+        System.out.println("1. menu items");
+        System.out.println("2. client");
+
+        String selectedOption = scanner.nextLine();
+        switch (selectedOption) {
+
+            case "1":
+                Set<MenuItemOrder> menuItems = getMenuItemsFromUser(scanner, menuRepository);
+                editOrder.setMenuItems(menuItems);
+
+                break;
+
+            case "2":
+                Client client = getClientByClientIDFromUser(scanner, clientRepository);
+                editOrder.setClient(client);
+                break;
+
+        }
+
         orderRepository.updateOrder(editOrder);
     }
 
 
-    private static void editOrderAllList(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
+    private static void editOrderAllList(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository, ClientRepository clientRepository) throws Exception {
         System.out.println("choose order ID from list to edit:  ");
         viewAllOpenOrders(orderRepository);
+        String orderID = scanner.nextLine();
 
-        editOrder(scanner, staff, orderRepository, menuRepository);
+        editOrder(orderID, scanner, orderRepository, menuRepository, clientRepository);
     }
 
     private static int viewAllOpenOrdersByStaff(int staffID, OrderRepository orderRepository) throws Exception {
@@ -710,9 +727,35 @@ public class Main {
         return orders.size();
     }
 
-    private static Order getOrderFromUser(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
+    private static Order getOrderFromUser(Scanner scanner, Staff staff, ClientRepository clientRepository, MenuRepository menuRepository) throws Exception {
 
         int staffId = staff.getPersonId();
+
+        Set<MenuItemOrder> menuItems = getMenuItemsFromUser(scanner, menuRepository);
+        Client client = getClientByClientIDFromUser(scanner, clientRepository);
+
+        Order orderFromUser = new Order(staffId, menuItems, client);
+
+        return orderFromUser;
+    }
+
+    private static Client getClientByClientIDFromUser(Scanner scanner, ClientRepository clientRepository) throws Exception {
+
+        System.out.println("Is there a customer club? press 1-yes , 0-no");
+        String customerClub = scanner.nextLine();
+
+        Client client = null;
+        if (customerClub.equals("1")) {
+            System.out.println("enter client ID");
+            String clientID = scanner.nextLine();
+            client = clientRepository.getClient(Integer.parseInt(clientID));
+        }
+
+        return client;
+
+    }
+
+    private static Set<MenuItemOrder> getMenuItemsFromUser(Scanner scanner, MenuRepository menuRepository) throws Exception {
         System.out.println("choose menu items ID from list : enter -1 to finish ");
         viewAllMenuItems(menuRepository);
 
@@ -739,14 +782,12 @@ public class Main {
             }
         }
 
-        Order orderFromUser = new Order(staffId, menuItems);
-
-        return orderFromUser;
+        return menuItems;
     }
 
-    private static void addNewOrder(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository) throws Exception {
+    private static void addNewOrder(Scanner scanner, Staff staff, OrderRepository orderRepository, MenuRepository menuRepository, ClientRepository clientRepository) throws Exception {
 
-        Order newOrder = getOrderFromUser(scanner, staff, orderRepository, menuRepository);
+        Order newOrder = getOrderFromUser(scanner, staff, clientRepository, menuRepository);
         orderRepository.addOrder(newOrder);
 
     }

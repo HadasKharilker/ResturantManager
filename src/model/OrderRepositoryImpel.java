@@ -69,6 +69,12 @@ public class OrderRepositoryImpel implements OrderRepository {
 
     @Override
     public void closeOrder(Order order) throws IOException {
+
+        if (order.getClient() != null) {
+            String messageClosed = "order closed , total price:" + order.getTotalOrderPrice();
+            Mail.sendMail(messageClosed, order.getClient().getMailAddress());
+        }
+
         deleteOrder(order.getOrderID());
         addOrderToClosedList(order);
 
@@ -124,8 +130,10 @@ public class OrderRepositoryImpel implements OrderRepository {
         } else {
             for (Order o : openOrders) {
                 if (o.getOrderID() == order.getOrderID()) {
-                    o.setMenuItems(order.getMenuItems());
-                    o.setTotalOrderPrice(order.getTotalOrderPrice());
+                    deleteOrder(o.getOrderID());
+                    addOrder(o);
+                    //o.setMenuItems(order.getMenuItems());
+                    //o.setTotalOrderPrice(order.getTotalOrderPrice());
                 }
             }
 

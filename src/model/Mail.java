@@ -19,12 +19,11 @@ public class Mail {
     public static void sendMail(String messageToSend, Set<String> mailsTO) {
         Properties properties = System.getProperties();
 
-        // Setup mail server
         properties.put("mail.smtp.host", host);
         properties.put("mail.smtp.port", "465");
         properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.auth", "true");
-        // Get the Session object.// and pass username and password
+
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
 
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -33,7 +32,6 @@ public class Mail {
 
         });
 
-        // Used to debug SMTP issues
         session.setDebug(true);
 
         try {
@@ -51,7 +49,6 @@ public class Mail {
 
             System.out.println("sending...");
 
-            // Send message
             Transport.send(message);
             System.out.println("Sent message successfully....");
 
@@ -60,5 +57,45 @@ public class Mail {
         }
     }
 
+    public static void sendMail(String messageToSend, String mailTo) {
+        Properties properties = System.getProperties();
+
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.ssl.enable", "true");
+        properties.put("mail.smtp.auth", "true");
+
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("resturantmanagerhit@gmail.com", "HIT123456");
+            }
+
+        });
+
+        session.setDebug(true);
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+
+            message.setFrom(new InternetAddress(from));
+
+
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(mailTo));
+
+
+            message.setSubject("resturant hit!");
+
+            message.setText(messageToSend);
+
+            System.out.println("sending...");
+
+            Transport.send(message);
+            System.out.println("Sent message successfully....");
+
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
 
 }

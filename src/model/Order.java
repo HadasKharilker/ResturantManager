@@ -9,6 +9,7 @@ public class Order implements Serializable {
     private Set<MenuItemOrder> menuItems;
     private double totalOrderPrice;
     private boolean isClosed;
+    private Client client;
 
     private static final long serialVersionUID = 1L;
 
@@ -16,16 +17,17 @@ public class Order implements Serializable {
 
     }
 
-    public Order(int staffID, Set<MenuItemOrder> menuItems) {
+    public Order(int staffID, Set<MenuItemOrder> menuItems, Client client) {
         this.staffID = staffID;
         this.menuItems = menuItems;
         this.totalOrderPrice = getTotalPriceOrder();
         this.isClosed = false;
+        this.client = client;
 
     }
 
-    public boolean getClosed() {
-        return this.isClosed;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public void setClosed(boolean closed) {
@@ -76,17 +78,23 @@ public class Order implements Serializable {
         this.menuItems = menuItems;
     }
 
+    public Client getClient() {
+        return client;
+    }
 
     @Override
     public String toString() {
-        String toPrint = "[orderID=" + orderID + ", staffID=" + staffID + ", ";
+        String toPrint = "[orderID=" + orderID + ", staffID=" + staffID;
 
-        toPrint += "items in order: ";
+        if (this.client != null)
+            toPrint += ", " + " client ID= " + this.client.getPersonId() + " ,client name= " + this.client.getFirstName() + " " + this.client.getLastName();
+
+        toPrint += " ,items in order: ";
         for (MenuItemOrder menuItemOrder : menuItems) {
             toPrint += menuItemOrder.toString();
         }
 
-        toPrint += "total price=" + totalOrderPrice + "]";
+        toPrint += " total price=" + totalOrderPrice + "]";
 
         return toPrint;
 

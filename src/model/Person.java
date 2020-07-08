@@ -1,8 +1,14 @@
 package model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
+
+@Builder
+@AllArgsConstructor
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -14,18 +20,12 @@ public class Person implements Serializable {
     private Address address;
 
     //c'tor
-
-
-
-    public Person(Integer personId, String firstName, String lastName, LocalDate birthDate, Integer houseNumber, String street, String city, String state){
-        super();
+    public Person(Integer personId, String firstName, String lastName, LocalDate birthDate, Integer houseNumber, String street, String city, String state) {
         this.personId = personId;
         this.firstName = firstName;
-        this.lastName  = lastName;
-        this.birthDate= birthDate;
-        this.address=new Address( houseNumber,street,city,state);
-
-
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.address = new Address(houseNumber, street, city, state);
     }
 
     public Person(Integer personId) {
@@ -81,7 +81,6 @@ public class Person implements Serializable {
     }
 
 
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -103,8 +102,6 @@ public class Person implements Serializable {
             return false;
         return true;
     }
-
-
 
 
 }

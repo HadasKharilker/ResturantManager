@@ -83,4 +83,16 @@ public class ClientService {
 
     }
 
+    public Set<Client> getAllClientsBirthday() {
+        try {
+            return this.clientRepository.getAllClientsBirthday();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        }
+
+    }
+
 }

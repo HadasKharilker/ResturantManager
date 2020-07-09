@@ -86,7 +86,7 @@ public class ClientView {
                 System.out.println("enter identificationCode:");
                 String identificationCode = scanner.nextLine();
 
-                CreditDetails creditDetails=new CreditDetails.CreditDetailsBuilder(creditID).period(periodDate).code(Integer.parseInt(identificationCode)).build();
+                CreditDetails creditDetails = new CreditDetails.CreditDetailsBuilder(creditID).period(periodDate).code(Integer.parseInt(identificationCode)).build();
 
 
                 client.setCreditDetails(creditDetails);
@@ -160,7 +160,7 @@ public class ClientView {
         System.out.println("enter identificationCode:");
         String identificationCode = scanner.nextLine();
 
-        CreditDetails creditDetails=new CreditDetails.CreditDetailsBuilder(creditID).period(periodDate).code(Integer.parseInt(identificationCode)).build();
+        CreditDetails creditDetails = new CreditDetails.CreditDetailsBuilder(creditID).period(periodDate).code(Integer.parseInt(identificationCode)).build();
 
 
         System.out.println("enter mail address:");
@@ -218,6 +218,23 @@ public class ClientView {
         Set<Client> clients = clientController.getAllClientsPushOn();
 
         if (clients != null) {
+            for (Client client : clients) {
+                mails.add(client.getMailAddress());
+            }
+
+            Mail.sendMail(message, mails);
+        }
+    }
+
+    public void sendClientBirthdayPush(Scanner scanner) throws Exception {
+
+        String message = "מזל טוב ליום הולדתך! הנך מקבל 100 שח מתנה ברשת מסעדות HIT" ;
+
+        Set<String> mails = new HashSet<String>();
+
+        Set<Client> clients = clientController.getAllClientsBirthday();
+
+        if (clients != null && clients.size() != 0) {
             for (Client client : clients) {
                 mails.add(client.getMailAddress());
             }

@@ -84,7 +84,11 @@ public class StaffView {
 
         } else {
             userDetails.setRole(Role.manager);
-            staff = new Manager(Integer.parseInt(staffId), fName, lName, date, address, userDetails, bankDetails, mailAddress);
+
+            System.out.print("Enter License number:");
+            String licenseNum = scanner.nextLine();
+
+            staff = new Manager(Integer.parseInt(staffId), fName, lName, date, address, userDetails, bankDetails, mailAddress, licenseNum);
         }
 
         boolean success = this.staffController.addNewStaff(staff);

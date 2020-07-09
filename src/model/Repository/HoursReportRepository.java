@@ -4,6 +4,7 @@ import model.Staff;
 import model.StaffHour;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.Date;
 import java.util.Set;
@@ -17,6 +18,6 @@ public interface HoursReportRepository {
 
     Set<StaffHour> getStaffHourByStaffID(int staffID) throws IOException;
 
-    Set<StaffHour> getAllStaffHourToday(Date todayDate) throws IOException;
+    Set<StaffHour> getAllStaffHourToday(LocalDate todayDate) throws IOException;
 
 }

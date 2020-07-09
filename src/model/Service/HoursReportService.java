@@ -5,6 +5,7 @@ import model.Repository.HoursReportRepositoryImpel;
 import model.Staff;
 import model.StaffHour;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -63,7 +64,7 @@ public class HoursReportService {
 
     }
 
-    public Set<StaffHour> getAllStaffHourToday(Date todayDate) {
+    public Set<StaffHour> getAllStaffHourToday(LocalDate todayDate) {
         try {
             return this.hoursReportRepository.getAllStaffHourToday(todayDate);
 

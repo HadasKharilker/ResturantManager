@@ -37,11 +37,7 @@ public class RestaurantView {
     //hour report
     private final HoursReportController hoursReportController;
     private final HoursReportView hoursReportView;
-    //להשלים
-    //private final EmployeeView employeeView;
 
-    //להשלים
-    //private final EmployeeController employeeController;
 
     public RestaurantView() throws Exception {
 
@@ -57,7 +53,6 @@ public class RestaurantView {
         this.orderController = OrderController.getInstance();
         this.clientController = ClientController.getInstance();
         this.hoursReportController = HoursReportController.getInstance();
-        // this.employeeController = EmployeeController.getInstance();לשנות להזמנות, עובדים ועוד...
         this.loginController = LoginController.getInstance();
 
     }
@@ -68,6 +63,7 @@ public class RestaurantView {
         boolean stayInResturant = true;
 
         try (Scanner scanner = new Scanner(System.in)) {
+
           //  staffView.addNewStaff(scanner);
             while (stayInResturant) {
                 System.out.println("1. login");
@@ -127,19 +123,26 @@ public class RestaurantView {
             boolean stayInEmployee = true;
 
             while (stayInEmployee && !isClockOut) {
+                System.out.println();
+                System.out.println("Menu item:");
                 System.out.println("1. view all Menu Items");
+                System.out.println();
+                System.out.println("Orders:");
                 System.out.println("2. add new order");
                 System.out.println("3. edit my order");
                 System.out.println("4. delete order");
                 System.out.println("5. view my open orders");
                 System.out.println("6. close my order");
-                System.out.println("7. clock out");
-                System.out.println("8. view my hours report");
-                System.out.println("9. add new client");
-                System.out.println("10. delete client");
-                System.out.println("11.update client ");
-                System.out.println("12.view all Clients ");
-
+                System.out.println();
+                System.out.println("Clients:");
+                System.out.println("7. add new client");
+                System.out.println("8. delete client");
+                System.out.println("9.update client ");
+                System.out.println("10.view all Clients ");
+                System.out.println();
+                System.out.println("Others:");
+                System.out.println("11. view my hours report");
+                System.out.println("12. clock out");
                 System.out.println("Q. Exit");
 
                 String selectedOption = scanner.nextLine();
@@ -211,44 +214,53 @@ public class RestaurantView {
             boolean stayInManager = true;
 
             while (stayInManager && !isClockOut) {
-
-                System.out.println("");
                 //menu item
+                System.out.println();
+                System.out.println("Menu items:");
                 System.out.println("1. Add new Menu item");
                 System.out.println("2. view all Menu Items");
                 System.out.println("3. Edit Menu Item");
                 System.out.println("4. delete Menu Item");
-
+                System.out.println();
                 //staff
+                System.out.println("Staff:");
                 System.out.println("5. Add new Staff member");
                 System.out.println("6. Edit Staff personal details");
                 System.out.println("7. Edit Staff user details");
                 System.out.println("8. Delete Staff member");
                 System.out.println("9. view all Staff members");
                 System.out.println("10. view staff hour wage");
-                System.out.println("18. view total staff hours report by month");
-
+                System.out.println("11. view total staff hours report by month");
+                System.out.println("12. pay salary to staff id");
+                System.out.println();
                 //order
-                System.out.println("11. edit order");
-                System.out.println("12. add new order");
-                System.out.println("13. delete order");
-                System.out.println("14. view all open order");
-                System.out.println("15. close order");
-                System.out.println("16. view total orders report (only close)");
-
-                System.out.println("17. clock out");
-
-                System.out.println("19. pay salary to staff id");
+                System.out.println("Orders:");
+                System.out.println("13. edit order");
+                System.out.println("14. add new order");
+                System.out.println("15. delete order");
+                System.out.println("16. view all open order");
+                System.out.println("17. close order");
+                System.out.println("18. view total orders report (only close)");
+                System.out.println();
                 //client:
-                System.out.println("20. add new client");
-                System.out.println("21. delete client");
-                System.out.println("22.update client ");
-                System.out.println("23.view all Clients ");
-                System.out.println("24.send client push ");
+                System.out.println("Clients:");
+                System.out.println("19. add new client");
+                System.out.println("20. delete client");
+                System.out.println("21.update client ");
+                System.out.println("22.view all Clients ");
+                System.out.println("23.send client push ");
+                System.out.println("24.Sending an email with an offer to customers who are celebrating a birthday this month ");
+                System.out.println();
+                System.out.println("Other:");
+                System.out.println("25. clock out");
                 System.out.println("Q. Exit");
 
                String userSelection = scanner.nextLine();
+
                 switch (userSelection) {
+                    case MenuCases.SEND_BIRTHAY_CLIENT_PUSH:
+                        this.clientView.sendClientBirthdayPush(scanner);
+                        break;
 
                     case MenuCases.ADD_NEW_MENU_ITEM:
                         this.menuView.addNewMenuItem(scanner);
@@ -370,22 +382,39 @@ public class RestaurantView {
 
                 System.out.println("");
                 //order
+                System.out.println("Orders:");
                 System.out.println("1. edit order");
                 System.out.println("2. add new order");
                 System.out.println("3. delete order");
                 System.out.println("4. view all open order");
                 System.out.println("5. close order");
+                System.out.println();
+
+                System.out.println("Clients:");
                 System.out.println("6. add new client");
                 System.out.println("7. delete client");
                 System.out.println("8.update client ");
                 System.out.println("9.view all Clients ");
+                System.out.println();
+                System.out.println("Staff:");
                 System.out.println("10. total staff hour today");
-                System.out.println("11. clock out");
-
+                System.out.println("11. view my hours report");
+                System.out.println();
+                System.out.println("Menu Item:");
+                System.out.println("12. view all menu item");
+                System.out.println();
+                System.out.println("Others:");
+                System.out.println("13. clock out");
                 System.out.println("Q. Exit");
 
                 String userSelection = scanner.nextLine();
                 switch (userSelection) {
+                    case MenuCases.VIEW_MY_HOURS_REPORT_SHIFT_MANAGER:
+                        this.hoursReportView.viewMyHoursReport(staff);
+                        break;
+                    case MenuCases.VIEW_ALL_MENU_ITEMS_SHIFT_MANAGER:
+                        menuView.viewAllMenuItems();
+                        break;
 
                     case MenuCases.NEW_ORDER_SHIFT_MANAGER:
                         this.orderView.addNewOrder(scanner, staff, menuView, menuController, clientController);

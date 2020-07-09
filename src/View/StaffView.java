@@ -39,8 +39,17 @@ public class StaffView {
         String city = scanner.nextLine();
         System.out.print("Enter state:");
         String state = scanner.nextLine();
-        System.out.print("Enter role (manager/employee:");
-        String role = scanner.nextLine();
+
+        Role role;
+        System.out.print("Enter role (manager/employee):");
+        String roleUser = scanner.nextLine();
+
+        if (roleUser.equals("employee")) {
+            System.out.print("Enter employee type (shiftManager,minorWorker):");
+            roleUser = scanner.nextLine();
+        }
+        role = Role.valueOf(roleUser);
+
         System.out.print("Enter User Name:");
         String username = scanner.nextLine();
         System.out.print("Enter password:");
@@ -55,7 +64,7 @@ public class StaffView {
 
         Address address = new Address.AddressBuilder(houseStreet).houseNumber(Integer.parseInt(houseNum)).city(city).state(state).build();
 
-        UserDetails userDetails = new UserDetails(username, staffPassword, Role.valueOf(role));
+        UserDetails userDetails = new UserDetails(username, staffPassword, role);
         BankDetails bankDetails = new BankDetails(bankAccountNumber, Integer.parseInt(brunchNumber));
 
         boolean success = this.staffController.addNewStaff(staffId, fName, lName, birthDate, address, userDetails, bankDetails, mailAddress);
@@ -161,8 +170,19 @@ public class StaffView {
             System.out.print("Staff does not exists!");
 
         } else {
+            Role role;
             System.out.print("Enter role (manager/employee):");
-            String role = scanner.nextLine();
+            String roleUser = scanner.nextLine();
+
+            if (roleUser.equals("employee")) {
+                System.out.print("Enter employee type (shiftManager,minorWorker):");
+                roleUser = scanner.nextLine();
+            }
+
+            else{
+
+            }
+            role = Role.valueOf(roleUser);
 
             System.out.print("Enter User Name:");
             String username = scanner.nextLine();
@@ -170,7 +190,7 @@ public class StaffView {
             System.out.print("Enter password:");
             String staffPassword = scanner.nextLine();
 
-            UserDetails userDetails = new UserDetails(username, staffPassword, Role.valueOf(role));
+            UserDetails userDetails = new UserDetails(username, staffPassword, role);
             staffEdit.setUserDetails(userDetails);
 
             boolean success = this.staffController.editStaff(staffEdit);

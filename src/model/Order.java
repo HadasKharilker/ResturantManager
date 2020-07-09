@@ -12,9 +12,6 @@ public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Order(int orderID, int staffID, Set<MenuItemOrder> menuItems, double totalOrderPrice) {
-
-    }
 
     public Order(int staffID, Set<MenuItemOrder> menuItems, int clientID) {
         this.staffID = staffID;

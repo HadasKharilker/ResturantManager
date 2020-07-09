@@ -89,6 +89,9 @@ public abstract class Person implements Serializable {
         this.address = address;
     }
 
+    public boolean isBirthday(){
+        return true;
+    }
 
     @Override
     public int hashCode() {

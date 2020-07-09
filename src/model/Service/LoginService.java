@@ -21,7 +21,7 @@ public class LoginService {
 
 
 
-
+/*
     public Integer typeOfLogin(String userName, String password) throws Exception {
 
         Staff staff = staffRepository.getStaffByUserName(userName);
@@ -44,7 +44,7 @@ public class LoginService {
 
     }
 
-
+*/
 }
 
 

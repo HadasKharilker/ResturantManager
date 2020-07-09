@@ -1,6 +1,9 @@
-package model;
+package model.Service;
 
 
+import model.Staff;
+import model.Repository.StaffRepository;
+import model.Repository.StaffRepositoryImpel;
 
 public class LoginService {
 

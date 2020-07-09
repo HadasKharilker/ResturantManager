@@ -1,4 +1,7 @@
-package model;
+package model.Repository;
+
+import model.Client;
+import model.FileManager;
 
 import java.io.IOException;
 import java.util.HashSet;

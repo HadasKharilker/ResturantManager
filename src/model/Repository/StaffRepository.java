@@ -1,4 +1,7 @@
-package model;
+package model.Repository;
+
+import model.Staff;
+import model.UserDetails;
 
 import java.io.IOException;
 import java.util.Set;

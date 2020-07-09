@@ -1,4 +1,9 @@
-package model;
+package model.Service;
+
+import model.Repository.HoursReportRepository;
+import model.Repository.HoursReportRepositoryImpel;
+import model.Staff;
+import model.StaffHour;
 
 import java.util.Set;
 

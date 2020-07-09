@@ -1,9 +1,8 @@
 package Controller;
 
 import model.*;
+import model.Service.ClientService;
 
-import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 
 public class ClientController {

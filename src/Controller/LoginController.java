@@ -2,10 +2,8 @@ package Controller;
 
 import View.HoursReportView;
 import View.RestaurantView;
-import model.LoginService;
+import model.Service.LoginService;
 import model.Staff;
-
-import java.util.Scanner;
 
 //singelton
 public class LoginController {

@@ -1,4 +1,9 @@
-package model;
+package model.Repository;
+
+import model.Client;
+import model.FileManager;
+import model.Mail;
+import model.Order;
 
 import java.io.IOException;
 import java.util.HashSet;

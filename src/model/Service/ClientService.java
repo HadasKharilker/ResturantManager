@@ -1,4 +1,8 @@
-package model;
+package model.Service;
+
+import model.Client;
+import model.Repository.ClientRepository;
+import model.Repository.ClientRepositoryImpel;
 
 import java.util.Set;
 

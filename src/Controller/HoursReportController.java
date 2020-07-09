@@ -1,8 +1,8 @@
 package Controller;
 
 import model.*;
+import model.Service.HoursReportService;
 
-import java.util.Scanner;
 import java.util.Set;
 
 public class HoursReportController {

@@ -1,4 +1,8 @@
-package model;
+package model.Service;
+import model.Repository.StaffRepository;
+import model.Repository.StaffRepositoryImpel;
+import model.Staff;
+
 import java.util.Set;
 
 public class StaffService {

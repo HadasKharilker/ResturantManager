@@ -3,6 +3,7 @@ package Controller;
 import model.*;
 import model.Service.HoursReportService;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -47,7 +48,7 @@ public class HoursReportController {
         return hoursReportService.getAllStaffHourByMonth(month);
     }
 
-    public Set<StaffHour> getAllStaffHourToday(Date todayDate) {
+    public Set<StaffHour> getAllStaffHourToday(LocalDate todayDate) {
         return hoursReportService.getAllStaffHourToday(todayDate);
     }
 

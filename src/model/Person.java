@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 public abstract class Person implements Serializable {
 
@@ -89,8 +91,15 @@ public abstract class Person implements Serializable {
         this.address = address;
     }
 
-    public boolean isBirthday(){
-        return true;
+    public boolean isBirthday() {
+        Date date = new Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        int todayMonth = localDate.getMonthValue();
+        if (this.birthDate.getMonthValue() == todayMonth)
+            return true;
+
+        return false;
     }
 
     @Override

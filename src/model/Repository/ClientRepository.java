@@ -18,5 +18,6 @@ public interface ClientRepository {
 
     void updateClient(Client client) throws Exception;
 
+    Set<Client> getAllClientsBirthday();
 
 }

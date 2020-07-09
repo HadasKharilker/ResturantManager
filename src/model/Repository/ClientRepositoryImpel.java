@@ -4,6 +4,9 @@ import model.Client;
 import model.FileManager;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -68,13 +71,25 @@ public class ClientRepositoryImpel implements ClientRepository {   //for singelt
 
     @Override
     public Set<Client> getAllClientsPushOn() {
-        Set<Client> clientsPushOn=new HashSet<Client>();
+        Set<Client> clientsPushOn = new HashSet<Client>();
 
-        for(Client client :this.clients){
-            if(client.isPushOn())
+        for (Client client : this.clients) {
+            if (client.isPushOn())
                 clientsPushOn.add(client);
         }
         return clientsPushOn;
+    }
+
+    @Override
+    public Set<Client> getAllClientsBirthday() {
+        Set<Client> clientsBirthday = new HashSet<Client>();
+
+        for (Client client : this.clients) {
+            if (client.isBirthday())
+                clientsBirthday.add(client);
+        }
+
+        return clientsBirthday;
     }
 
     @Override

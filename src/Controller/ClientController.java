@@ -46,6 +46,11 @@ public class ClientController {
 
     }
 
+    public Set<Client> getAllClientsBirthday() {
+        return clientService.getAllClientsBirthday();
+
+    }
+
     public boolean addNewClient(Client client) {
         return clientService.addNewClient(client);
     }

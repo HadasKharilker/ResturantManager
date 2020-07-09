@@ -108,13 +108,18 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
     }
 
     @Override
-    public Set<StaffHour> getAllStaffHourToday(Date todayDate) throws IOException {
+    public Set<StaffHour> getAllStaffHourToday(LocalDate todayDate) throws IOException {
         try {
             Set<StaffHour> spesificStaffHour = new HashSet<StaffHour>();
-            LocalDate localDate = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
 
             for (StaffHour staffHour : staffHours) {
-                if (staffHour.getClockInDate() == todayDate)
+                LocalDate localDate = staffHour.getClockInDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                int ClockInDay = localDate.getDayOfMonth();
+                int ClockInMonth = localDate.getMonthValue();
+                int ClockInYear = localDate.getYear();
+
+                if (todayDate.getDayOfMonth() == ClockInDay && todayDate.getMonthValue() == ClockInMonth && todayDate.getYear() == ClockInYear)
                     spesificStaffHour.add(staffHour);
             }
 

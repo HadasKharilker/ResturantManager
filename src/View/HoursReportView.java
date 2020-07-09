@@ -4,7 +4,9 @@ import Controller.HoursReportController;
 import Controller.StaffController;
 import model.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Scanner;
@@ -100,8 +102,9 @@ public class HoursReportView {
     public void viewAllStaffHoursReportsToday(Scanner scanner) throws Exception {
 
         Date date = new Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHourToday(date);
+        Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHourToday(localDate);
         printStaffHourList(staffHours);
     }
 

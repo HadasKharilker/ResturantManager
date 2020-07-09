@@ -50,7 +50,7 @@ public class Address implements Serializable {
 
     @Override
     public String toString() {
-        return "[House number=" + houseNumber + ", Street=" + street + ", City=" + city + "]";
+        return "[House number=" + getHouseNumber() + ", Street=" + getStreet() + ", City=" + getCity() + "]";
 
     }
 

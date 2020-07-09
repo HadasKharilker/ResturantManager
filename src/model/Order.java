@@ -21,6 +21,13 @@ public class Order implements Serializable {
 
     }
 
+    public Order(int staffID, Set<MenuItemOrder> menuItems) {
+        this.staffID = staffID;
+        this.menuItems = menuItems;
+        this.isClosed = false;
+
+    }
+
     public void setClientID(int clientID) {
         this.clientID = clientID;
     }

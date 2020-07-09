@@ -18,46 +18,59 @@ public class OrderView {
     }
 
     public void viewTotalOrderReport() throws Exception {
+        try {
+            Set<Order> orders = this.orderController.getAllClosedOrders();
+            double sumReport = 0;
 
-        Set<Order> orders = this.orderController.getAllClosedOrders();
-        double sumReport = 0;
+            for (Order o : orders) {
+                System.out.println(o);
+                sumReport += o.getTotalPriceOrder();
 
-        for (Order o : orders) {
-            System.out.println(o);
-            sumReport += o.getTotalPriceOrder();
+            }
 
+            System.out.println("total orders price:" + sumReport);
+
+        } catch (Exception ex) {
+            System.out.println("Failed to viewTotalOrderReport");
         }
-
-        System.out.println("total orders price:" + sumReport);
-
     }
 
     public void deleteOrder(Scanner scanner) throws Exception {
-        System.out.println("choose order ID to delete:");
+        try {
+            System.out.println("choose order ID to delete:");
 
-        int sizeOrder = viewAllOpenOrders();
+            int sizeOrder = viewAllOpenOrders();
 
-        if (sizeOrder != 0) {
-            System.out.print("order ID:");
-            String orderID = scanner.nextLine();
+            if (sizeOrder != 0) {
+                System.out.print("order ID:");
+                String orderID = scanner.nextLine();
 
-            boolean success = this.orderController.deleteOrder(Integer.parseInt(orderID));
-            if (success) {
-                System.out.println("New order added succesfully ");
+                boolean success = this.orderController.deleteOrder(Integer.parseInt(orderID));
+                if (success) {
+                    System.out.println("New order added succesfully ");
+                } else {
+                    System.out.println("Failed to add Order ");
+                }
+
             } else {
-                System.out.println("Failed to add Order ");
+                System.out.print("no order to delete");
             }
 
-        } else {
-            System.out.print("no order to delete");
+        } catch (Exception ex) {
+            System.out.println("Failed to deleteOrder");
         }
     }
 
     public void closeOrderAllList(Scanner scanner, ClientController clientController) throws Exception {
-        System.out.println("choose order ID to close from list:  ");
-        viewAllOpenOrders();
+        try {
+            System.out.println("choose order ID to close from list:  ");
+            viewAllOpenOrders();
 
-        closeOrder(scanner, clientController);
+            closeOrder(scanner, clientController);
+
+        } catch (Exception ex) {
+            System.out.println("Failed to closeOrders");
+        }
     }
 
     private void closeOrder(Scanner scanner, ClientController clientController) throws Exception {
@@ -87,27 +100,37 @@ public class OrderView {
 
 
     public int viewAllOpenOrders() {
+        try {
+            Set<Order> orders = orderController.getAllOpenOrders();
 
-        Set<Order> orders = orderController.getAllOpenOrders();
+            for (Order o : orders) {
+                System.out.println(o);
+            }
 
-        for (Order o : orders) {
-            System.out.println(o);
+            return orders.size();
+
+        } catch (Exception ex) {
+            System.out.println("Failed to viewAllOpenOrders");
+            return 0;
         }
-
-        return orders.size();
     }
 
 
     public void addNewOrder(Scanner scanner, Staff staff, MenuView menuView, MenuController menuController, ClientController clientController) {
-        Order newOrder = getOrderFromUser(scanner, staff, menuView, menuController, clientController);
+        try {
+            Order newOrder = getOrderFromUser(scanner, staff, menuView, menuController, clientController);
 
-        boolean success = this.orderController.addOrder(newOrder);
-        if (success) {
-            System.out.println("New order added succesfully ");
-        } else {
-            System.out.println("Failed to add Order ");
+            boolean success = this.orderController.addOrder(newOrder);
+            if (success) {
+                System.out.println("New order added succesfully ");
+            } else {
+                System.out.println("Failed to add Order ");
+            }
+            System.out.println();
+
+        } catch (Exception ex) {
+            System.out.println("Failed to addNewOrder");
         }
-        System.out.println();
     }
 
 
@@ -118,7 +141,12 @@ public class OrderView {
         Set<MenuItemOrder> menuItems = getMenuItemsFromUser(scanner, menuView, menuController);
         Client client = getClientByClientIDFromUser(scanner, clientController);
 
-        Order orderFromUser = new Order(staffId, menuItems, client.getPersonId());
+        Order orderFromUser;
+        if (client != null)
+            orderFromUser = new Order(staffId, menuItems, client.getPersonId());
+
+        else
+            orderFromUser = new Order(staffId, menuItems);
 
         return orderFromUser;
     }
@@ -131,6 +159,7 @@ public class OrderView {
         Client client = null;
         if (customerClub.equals("1")) {
             System.out.println("enter client ID");
+
             String clientID = scanner.nextLine();
             client = clientController.getClient(Integer.parseInt(clientID));
         }
@@ -170,22 +199,26 @@ public class OrderView {
     }
 
 
-    //manager order view only
     public void editOrderAllList(Scanner scanner, Staff staff, MenuView menuView, MenuController menuController, ClientController clientController) {
-        System.out.println("choose order ID from list to edit:  ");
-        int openOrderCount = viewAllOpenOrders();
+        try {
+            System.out.println("choose order ID from list to edit:  ");
+            int openOrderCount = viewAllOpenOrders();
 
-        if (openOrderCount != 0) {
-            editOrder(scanner, staff, menuView, menuController, clientController);
-        } else {
-            System.out.println("no orders open");
+            if (openOrderCount != 0) {
+                editOrder(scanner, staff, menuView, menuController, clientController);
+            } else {
+                System.out.println("no orders open");
+            }
+        } catch (Exception ex) {
+            System.out.println("Failed to edit Order ");
+
         }
-
 
     }
 
 
     public void editOrder(Scanner scanner, Staff staff, MenuView menuView, MenuController menuController, ClientController clientController) {
+
         System.out.println("choose order ID from list to edit:  ");
         viewAllOpenOrdersByStaff(staff.getPersonId());
         String orderID = scanner.nextLine();
@@ -209,16 +242,23 @@ public class OrderView {
     }
 
     public int viewAllOpenOrdersByStaff(int staffID) {
-        Set<Order> orders = this.orderController.getAllStaffOpenOrders(staffID);
+        try {
+            Set<Order> orders = this.orderController.getAllStaffOpenOrders(staffID);
 
-        for (Order o : orders) {
-            System.out.println(o);
+            for (Order o : orders) {
+                System.out.println(o);
+            }
+
+            return orders.size();
+
+        } catch (Exception ex) {
+            System.out.println("Failed to addNewOrder");
+            return 0;
         }
-
-        return orders.size();
     }
 
     public void deleteOrderByStaff(Scanner scanner, Staff staff) throws Exception {
+
         System.out.println("choose order ID to delete:");
 
         int sizeOrder = viewAllOpenOrdersByStaff(staff.getPersonId());

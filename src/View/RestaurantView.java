@@ -46,8 +46,6 @@ public class RestaurantView {
         this.orderView = new OrderView();
         this.clientView = new ClientView();
         this.hoursReportView = new HoursReportView();
-
-        //this.employeeView = new EmployeeView(); לשנות להזמנות, עובדים ועוד...
         this.menuController = MenuController.getInstance();
         this.staffController = StaffController.getInstance();
         this.orderController = OrderController.getInstance();
@@ -259,7 +257,7 @@ public class RestaurantView {
 
                 switch (userSelection) {
                     case MenuCases.SEND_BIRTHAY_CLIENT_PUSH:
-                        this.clientView.sendClientBirthdayPush(scanner);
+                        this.clientView.sendClientBirthdayPush();
                         break;
 
                     case MenuCases.ADD_NEW_MENU_ITEM:
@@ -460,7 +458,7 @@ public class RestaurantView {
                         break;
 
                     case MenuCases.TOTAL_STAFF_HOURS_REPORT_TODAY:
-                        this.hoursReportView.viewAllStaffHoursReportsToday(scanner);
+                        this.hoursReportView.viewAllStaffHoursReportsToday();
                         break;
 
 

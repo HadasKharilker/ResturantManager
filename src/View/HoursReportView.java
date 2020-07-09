@@ -41,30 +41,38 @@ public class HoursReportView {
         return shiftNum;
     }
 
-    public void viewStaffHouerWage(Scanner scanner,StaffView staffView) throws Exception {
-        System.out.println("Enter staff Id from staff list:");
-        staffView.viewAllStaff();
-        String staffID = scanner.nextLine();
+    public void viewStaffHouerWage(Scanner scanner, StaffView staffView) throws Exception {
+        try {
+            System.out.println("Enter staff Id from staff list:");
+            staffView.viewAllStaff();
+            String staffID = scanner.nextLine();
 
-        Set<StaffHour> staffHours = this.hoursReportController.getStaffHourBy(Integer.parseInt(staffID));
-        printStaffHourList(staffHours);
+            Set<StaffHour> staffHours = this.hoursReportController.getStaffHourBy(Integer.parseInt(staffID));
+            printStaffHourList(staffHours);
+
+        } catch (Exception ex) {
+            System.out.println("Failed to viewStaffHouerWage");
+
+        }
     }
 
     public void printStaffHourList(Set<StaffHour> staffHours) throws Exception {
-        int totalHours = 0;
-        int totalMin = 0;
-        double totalSalary = 0;
+        try {
+            int totalHours = 0;
+            int totalMin = 0;
+            double totalSalary = 0;
 
-        for (StaffHour staffHour : staffHours) {
-            System.out.println(staffHour);
-            totalHours += getHoursDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
-            totalMin += getMinDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
+            for (StaffHour staffHour : staffHours) {
+                System.out.println(staffHour);
+                totalHours += getHoursDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
+                totalMin += getMinDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
+            }
+            System.out.println("total hours: " + totalHours + " Minutes: " + totalMin);
 
-            //totalSalary += totalHours * (staffHour.getStaff().getWage());
+        } catch (Exception ex) {
+            System.out.println("Failed to print Staff Hour List");
 
         }
-        System.out.println("total hours: " + totalHours + " Minutes: " + totalMin);
-        //System.out.println("total salary: " + totalSalary);
     }
 
     private long getMinDifference(Date date1, Date date2) {
@@ -72,7 +80,6 @@ public class HoursReportView {
         long diff = date2.getTime() - date1.getTime();
 
         long diffMinutes = diff / (60 * 1000) % 60;
-        long diffHours = diff / (60 * 60 * 1000) % 24;
 
         return diffMinutes;
 
@@ -85,71 +92,97 @@ public class HoursReportView {
         long diffMinutes = diff / (60 * 1000) % 60;
         long diffHours = diff / (60 * 60 * 1000) % 24;
 
-        String hoursMinString = "hours: " + diffHours + "Minutes: " + diffMinutes;
-
         return diffHours;
 
     }
 
     public void viewAllStaffHoursReportsByMonth(Scanner scanner) throws Exception {
-        System.out.println("Enter month to watch:");
-        String month = scanner.nextLine();
+        try {
+            System.out.println("Enter month to watch:");
+            String month = scanner.nextLine();
 
-        Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHourByMonth(Integer.parseInt(month));
-        printStaffHourList(staffHours);
+            Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHourByMonth(Integer.parseInt(month));
+            printStaffHourList(staffHours);
+        } catch (Exception ex) {
+            System.out.println("Failed to view All Staff Hours Reports By Month");
+
+        }
     }
 
-    public void viewAllStaffHoursReportsToday(Scanner scanner) throws Exception {
+    public void viewAllStaffHoursReportsToday() throws Exception {
+        try {
+            Date date = new Date();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        Date date = new Date();
-        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHourToday(localDate);
+            printStaffHourList(staffHours);
 
-        Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHourToday(localDate);
-        printStaffHourList(staffHours);
+        } catch (Exception ex) {
+            System.out.println("Failed to view All Staff Hours Reports today");
+
+        }
     }
 
     public void paySalaryToStaffID(Scanner scanner, StaffView staffView, StaffController staffController) throws Exception {
-        System.out.print("choose staff Id from list : ");
-        staffView.viewAllStaff();
-        String staffID = scanner.nextLine();
+        try {
+            System.out.print("choose staff Id from list : ");
+            staffView.viewAllStaff();
+            String staffID = scanner.nextLine();
 
-        System.out.println("Enter month to pay:");
-        String month = scanner.nextLine();
+            System.out.println("Enter month to pay:");
+            String month = scanner.nextLine();
 
-        Staff staff = staffController.getStaffByID(Integer.parseInt(staffID));
+            Staff staff = staffController.getStaffByID(Integer.parseInt(staffID));
 
-        double totalSalary = getTotalSalary(staff, Integer.parseInt(month));
-        String message = "hello " + staff.getFirstName() + " your salary from month " + month + " is " + totalSalary;
-        message += ", The salary went into the account : " + staff.getBankDetails().toString();
+            double totalSalary = getTotalSalary(staff, Integer.parseInt(month));
+            String message = "hello " + staff.getFirstName() + " your salary from month " + month + " is " + totalSalary;
+            message += ", The salary went into the account : " + staff.getBankDetails().toString();
 
-        Mail.sendMail(message, staff.getMailAddress());
+            Mail.sendMail(message, staff.getMailAddress());
+
+        } catch (Exception ex) {
+            System.out.println("Failed to pay salary");
+
+        }
     }
 
     private double getTotalSalary(Staff staff, int month) throws Exception {
-        Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHourByMonth(month);
+        try {
+            Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHourByMonth(month);
 
-        int totalHours = 0;
-        int totalMin = 0;
-        double totalSalary = 0;
+            int totalHours = 0;
+            int totalMin = 0;
+            double totalSalary = 0;
 
-        for (StaffHour staffHour : staffHours) {
-            System.out.println(staffHour);
-            totalHours += getHoursDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
-            totalMin += getMinDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
+            for (StaffHour staffHour : staffHours) {
+                System.out.println(staffHour);
+                totalHours += getHoursDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
+                totalMin += getMinDifference(staffHour.getClockInDate(), staffHour.getClockOutDate());
+
+            }
+            System.out.println("total hours: " + totalHours + " Minutes: " + totalMin);
+            System.out.println("total salary: " + totalSalary);
+
+            totalSalary = totalHours * staff.getWage() + (totalMin / 60 * staff.getWage());
+
+            return totalSalary;
+
+        } catch (Exception ex) {
+            System.out.println("Failed to get total salary");
+            return 0;
 
         }
-        System.out.println("total hours: " + totalHours + " Minutes: " + totalMin);
-        System.out.println("total salary: " + totalSalary);
-
-        totalSalary = totalHours * staff.getWage() + (totalMin / 60 * staff.getWage());
-
-        return totalSalary;
     }
 
     public void viewMyHoursReport(Staff staff) throws Exception {
+        try {
+            Set<StaffHour> staffHours = this.hoursReportController.getStaffHourBy(staff.getPersonId());
+            printStaffHourList(staffHours);
 
-        Set<StaffHour> staffHours = this.hoursReportController.getStaffHourBy(staff.getPersonId());
-        printStaffHourList(staffHours);
+        } catch (Exception ex) {
+            System.out.println("Failed to view My Hours Report");
+
+        }
     }
 
 

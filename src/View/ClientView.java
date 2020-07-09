@@ -68,7 +68,8 @@ public class ClientView {
                 System.out.print("Enter state:");
                 String state = scanner.nextLine();
 
-                Address address = new Address(Integer.parseInt(houseNum), houseStreet, city, state);
+                Address address = new Address.AddressBuilder(houseStreet).houseNumber(Integer.parseInt(houseNum)).city(city).state(state).build();
+
 
                 client.setAddress(address);
                 break;
@@ -85,7 +86,9 @@ public class ClientView {
                 System.out.println("enter identificationCode:");
                 String identificationCode = scanner.nextLine();
 
-                CreditDetails creditDetails = new CreditDetails(creditID, periodDate, Integer.parseInt(identificationCode));
+                CreditDetails creditDetails=new CreditDetails.CreditDetailsBuilder(creditID).period(periodDate).code(Integer.parseInt(identificationCode)).build();
+
+
                 client.setCreditDetails(creditDetails);
                 break;
 
@@ -143,7 +146,8 @@ public class ClientView {
         System.out.print("Enter state:");
         String state = scanner.nextLine();
 
-        Address address = new Address(Integer.parseInt(houseNum), houseStreet, city, state);
+        Address address = new Address.AddressBuilder(houseStreet).houseNumber(Integer.parseInt(houseNum)).city(city).state(state).build();
+
 
         System.out.println("Credit details:");
         System.out.println("enter creditID:");
@@ -156,7 +160,8 @@ public class ClientView {
         System.out.println("enter identificationCode:");
         String identificationCode = scanner.nextLine();
 
-        CreditDetails creditDetails = new CreditDetails(creditID, periodDate, Integer.parseInt(identificationCode));
+        CreditDetails creditDetails=new CreditDetails.CreditDetailsBuilder(creditID).period(periodDate).code(Integer.parseInt(identificationCode)).build();
+
 
         System.out.println("enter mail address:");
         String mailAddress = scanner.nextLine();

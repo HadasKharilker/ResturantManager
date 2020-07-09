@@ -53,7 +53,8 @@ public class StaffView {
         System.out.println("brunch Number:");
         String brunchNumber = scanner.nextLine();
 
-        Address address = new Address(Integer.parseInt(houseNum), houseStreet, city, state);
+        Address address = new Address.AddressBuilder(houseStreet).houseNumber(Integer.parseInt(houseNum)).city(city).state(state).build();
+
         UserDetails userDetails = new UserDetails(username, staffPassword, Role.valueOf(role));
         BankDetails bankDetails = new BankDetails(bankAccountNumber, Integer.parseInt(brunchNumber));
 
@@ -125,8 +126,6 @@ public class StaffView {
             String brunchNumber = scanner.nextLine();
 
 
-
-
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
             LocalDate date = LocalDate.parse(birthDate, formatter);
 
@@ -134,7 +133,8 @@ public class StaffView {
             staff.setLastName(lName);
             staff.setBirthDate(date);
 
-            Address address = new Address(Integer.parseInt(houseNum), houseStreet, city, state);
+            Address address = new Address.AddressBuilder(houseStreet).houseNumber(Integer.parseInt(houseNum)).city(city).state(state).build();
+
             staff.setAddress(address);
             BankDetails bankDetails = new BankDetails(bankAccountNumber, Integer.parseInt(brunchNumber));
             staff.setBankDetails(bankDetails);

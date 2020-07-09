@@ -33,19 +33,18 @@ public class HoursReportTest {
 
         });
     }
+
     @Test
 
     public void FailgetAllStaffHourByEmptyMonthTest() {
 
         Assertions.assertThrows(Exception.class, () -> {
 
-            Set<StaffHour> result = hoursReportController.getAllStaffHour(15);
+            Set<StaffHour> result = hoursReportController.getAllStaffHourByMonth(15);
             Assertions.assertNull(result);
 
         });
     }
-
-
 
 
 }

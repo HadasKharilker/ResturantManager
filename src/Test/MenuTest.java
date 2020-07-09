@@ -25,18 +25,16 @@ public class MenuTest {
     private static MenuItem menuItem;
 
 
-
-
     @BeforeEach
     public void setup() throws Exception {
         menuController = MenuController.getInstance();
 
     }
+
     @AfterAll
     public void tearDown() {
         System.out.println("MenuTestsEnded");
     }
-
 
 
     @Test
@@ -44,8 +42,9 @@ public class MenuTest {
     public void addMenuItemWithInvalidMenuitemID() {
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            MenuItem menuItem = new MenuItem.MenuItemBuilder(99999).itemName("xxx").price(12.0).itemType(MenuItemType.valueOf("manager")).build();
 
-            boolean result = menuController.addMenuItem(new MenuItem(99999,"xxx",12.0,MenuItemType.valueOf("manager")) );
+            boolean result = menuController.addMenuItem(menuItem);
             System.out.println(result);
             Assertions.assertFalse(result);
 
@@ -53,15 +52,14 @@ public class MenuTest {
     }
 
 
-
-
     @Test
     //test 2: adding new menuItem with menuItemType
     public void addMenuItemWithInvalidMenuitemType() {
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            MenuItem menuItem = new MenuItem.MenuItemBuilder(1).itemName("xxx").price(12.0).itemType(MenuItemType.valueOf("koko")).build();
 
-            boolean result = menuController.addMenuItem(new MenuItem(1,"xxx",12.0,MenuItemType.valueOf("koko")) );
+            boolean result = menuController.addMenuItem(menuItem);
             System.out.println(result);
             Assertions.assertFalse(result);
 
@@ -73,8 +71,9 @@ public class MenuTest {
     //test 3: Checking success  valid menuItem addition
     public void addValidMenuItem() throws Exception {
         Assertions.assertThrows(Exception.class, () -> {
+            MenuItem menuItem = new MenuItem.MenuItemBuilder(15).itemName("TOFI").price(12.0).itemType(MenuItemType.valueOf("DESERT")).build();
 
-            boolean result = menuController.addMenuItem(new MenuItem(15,"TOFI",12.0,MenuItemType.valueOf("DESERT")) );
+            boolean result = menuController.addMenuItem(menuItem);
             System.out.println(result);
             Assertions.assertTrue(result);
 

@@ -41,7 +41,8 @@ public class ClientTest {
         LocalDate date = LocalDate.parse("01/01/2001", formatter);
 
         Assertions.assertThrows(Exception.class, () -> {
-            Client client = new Client(Integer.parseInt(""), "test", "test", date, new Address(Integer.parseInt("12"), "test", "test", "test"), "test", new CreditDetails("12345", date, 123), false);
+
+            Client client = new Client(Integer.parseInt(""), "test", "test", date, new Address.AddressBuilder("test").houseNumber(Integer.parseInt("12")).state("test").city("test").build(), "test", new CreditDetails.CreditDetailsBuilder("12345").period(date).code(123).build(), false);
             Boolean result = clientController.addNewClient(client);
             Assertions.assertFalse(result);
 
@@ -54,7 +55,7 @@ public class ClientTest {
         LocalDate date = LocalDate.parse("01/01/2001", formatter);
 
         Assertions.assertThrows(Exception.class, () -> {
-            Client client = new Client(999, "test", "test", date, new Address(Integer.parseInt("12"), "test", "test", "test"), "test", new CreditDetails("12345", date, 123), false);
+            Client client = new Client(999, "test", "test", date, new Address.AddressBuilder("test").houseNumber(Integer.parseInt("12")).state("test").city("test").build(), "test", new CreditDetails.CreditDetailsBuilder("12345").period(date).code(123).build(), false);
             Boolean result = clientController.addNewClient(client);
             Assertions.assertTrue(result);
 
@@ -72,8 +73,6 @@ public class ClientTest {
 
         });
     }
-
-
 
 
 }

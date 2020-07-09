@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         RestaurantView resturantView = new RestaurantView();
-        resturantView.start();
+        resturantView.start(resturantView);
     }
 /*
 

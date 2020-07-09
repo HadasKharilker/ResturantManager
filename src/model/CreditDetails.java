@@ -9,11 +9,12 @@ public class CreditDetails implements Serializable {
     private LocalDate period;
     private int identificationCode;
 
-    public CreditDetails(String creditID, LocalDate period, int identificationCode) {
-        this.creditID = creditID;
-        this.period = period;
-        this.identificationCode = identificationCode;
+    public CreditDetails(CreditDetailsBuilder creditDetailsBuilder) {
+        this.creditID = creditDetailsBuilder.creditID;
+        this.period = creditDetailsBuilder.period;
+        this.identificationCode = creditDetailsBuilder.identificationCode;
     }
+
 
     @Override
     public String toString() {
@@ -22,5 +23,38 @@ public class CreditDetails implements Serializable {
                 ", period=" + period +
                 ", identificationCode=" + identificationCode +
                 '}';
+    }
+
+    public static class CreditDetailsBuilder {
+
+        private String creditID;
+        private LocalDate period;
+        private int identificationCode;
+
+        public CreditDetailsBuilder(String creditID) {
+            this.creditID = creditID;
+        }
+
+        public CreditDetailsBuilder period(LocalDate period) {
+            this.period = period;
+            return this;
+        }
+
+        public CreditDetailsBuilder code(int identificationCode) {
+            this.identificationCode = identificationCode;
+            return this;
+        }
+
+
+        public CreditDetails build() {
+            CreditDetails creditDetails = new CreditDetails(this);
+            validateUserObject(creditDetails);
+            return creditDetails;
+        }
+
+        private void validateUserObject(CreditDetails creditDetails) {
+            //Do some basic validations to check
+            //if user object does not break any assumption of system
+        }
     }
 }

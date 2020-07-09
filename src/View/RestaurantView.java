@@ -105,6 +105,10 @@ public class RestaurantView {
                 System.out.println("You are now logged in as manager");
                 this.manager(scanner, staff);
             }
+            else{
+                System.out.println("You are now logged in as employee");
+                this.employee(scanner, staff);
+            }
             //else
             //     {
             //employeeView
@@ -120,6 +124,86 @@ public class RestaurantView {
 
     }
 
+    private void employee(Scanner scanner, Staff staff) throws Exception {
+        boolean stayInManager = true;
+
+        while (stayInManager && !isClockOut) {
+            System.out.println("1. view all Menu Items");
+            System.out.println("2. add new order");
+            System.out.println("3. edit my order");
+            System.out.println("4. delete order");
+            System.out.println("5. view my open orders");
+            System.out.println("6. close my order");
+            System.out.println("7. clock out");
+            System.out.println("8. view my hours report");
+            System.out.println("9. add new client");
+            System.out.println("10. delete client");
+            System.out.println("11.update client ");
+            System.out.println("12.view all Clients ");
+
+            System.out.println("Q. Exit");
+
+            String selectedOption = scanner.nextLine();
+            switch (selectedOption) {
+
+                case MenuCases.VIEW_ALL_MENU_ITEMS_EMPLOYEE:
+                    menuView.viewAllMenuItems();
+                    break;
+
+
+                case MenuCases.NEW_ORDER_EMPLOYEE:
+                    this.orderView.addNewOrder(scanner, staff, menuView, menuController, clientController);
+                    break;
+
+                case MenuCases.EDIT_MY_ORDER:
+                    this.orderView.editOrderStaffList(scanner, staff, menuView, menuController, clientController);
+                    break;
+
+                case MenuCases.DELETE_MY_ORDER:
+                    this.orderView.deleteOrderByStaff(scanner, staff);
+                    break;
+
+                case MenuCases.VIEW_MY_ORDERS:
+                    this.orderView.viewAllOpenOrdersByStaff(staff.getPersonId());
+                    break;
+
+                case MenuCases.CLOSE_MY_ORDER:
+                    this.orderView.closeOrderByStaff(scanner, staff, clientController);
+                    break;
+
+                case MenuCases.CLOCK_OUT_EMPLOYEE:
+                    this.hoursReportView.clockOut(staff, shiftNum);
+                    isClockOut = true;
+                    break;
+
+                case MenuCases.MY_HOURS_REPORT:
+                    this.hoursReportView.viewMyHoursReport(staff);
+                    break;
+
+                case MenuCases.ADD_CLIENT_EMPLOYEE:
+                    this.clientView.addNewClient(scanner);
+                    break;
+
+                case MenuCases.DELETE_CLIENT_EMPLOYEE:
+                    this.clientView.deleteClient(scanner);
+
+                case MenuCases.VIEW_CLIENT_LIST_EMPLOYEE:
+                    this.clientView.viewAllClients();
+                    break;
+
+                case MenuCases.UPDATE_CLIENT_EMPLOYEE:
+                    this.clientView.updateClient(scanner);
+                    break;
+                case "Q":
+                case "q":
+                default:
+                    System.out.println("Goodbye");
+                    System.exit(0);
+            }
+
+
+        }
+    }
 
     public void manager(Scanner scanner, Staff staff) throws Exception {
         boolean stayInManager = true;

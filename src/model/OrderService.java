@@ -74,4 +74,17 @@ public class OrderService {
             return false;
         }
     }
+
+    public Set<Order> getAllStaffOpenOrders(int staffID)  {
+        try {
+            return this.orderRepository.getAllStaffOpenOrders(staffID);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }
+
+    }
 }

@@ -11,15 +11,13 @@ public class OrderRepositoryImpel implements OrderRepository {
     private static Object lockObject = new Object();
 
     private final String FILENAME = "order";
-    private Set<Order> openOrders;
-    private Set<Order> closedOrders;
+    private Set<Order> orders;
     private FileManager<Order> fileManager;
 
     //singelton has a private constructor
     private OrderRepositoryImpel() throws IOException, ClassNotFoundException {
         this.fileManager = new FileManager<Order>(FILENAME);
-        this.openOrders = this.fileManager.read();
-        this.closedOrders = this.fileManager.read();
+        this.orders = this.fileManager.read();
     }
 
     //for singelton use
@@ -45,8 +43,8 @@ public class OrderRepositoryImpel implements OrderRepository {
             int newOrderID = getNewOrderID();
             order.setOrderID(newOrderID);
 
-            this.openOrders.add(order);
-            this.fileManager.write(this.openOrders);
+            this.orders.add(order);
+            this.fileManager.write(this.orders);
 
         } catch (Exception ex) {
             throw new Exception("error in add order");
@@ -55,7 +53,7 @@ public class OrderRepositoryImpel implements OrderRepository {
 
     private int getNewOrderID() {
         int maxOrderID = 0;
-        for (Order orderItem : openOrders) {
+        for (Order orderItem : orders) {
             if (orderItem.getOrderID() > maxOrderID)
                 maxOrderID = orderItem.getOrderID();
         }
@@ -72,8 +70,8 @@ public class OrderRepositoryImpel implements OrderRepository {
             if (order == null)
                 throw new IOException("order not exist!");
 
-            openOrders.remove(order);
-            this.fileManager.write(this.openOrders);
+            orders.remove(order);
+            this.fileManager.write(this.orders);
 
         } catch (IOException ex) {
             throw new IOException("error in delete order");
@@ -83,32 +81,28 @@ public class OrderRepositoryImpel implements OrderRepository {
     @Override
     public void closeOrder(Order order, Client clientOrder) throws Exception {
         try {
-        if (order == null)
-            throw new IOException("order not exist!");
+            if (order == null)
+                throw new IOException("order not exist!");
 
-        if (clientOrder != null) {
-            String messageClosed = "order closed , total price:" + order.getTotalPriceOrder();
-            messageClosed += "credit details :" + clientOrder.getCreditDetails().toString();
-            Mail.sendMail(messageClosed, clientOrder.getMailAddress());
-        }
+            if (clientOrder != null) {
+                String messageClosed = "order closed , total price:" + order.getTotalPriceOrder();
+                messageClosed += "credit details :" + clientOrder.getCreditDetails().toString();
+                Mail.sendMail(messageClosed, clientOrder.getMailAddress());
+            }
 
-        deleteOrder(order.getOrderID());
-        addOrderToClosedList(order);
+            deleteOrder(order.getOrderID());
+            addOrder(order);
 
         } catch (IOException ex) {
             throw new IOException("error in close order");
         }
     }
 
-    private void addOrderToClosedList(Order order) throws IOException {
-        this.closedOrders.add(order);
-        this.fileManager.write(this.closedOrders);
-    }
 
     @Override
     public Order getOrder(int orderID) {
 
-        for (Order o : openOrders) {
+        for (Order o : orders) {
             if (o.getOrderID() == orderID) {
                 return o;
             }
@@ -120,16 +114,26 @@ public class OrderRepositoryImpel implements OrderRepository {
 
     @Override
     public Set<Order> getAllOpenOrders() {
-        return this.openOrders;
+        Set<Order> openOrders = new HashSet<Order>();
+
+        for (Order o : orders) {
+            if (!o.isClosed()) {
+                openOrders.add(o);
+            }
+
+        }
+        return openOrders;
     }
 
     @Override
     public Set<Order> getAllStaffOpenOrders(int staffID) {
         Set<Order> ordersByStaff = new HashSet<Order>();
 
-        for (Order o : openOrders) {
+        for (Order o : orders) {
             if (o.getStaffID() == staffID) {
-                ordersByStaff.add(o);
+                if (!o.isClosed()) {
+                    ordersByStaff.add(o);
+                }
             }
 
         }
@@ -138,7 +142,15 @@ public class OrderRepositoryImpel implements OrderRepository {
 
     @Override
     public Set<Order> getAllClosedOrders() {
-        return this.closedOrders;
+        Set<Order> openOrders = new HashSet<Order>();
+
+        for (Order o : orders) {
+            if (o.isClosed()) {
+                openOrders.add(o);
+            }
+
+        }
+        return openOrders;
     }
 
     @Override
@@ -146,10 +158,10 @@ public class OrderRepositoryImpel implements OrderRepository {
         if (order == null) {
             throw new Exception("must have a value");
         }
-        if (!(this.openOrders.contains(order))) {
+        if (!(this.orders.contains(order))) {
             throw new Exception("Item does not exists!");
         } else {
-            for (Order o : openOrders) {
+            for (Order o : orders) {
                 if (o.getOrderID() == order.getOrderID()) {
                     deleteOrder(o.getOrderID());
                     addOrder(o);
@@ -159,7 +171,7 @@ public class OrderRepositoryImpel implements OrderRepository {
             }
 
         }
-        this.fileManager.write(this.openOrders);
+        this.fileManager.write(this.orders);
 
     }
 }

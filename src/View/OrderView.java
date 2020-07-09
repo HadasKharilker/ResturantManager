@@ -65,6 +65,7 @@ public class OrderView {
         String orderID = scanner.nextLine();
 
         Order orderToClose = this.orderController.getOrder(Integer.parseInt(orderID));
+        orderToClose.setClosed(true);
         System.out.println("Total Order price: " + orderToClose.getTotalPriceOrder());
 
         System.out.println("press 1 to close , 0 to cancel:  ");
@@ -172,16 +173,21 @@ public class OrderView {
     //manager order view only
     public void editOrderAllList(Scanner scanner, Staff staff, MenuView menuView, MenuController menuController, ClientController clientController) {
         System.out.println("choose order ID from list to edit:  ");
-        viewAllOpenOrders();
+        int openOrderCount = viewAllOpenOrders();
 
+        if (openOrderCount != 0) {
+            editOrder(scanner, staff, menuView, menuController, clientController);
+        } else {
+            System.out.println("no orders open");
+        }
 
-        editOrder(scanner, staff, menuView, menuController, clientController);
 
     }
 
 
     public void editOrder(Scanner scanner, Staff staff, MenuView menuView, MenuController menuController, ClientController clientController) {
-        System.out.print("order ID: ");
+        System.out.println("choose order ID from list to edit:  ");
+        viewAllOpenOrdersByStaff(staff.getPersonId());
         String orderID = scanner.nextLine();
 
         Order editOrder = getOrderFromUser(scanner, staff, menuView, menuController, clientController);
@@ -195,6 +201,44 @@ public class OrderView {
         System.out.println();
 
 
+    }
+
+    public void editOrderStaffList(Scanner scanner, Staff staff, MenuView menuView, MenuController menuController, ClientController clientController) throws Exception {
+        editOrder(scanner, staff, menuView, menuController, clientController);
+
+    }
+
+    public int viewAllOpenOrdersByStaff(int staffID) {
+        Set<Order> orders = this.orderController.getAllStaffOpenOrders(staffID);
+
+        for (Order o : orders) {
+            System.out.println(o);
+        }
+
+        return orders.size();
+    }
+
+    public void deleteOrderByStaff(Scanner scanner, Staff staff) throws Exception {
+        System.out.println("choose order ID to delete:");
+
+        int sizeOrder = viewAllOpenOrdersByStaff(staff.getPersonId());
+
+        if (sizeOrder != 0) {
+            System.out.print("order ID:");
+            String orderID = scanner.nextLine();
+
+            this.orderController.deleteOrder(Integer.parseInt(orderID));
+
+        } else {
+            System.out.print("no order to delete");
+        }
+    }
+
+    public void closeOrderByStaff(Scanner scanner, Staff staff, ClientController clientController) throws Exception {
+        System.out.println("choose order ID to close from list:  ");
+        viewAllOpenOrdersByStaff(staff.getPersonId());
+
+        closeOrder(scanner, clientController);
     }
 
 

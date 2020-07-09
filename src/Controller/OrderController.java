@@ -65,4 +65,11 @@ public class OrderController {
         return this.orderService.updateOrder(editOrder);
 
     }
+
+    public Set<Order> getAllStaffOpenOrders(int staffID) {
+
+        return this.orderService.getAllStaffOpenOrders(staffID);
+
+    }
+
 }

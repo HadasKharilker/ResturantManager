@@ -132,6 +132,12 @@ public class HoursReportView {
         return totalSalary;
     }
 
+    public void viewMyHoursReport(Staff staff) throws Exception {
+
+        Set<StaffHour> staffHours = this.hoursReportController.getStaffHourBy(staff.getPersonId());
+        printStaffHourList(staffHours);
+    }
+
 
 }
 

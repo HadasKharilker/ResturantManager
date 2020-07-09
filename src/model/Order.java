@@ -32,6 +32,9 @@ public class Order implements Serializable {
         isClosed = closed;
     }
 
+    public boolean isClosed() {
+        return isClosed;
+    }
 
     public double getTotalPriceOrder() {
 

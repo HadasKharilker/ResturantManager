@@ -11,8 +11,8 @@ public class LoginController {
 
     private static LoginController INSTANCE;
     private static final Object lockObject = new Object();
-    private boolean isClockOut = false;
-    private int shiftNum;
+
+
 
     private final LoginService loginService;
     //signup

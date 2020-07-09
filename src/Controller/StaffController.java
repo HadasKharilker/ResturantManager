@@ -43,11 +43,11 @@ public class StaffController {
         LocalDate date = LocalDate.parse(birthDate, formatter);
 
 
-        if (userDetails.getRole().equals("manager")) {
+        if (userDetails.getRole().equals(Role.valueOf("manager"))) {
             Manager staff = new Manager(Integer.parseInt(personId), firstName, lastName, date, address, userDetails, bankDetails, mailAddress);
             return this.staffService.addNewStaff(staff);
         }
-        if (userDetails.getRole().equals("employee")) {
+        if (((userDetails.getRole()).equals(Role.valueOf("employee")))) {
             Employee staff = new Employee(Integer.parseInt(personId), firstName, lastName, date, address, userDetails, bankDetails, mailAddress);
             return this.staffService.addNewStaff(staff);
         }

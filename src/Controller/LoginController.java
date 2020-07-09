@@ -1,7 +1,11 @@
 package Controller;
 
+import View.HoursReportView;
+import View.RestaurantView;
 import model.LoginService;
 import model.Staff;
+
+import java.util.Scanner;
 
 //singelton
 public class LoginController {
@@ -9,6 +13,8 @@ public class LoginController {
 
     private static LoginController INSTANCE;
     private static final Object lockObject = new Object();
+    private boolean isClockOut = false;
+    private int shiftNum;
 
     private final LoginService loginService;
     //signup
@@ -43,15 +49,34 @@ public class LoginController {
 
 
 
-    public Integer login(String username, String password) throws Exception{
+    public boolean login(String username, String password, HoursReportView hoursReportView, RestaurantView resturantView) throws Exception{
         if (username == null || username.trim().equals("") || password == null || password.trim().equals("")) {
             throw new IllegalArgumentException("Username or password must not be null");
         }
+        boolean isUserCorrect = false;
 
-        Integer typeOfLogin = loginService.typeOfLogin(username, password);
+
+        Staff staff = this.getStaffByUserName(username);
+
+        if (staff != null)
+            isUserCorrect = staff.isPasswordCorrect(password);
+
+        if (isUserCorrect) {
+            isClockOut = false;
+
+            shiftNum = hoursReportView.clockIn(staff);
+            return true;
 
 
-        return typeOfLogin;
+
+        } else
+
+            return false;
+
+
+
+
+
     }
 
 }

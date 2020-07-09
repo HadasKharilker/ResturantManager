@@ -1,4 +1,7 @@
-package model;
+package model.Repository;
+
+import model.Client;
+import model.Order;
 
 import java.io.IOException;
 import java.util.Set;
@@ -16,7 +19,7 @@ public interface OrderRepository {
 
     void updateOrder(Order order) throws Exception;
 
-    public void closeOrder(Order order,Client clientOrder) throws IOException, Exception;
+    public void closeOrder(Order order, Client clientOrder) throws IOException, Exception;
 
     public Set<Order> getAllClosedOrders();
 }

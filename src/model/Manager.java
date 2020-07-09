@@ -9,6 +9,7 @@ public class Manager extends Staff implements Serializable {
     //here2
     private static final Double WAGE = 50.0;
     private static final long serialVersionUID = 1L;
+    private static String license;
 
     public Manager(Integer personId, String firstName, String lastName, LocalDate birthDate, Address address, UserDetails userDetails, BankDetails bankDetails, String mailAddress) {
         super(personId, firstName, lastName, birthDate, address, userDetails, bankDetails, mailAddress);
@@ -55,7 +56,6 @@ public class Manager extends Staff implements Serializable {
         return true;
     }
     */
-
 
 
     @Override

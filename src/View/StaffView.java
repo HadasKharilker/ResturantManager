@@ -19,7 +19,7 @@ public class StaffView {
 
 
     public void addNewStaff(Scanner scanner) {
-        //yarden-main
+
         System.out.print("Enter staff id : ");
         String staffId = scanner.nextLine();
         System.out.print("Entr first name : ");
@@ -39,8 +39,6 @@ public class StaffView {
         String city = scanner.nextLine();
         System.out.print("Enter state:");
         String state = scanner.nextLine();
-        System.out.print("Enter role (manager/employee:");
-        String role = scanner.nextLine();
         System.out.print("Enter User Name:");
         String username = scanner.nextLine();
         System.out.print("Enter password:");
@@ -54,11 +52,42 @@ public class StaffView {
         String brunchNumber = scanner.nextLine();
 
         Address address = new Address.AddressBuilder(houseStreet).houseNumber(Integer.parseInt(houseNum)).city(city).state(state).build();
-
-        UserDetails userDetails = new UserDetails(username, staffPassword, Role.valueOf(role));
         BankDetails bankDetails = new BankDetails(bankAccountNumber, Integer.parseInt(brunchNumber));
 
-        boolean success = this.staffController.addNewStaff(staffId, fName, lName, birthDate, address, userDetails, bankDetails, mailAddress);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
+        LocalDate date = LocalDate.parse(birthDate, formatter);
+        UserDetails userDetails = new UserDetails(username, staffPassword);
+
+
+        Staff staff;
+        System.out.print("Enter role (manager/employee):");
+        String roleUser = scanner.nextLine();
+
+        if (roleUser.equals("employee")) {
+            EmployeeType employeeType;
+
+            System.out.print("Enter employee type (shiftManager,minorWorker):");
+            roleUser = scanner.nextLine();
+
+            if (roleUser.equals("minorWorker")) {
+                System.out.print("Enter employee type (waiter,hostess,massacre):");
+                String employeeTypeUser = scanner.nextLine();
+                employeeType = EmployeeType.valueOf(employeeTypeUser);
+
+                userDetails.setRole(Role.minorWorker);
+            } else {
+                employeeType = EmployeeType.shiftManager;
+                userDetails.setRole(Role.shiftManager);
+            }
+            staff = new Employee(Integer.parseInt(staffId), fName, lName, date, address, userDetails, bankDetails, mailAddress, employeeType);
+
+
+        } else {
+            userDetails.setRole(Role.manager);
+            staff = new Manager(Integer.parseInt(staffId), fName, lName, date, address, userDetails, bankDetails, mailAddress);
+        }
+
+        boolean success = this.staffController.addNewStaff(staff);
         if (success) {
             System.out.println("Staff " + fName + " added successfully");
         } else {
@@ -161,8 +190,15 @@ public class StaffView {
             System.out.print("Staff does not exists!");
 
         } else {
+            Role role;
             System.out.print("Enter role (manager/employee):");
-            String role = scanner.nextLine();
+            String roleUser = scanner.nextLine();
+
+            if (roleUser.equals("employee")) {
+                System.out.print("Enter employee type (shiftManager,minorWorker):");
+                roleUser = scanner.nextLine();
+            }
+            role = Role.valueOf(roleUser);
 
             System.out.print("Enter User Name:");
             String username = scanner.nextLine();
@@ -170,7 +206,7 @@ public class StaffView {
             System.out.print("Enter password:");
             String staffPassword = scanner.nextLine();
 
-            UserDetails userDetails = new UserDetails(username, staffPassword, Role.valueOf(role));
+            UserDetails userDetails = new UserDetails(username, staffPassword, role);
             staffEdit.setUserDetails(userDetails);
 
             boolean success = this.staffController.editStaff(staffEdit);

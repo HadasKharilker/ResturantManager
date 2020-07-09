@@ -51,16 +51,25 @@ public abstract class Staff extends Person implements Serializable {
         this.userDetails = userDetails;
     }
 
-
+    public BankDetails getBankDetails() {
+        return bankDetails;
+    }
 
     public boolean isManager() {
 
         return userDetails.getRole().equals(Role.manager);
 
     }
-    public boolean isEmployee() {
+    public boolean isMinorWorker() {
 
-        return userDetails.getRole().equals(Role.employee);
+        return userDetails.getRole().equals(Role.minorWorker);
+
+    }
+
+
+    public boolean isShiftManager() {
+
+        return userDetails.getRole().equals(Role.shiftManager);
 
     }
 

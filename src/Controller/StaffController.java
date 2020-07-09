@@ -10,6 +10,7 @@ import model.Employee;
 import java.time.format.DateTimeFormatter;
 
 import model.*;
+import model.Service.StaffService;
 
 public class StaffController {
 
@@ -36,24 +37,10 @@ public class StaffController {
         return INSTANCE;
     }
 
-
-    public boolean addNewStaff(String personId, String firstName, String lastName, String birthDate, Address address, UserDetails userDetails, BankDetails bankDetails, String mailAddress) {
-        // validations
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-        LocalDate date = LocalDate.parse(birthDate, formatter);
-
-
-        if (userDetails.getRole().equals(Role.valueOf("manager"))) {
-            Manager staff = new Manager(Integer.parseInt(personId), firstName, lastName, date, address, userDetails, bankDetails, mailAddress);
-            return this.staffService.addNewStaff(staff);
-        }
-        if (((userDetails.getRole()).equals(Role.valueOf("employee")))) {
-            Employee staff = new Employee(Integer.parseInt(personId), firstName, lastName, date, address, userDetails, bankDetails, mailAddress);
-            return this.staffService.addNewStaff(staff);
-        }
-        return false;
-
+    public boolean addNewStaff(Staff staff) {
+        return this.staffService.addNewStaff(staff);
     }
+
 
     public Set<Staff> getAllStaff() {
         Set<Staff> staff = this.staffService.getAllStaff();
@@ -88,7 +75,6 @@ public class StaffController {
         return this.staffService.isExist(id);
 
     }
-
 
 
 }

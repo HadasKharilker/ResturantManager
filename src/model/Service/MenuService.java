@@ -1,5 +1,9 @@
-package model;
+package model.Service;
 
+
+import model.MenuItem;
+import model.Repository.MenuItemRepositoryImpel;
+import model.Repository.MenuRepository;
 
 import java.util.Set;
 

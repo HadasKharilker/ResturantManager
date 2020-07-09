@@ -4,8 +4,7 @@ package Controller;
 import java.util.Set;
 
 import model.MenuItem;
-import model.MenuService;
-import model.MenuItemType;
+import model.Service.MenuService;
 
 
 public class MenuController {

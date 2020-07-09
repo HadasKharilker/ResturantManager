@@ -1,10 +1,11 @@
 package View;
 
-import Controller.ClientController;
 import Controller.HoursReportController;
 import Controller.StaffController;
 import model.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Set;
@@ -38,8 +39,9 @@ public class HoursReportView {
         return shiftNum;
     }
 
-    public void viewStaffHouerWage(Scanner scanner) throws Exception {
-        System.out.println("Enter staff Id:");
+    public void viewStaffHouerWage(Scanner scanner,StaffView staffView) throws Exception {
+        System.out.println("Enter staff Id from staff list:");
+        staffView.viewAllStaff();
         String staffID = scanner.nextLine();
 
         Set<StaffHour> staffHours = this.hoursReportController.getStaffHourBy(Integer.parseInt(staffID));
@@ -87,11 +89,19 @@ public class HoursReportView {
 
     }
 
-    public void viewAllStaffHoursReports(Scanner scanner) throws Exception {
+    public void viewAllStaffHoursReportsByMonth(Scanner scanner) throws Exception {
         System.out.println("Enter month to watch:");
         String month = scanner.nextLine();
 
-        Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHour(Integer.parseInt(month));
+        Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHourByMonth(Integer.parseInt(month));
+        printStaffHourList(staffHours);
+    }
+
+    public void viewAllStaffHoursReportsToday(Scanner scanner) throws Exception {
+
+        Date date = new Date();
+
+        Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHourToday(date);
         printStaffHourList(staffHours);
     }
 
@@ -107,12 +117,13 @@ public class HoursReportView {
 
         double totalSalary = getTotalSalary(staff, Integer.parseInt(month));
         String message = "hello " + staff.getFirstName() + " your salary from month " + month + " is " + totalSalary;
+        message += ", The salary went into the account : " + staff.getBankDetails().toString();
 
         Mail.sendMail(message, staff.getMailAddress());
     }
 
     private double getTotalSalary(Staff staff, int month) throws Exception {
-        Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHour(month);
+        Set<StaffHour> staffHours = this.hoursReportController.getAllStaffHourByMonth(month);
 
         int totalHours = 0;
         int totalMin = 0;

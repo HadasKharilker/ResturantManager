@@ -1,4 +1,8 @@
-package model;
+package model.Repository;
+
+import model.FileManager;
+import model.Staff;
+import model.StaffHour;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -84,7 +88,7 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
 
 
     @Override
-    public Set<StaffHour> getAllStaffHour(int month) throws IOException {
+    public Set<StaffHour> getAllStaffHourByMonth(int month) throws IOException {
         try {
             Set<StaffHour> spesificStaffHour = new HashSet<StaffHour>();
 
@@ -104,7 +108,25 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
     }
 
     @Override
-    public Set<StaffHour> getStaffHourBy(int staffID) throws IOException {
+    public Set<StaffHour> getAllStaffHourToday(Date todayDate) throws IOException {
+        try {
+            Set<StaffHour> spesificStaffHour = new HashSet<StaffHour>();
+            LocalDate localDate = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            for (StaffHour staffHour : staffHours) {
+                if (staffHour.getClockInDate() == todayDate)
+                    spesificStaffHour.add(staffHour);
+            }
+
+            return spesificStaffHour;
+
+        } catch (Exception ex) {
+            throw new IOException("fail to get all staff hour");
+        }
+    }
+
+    @Override
+    public Set<StaffHour> getStaffHourByStaffID(int staffID) throws IOException {
         try {
             Set<StaffHour> spesificStaffHour = new HashSet<StaffHour>();
 

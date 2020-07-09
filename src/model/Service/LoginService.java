@@ -1,6 +1,9 @@
-package model;
+package model.Service;
 
 
+import model.Staff;
+import model.Repository.StaffRepository;
+import model.Repository.StaffRepositoryImpel;
 
 public class LoginService {
 
@@ -18,7 +21,7 @@ public class LoginService {
 
 
 
-
+/*
     public Integer typeOfLogin(String userName, String password) throws Exception {
 
         Staff staff = staffRepository.getStaffByUserName(userName);
@@ -41,7 +44,7 @@ public class LoginService {
 
     }
 
-
+*/
 }
 
 

@@ -26,7 +26,8 @@ public class MenuCases {
     public static final String UPDATE_CLIENT = "22";
     public static final String VIEW_CLIENT_LIST = "23";
     public static final String SEND_CLIENT_PUSH = "24";
-
+    public static final String SEND_BIRTHAY_CLIENT_PUSH = "25";
+    public static final String MAIL_WITH_RESTURANT_DETAILS = "26";
 
     //employee
     public static final String VIEW_ALL_MENU_ITEMS_EMPLOYEE = "1";
@@ -41,4 +42,23 @@ public class MenuCases {
     public static final String DELETE_CLIENT_EMPLOYEE = "10";
     public static final String UPDATE_CLIENT_EMPLOYEE = "11";
     public static final String VIEW_CLIENT_LIST_EMPLOYEE = "12";
+
+
+    //shiftManager
+    public static final String EDIT_ORDER_SHIFT_MANAGER = "1";
+    public static final String NEW_ORDER_SHIFT_MANAGER = "2";
+    public static final String DELETE_ORDER_SHIFT_MANAGER = "3";
+    public static final String VIEW_ALL_ORDERS_SHIFT_MANAGER = "4";
+    public static final String CLOSE_ORDER_SHIFT_MANAGER = "5";
+    public static final String ADD_CLIENT_SHIFT_MANAGER = "6";
+    public static final String DELETE_CLIENT_SHIFT_MANAGER = "7";
+    public static final String UPDATE_CLIENT_SHIFT_MANAGER = "8";
+    public static final String VIEW_CLIENT_LIST_SHIFT_MANAGER = "9";
+    public static final String TOTAL_STAFF_HOURS_REPORT_TODAY = "10";
+    public static final String CLOCK_OUT_MANAGER_SHIFT_MANAGER = "11";
+
+
+
+
+
 }

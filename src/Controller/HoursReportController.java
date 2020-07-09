@@ -1,8 +1,9 @@
 package Controller;
 
 import model.*;
+import model.Service.HoursReportService;
 
-import java.util.Scanner;
+import java.util.Date;
 import java.util.Set;
 
 public class HoursReportController {
@@ -30,7 +31,7 @@ public class HoursReportController {
     }
 
     public Set<StaffHour> getStaffHourBy(int staffID) {
-        return hoursReportService.getStaffHourBy(staffID);
+        return hoursReportService.getStaffHourByStaffID(staffID);
 
     }
 
@@ -42,8 +43,12 @@ public class HoursReportController {
         return hoursReportService.clockIn(staff);
     }
 
-    public Set<StaffHour> getAllStaffHour(int month) {
-        return hoursReportService.getAllStaffHour(month);
+    public Set<StaffHour> getAllStaffHourByMonth(int month) {
+        return hoursReportService.getAllStaffHourByMonth(month);
+    }
+
+    public Set<StaffHour> getAllStaffHourToday(Date todayDate) {
+        return hoursReportService.getAllStaffHourToday(todayDate);
     }
 
 }

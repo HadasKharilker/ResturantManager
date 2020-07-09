@@ -1,4 +1,7 @@
-package model;
+package model.Repository;
+
+import model.FileManager;
+import model.MenuItem;
 
 import java.io.IOException;
 

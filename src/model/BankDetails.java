@@ -11,4 +11,28 @@ public class BankDetails implements Serializable {
         this.bankAccountNumber = bankAccountNumber;
         this.brunchNumber = brunchNumber;
     }
+
+    public int getBrunchNumber() {
+        return brunchNumber;
+    }
+
+    public void setBankAccountNumber(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
+    public String getBankAccountNumber() {
+        return bankAccountNumber;
+    }
+
+    public void setBrunchNumber(int brunchNumber) {
+        this.brunchNumber = brunchNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "BankDetails{" +
+                "bankAccountNumber='" + bankAccountNumber + '\'' +
+                ", brunchNumber=" + brunchNumber +
+                '}';
+    }
 }

@@ -1,5 +1,11 @@
-package model;
+package model.Service;
 
+import model.Repository.HoursReportRepository;
+import model.Repository.HoursReportRepositoryImpel;
+import model.Staff;
+import model.StaffHour;
+
+import java.util.Date;
 import java.util.Set;
 
 public class HoursReportService {
@@ -10,9 +16,9 @@ public class HoursReportService {
         this.hoursReportRepository = HoursReportRepositoryImpel.getInstance();
     }
 
-    public Set<StaffHour> getStaffHourBy(int staffID) {
+    public Set<StaffHour> getStaffHourByStaffID(int staffID) {
         try {
-            return this.hoursReportRepository.getStaffHourBy(staffID);
+            return this.hoursReportRepository.getStaffHourByStaffID(staffID);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -45,9 +51,21 @@ public class HoursReportService {
 
     }
 
-    public Set<StaffHour> getAllStaffHour(int month) {
+    public Set<StaffHour> getAllStaffHourByMonth(int month) {
         try {
-            return this.hoursReportRepository.getAllStaffHour(month);
+            return this.hoursReportRepository.getAllStaffHourByMonth(month);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public Set<StaffHour> getAllStaffHourToday(Date todayDate) {
+        try {
+            return this.hoursReportRepository.getAllStaffHourToday(todayDate);
 
 
         } catch (Exception e) {

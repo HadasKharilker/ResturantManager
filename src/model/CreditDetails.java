@@ -15,6 +15,29 @@ public class CreditDetails implements Serializable {
         this.identificationCode = creditDetailsBuilder.identificationCode;
     }
 
+    public int getIdentificationCode() {
+        return identificationCode;
+    }
+
+    public LocalDate getPeriod() {
+        return period;
+    }
+
+    public String getCreditID() {
+        return creditID;
+    }
+
+    public void setCreditID(String creditID) {
+        this.creditID = creditID;
+    }
+
+    public void setIdentificationCode(int identificationCode) {
+        this.identificationCode = identificationCode;
+    }
+
+    public void setPeriod(LocalDate period) {
+        this.period = period;
+    }
 
     @Override
     public String toString() {

@@ -22,7 +22,7 @@ public class LoginTest {
 
 
         try {
-            loginController.login("", "123", hoursReportView, resturantView);
+            loginController.login("", "123");
             fail("login success when should failed");
         } catch (IllegalArgumentException e) {
             Assert.assertEquals("Username or password must not be null", e.getMessage());
@@ -39,7 +39,7 @@ public class LoginTest {
 
 
         try {
-            loginController.login("", "123",hoursReportView, resturantView);
+            loginController.login("", "123");
             fail("login success when should failed");
         } catch (IllegalArgumentException e) {
             Assert.assertEquals("Username or password must not be null", e.getMessage());
@@ -54,7 +54,7 @@ public class LoginTest {
         RestaurantView resturantView=new RestaurantView();
 
 
-           boolean result= loginController.login("NOTVAILD", "123",hoursReportView,resturantView);
+           boolean result= loginController.login("NOTVAILD", "123");
             Assert.assertFalse(result);
 
         }
@@ -69,7 +69,7 @@ public class LoginTest {
         RestaurantView resturantView=new RestaurantView();
 
 
-        boolean result= loginController.login("hadas", "123",hoursReportView,resturantView);
+        boolean result= loginController.login("hadas", "123");
         Assert.assertFalse(result);
 
     }
@@ -81,7 +81,7 @@ public class LoginTest {
         RestaurantView resturantView=new RestaurantView();
 
 
-        boolean result= loginController.login("hadas", "1212",hoursReportView,resturantView);
+        boolean result= loginController.login("hadas", "1212");
         Assert.assertTrue(result);
 
     }

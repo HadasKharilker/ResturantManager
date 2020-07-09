@@ -63,7 +63,8 @@ public class RestaurantView {
         boolean stayInResturant = true;
 
         try (Scanner scanner = new Scanner(System.in)) {
-           // staffView.addNewStaff(scanner);
+
+          //  staffView.addNewStaff(scanner);
             while (stayInResturant) {
                 System.out.println("1. login");
                 System.out.println("Q. exit");
@@ -101,14 +102,14 @@ public class RestaurantView {
 
                 if (staff.isManager()) {
                     System.out.println("You are now logged in as manager");
-                    resturantView.manager(staff);
+                    resturantView.manager(staff,scanner);
                 } else if (staff.isShiftManager()) {
                     System.out.println("You are now logged in as ShiftManager");
-                    resturantView.shiftManager(staff);
+                    resturantView.shiftManager(staff,scanner);
 
                 } else if (staff.isMinorWorker()) {
                     System.out.println("You are now logged in as MinorWorker");
-                    resturantView.employee(staff);
+                    resturantView.employee(staff,scanner);
                 }
             } else
                 System.out.println("User name or password is wrong");
@@ -117,8 +118,8 @@ public class RestaurantView {
     }
 
 
-    public void employee(Staff staff) throws Exception {
-        try (Scanner scanner = new Scanner(System.in)) {
+    public void employee(Staff staff, Scanner scanner) throws Exception {
+
             boolean stayInEmployee = true;
 
             while (stayInEmployee && !isClockOut) {
@@ -206,10 +207,10 @@ public class RestaurantView {
 
             }
         }
-    }
 
-    public void manager(Staff staff) throws Exception {
-        try (Scanner scanner = new Scanner(System.in)) {
+
+    public void manager(Staff staff,Scanner scanner) throws Exception {
+
             boolean stayInManager = true;
 
             while (stayInManager && !isClockOut) {
@@ -253,7 +254,9 @@ public class RestaurantView {
                 System.out.println("Other:");
                 System.out.println("25. clock out");
                 System.out.println("Q. Exit");
-                String userSelection = scanner.nextLine();
+
+               String userSelection = scanner.nextLine();
+
                 switch (userSelection) {
                     case MenuCases.SEND_BIRTHAY_CLIENT_PUSH:
                         this.clientView.sendClientBirthdayPush(scanner);
@@ -369,10 +372,10 @@ public class RestaurantView {
                 }
             }
         }
-    }
 
-    public void shiftManager(Staff staff) throws Exception {
-        try (Scanner scanner = new Scanner(System.in)) {
+
+    public void shiftManager(Staff staff, Scanner scanner) throws Exception {
+
             boolean stayInShiftManager = true;
 
             while (stayInShiftManager && !isClockOut) {
@@ -476,4 +479,3 @@ public class RestaurantView {
     //add  public void employee(Scanner scanner){}
 
 
-}

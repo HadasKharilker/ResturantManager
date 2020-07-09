@@ -20,7 +20,7 @@ public class LoginController {
     //logout
 
     //for singelton
-    private LoginController()throws Exception {
+    private LoginController() throws Exception {
         this.loginService = new LoginService();
     }
 
@@ -37,17 +37,14 @@ public class LoginController {
         return INSTANCE;
     }
 
-    public Staff getStaffByUserName(String username) throws Exception{
+    public Staff getStaffByUserName(String username) throws Exception {
         return loginService.getStaffByUserName(username);
 
 
     }
 
 
-
-
-
-    public boolean login(String username, String password, HoursReportView hoursReportView, RestaurantView resturantView) throws Exception{
+    public boolean login(String username, String password) throws Exception {
         if (username == null || username.trim().equals("") || password == null || password.trim().equals("")) {
             throw new IllegalArgumentException("Username or password must not be null");
         }
@@ -59,22 +56,10 @@ public class LoginController {
         if (staff != null)
             isUserCorrect = staff.isPasswordCorrect(password);
 
-        if (isUserCorrect) {
-            isClockOut = false;
-
-            shiftNum = hoursReportView.clockIn(staff);
+        if (isUserCorrect)
             return true;
 
-
-
-        } else
-
-            return false;
-
-
-
-
-
+        return false;
     }
 
 }

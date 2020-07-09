@@ -66,6 +66,7 @@ public abstract class Staff extends Person implements Serializable {
 
     }
 
+
     public boolean isShiftManager() {
 
         return userDetails.getRole().equals(Role.shiftManager);

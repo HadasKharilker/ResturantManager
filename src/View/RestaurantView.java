@@ -2,7 +2,6 @@ package View;
 
 
 import java.util.Scanner;
-import java.util.Set;
 
 
 import Controller.*;
@@ -67,8 +66,9 @@ public class RestaurantView {
 
         System.out.println("Welcome to the Resturant Manager - The Right Way For Your Business");
         boolean stayInResturant = true;
+
         try (Scanner scanner = new Scanner(System.in)) {
-            staffView.addNewStaff(scanner);
+            //staffView.addNewStaff(scanner);
             while (stayInResturant) {
                 System.out.println("1. login");
                 System.out.println("Q. exit");
@@ -92,27 +92,32 @@ public class RestaurantView {
 
     public void login(Scanner scanner, RestaurantView resturantView) throws Exception {
 
-        System.out.print("username: ");
-        String username = scanner.nextLine();
-        System.out.print("password: ");
-        String password = scanner.nextLine();
 
-        boolean login = loginController.login(username, password, hoursReportView, resturantView);
-        if (login) {
-            Staff staff = loginController.getStaffByUserName(username);
+            System.out.print("username: ");
+            String username = scanner.nextLine();
+            System.out.print("password: ");
+            String password = scanner.nextLine();
 
-            if (staff.isManager()) {
-                System.out.println("You are now logged in as manager");
-                resturantView.manager(staff);
-            } else if (staff.isShiftManager()) {
-                System.out.println("You are now logged in as ShiftManager");
-                //resturantView.employee(staff);
-            } else if (staff.isMinorWorker()) {
-                System.out.println("You are now logged in as MinorWorker");
-                resturantView.employee(staff);
-            }
-        } else
-            System.out.println("User name or password is wrong");
+            boolean login = loginController.login(username, password);
+            if (login) {
+                Staff staff = loginController.getStaffByUserName(username);
+                isClockOut = false;
+                shiftNum = hoursReportView.clockIn(staff);
+
+                if (staff.isManager()) {
+                    System.out.println("You are now logged in as manager");
+                    resturantView.manager(staff);
+                } else if (staff.isShiftManager()) {
+                    System.out.println("You are now logged in as ShiftManager");
+                    resturantView.shiftManager(staff);
+
+                } else if (staff.isMinorWorker()) {
+                    System.out.println("You are now logged in as MinorWorker");
+                    resturantView.employee(staff);
+                }
+            } else
+                System.out.println("User name or password is wrong");
+
 
     }
 
@@ -334,11 +339,11 @@ public class RestaurantView {
                         break;
 
                     case MenuCases.VIEW_STAFF_HOUR_WAGE_REPORT:
-                        this.hoursReportView.viewStaffHouerWage(scanner);
+                        this.hoursReportView.viewStaffHouerWage(scanner, staffView);
                         break;
 
                     case MenuCases.TOTAL_STAFF_HOURS_REPORT_BY_MONTH:
-                        this.hoursReportView.viewAllStaffHoursReports(scanner);
+                        this.hoursReportView.viewAllStaffHoursReportsByMonth(scanner);
                         break;
 
                     case MenuCases.PAY_SALARY:
@@ -365,16 +370,18 @@ public class RestaurantView {
 
                 System.out.println("");
                 //order
-                System.out.println("11. edit order");
-                System.out.println("12. add new order");
-                System.out.println("13. delete order");
-                System.out.println("14. view all open order");
-                System.out.println("15. close order");
-                System.out.println("20. add new client");
-                System.out.println("21. delete client");
-                System.out.println("22.update client ");
-                System.out.println("23.view all Clients ");
-                System.out.println("17. clock out");
+                System.out.println("1. edit order");
+                System.out.println("2. add new order");
+                System.out.println("3. delete order");
+                System.out.println("4. view all open order");
+                System.out.println("5. close order");
+                System.out.println("6. add new client");
+                System.out.println("7. delete client");
+                System.out.println("8.update client ");
+                System.out.println("9.view all Clients ");
+                System.out.println("10. total staff hour today");
+                System.out.println("11. clock out");
+
                 System.out.println("Q. Exit");
 
                 String userSelection = scanner.nextLine();
@@ -423,6 +430,9 @@ public class RestaurantView {
                         this.clientView.viewAllClients();
                         break;
 
+                    case MenuCases.TOTAL_STAFF_HOURS_REPORT_TODAY:
+                        this.hoursReportView.viewAllStaffHoursReportsToday(scanner);
+                        break;
 
 
                     case "q":

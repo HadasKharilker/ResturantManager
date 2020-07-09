@@ -5,6 +5,7 @@ import model.StaffHour;
 
 import java.io.IOException;
 import java.time.Month;
+import java.util.Date;
 import java.util.Set;
 
 public interface HoursReportRepository {
@@ -12,10 +13,10 @@ public interface HoursReportRepository {
 
     void clockOut(Staff staff, int numberShift) throws IOException;
 
-    Set<StaffHour> getAllStaffHour(int month) throws IOException;
+    Set<StaffHour> getAllStaffHourByMonth(int month) throws IOException;
 
-    Set<StaffHour> getStaffHourBy(int staffID) throws IOException;
+    Set<StaffHour> getStaffHourByStaffID(int staffID) throws IOException;
 
-
+    Set<StaffHour> getAllStaffHourToday(Date todayDate) throws IOException;
 
 }

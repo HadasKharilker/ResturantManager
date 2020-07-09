@@ -11,9 +11,9 @@ public class Employee extends Staff implements Serializable {
     private static final long serialVersionUID = 1L;
     private EmployeeType employeeType;
 
-    public Employee(Integer personId, String firstName, String lastName, LocalDate birthDate, Address address, UserDetails userDetails, BankDetails bankDetails, String mailAddress) {
+    public Employee(Integer personId, String firstName, String lastName, LocalDate birthDate, Address address, UserDetails userDetails, BankDetails bankDetails, String mailAddress, EmployeeType employeeType) {
         super(personId, firstName, lastName, birthDate, address, userDetails, bankDetails, mailAddress);
-
+        this.employeeType = employeeType;
     }
 
     public Employee(Integer id) {

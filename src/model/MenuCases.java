@@ -50,13 +50,14 @@ public class MenuCases {
     public static final String DELETE_ORDER_SHIFT_MANAGER = "3";
     public static final String VIEW_ALL_ORDERS_SHIFT_MANAGER = "4";
     public static final String CLOSE_ORDER_SHIFT_MANAGER = "5";
-    public static final String CLOCK_OUT_MANAGER_SHIFT_MANAGER = "6";
+    public static final String ADD_CLIENT_SHIFT_MANAGER = "6";
+    public static final String DELETE_CLIENT_SHIFT_MANAGER = "7";
+    public static final String UPDATE_CLIENT_SHIFT_MANAGER = "8";
+    public static final String VIEW_CLIENT_LIST_SHIFT_MANAGER = "9";
+    public static final String TOTAL_STAFF_HOURS_REPORT_TODAY = "10";
+    public static final String CLOCK_OUT_MANAGER_SHIFT_MANAGER = "11";
 
-    public static final String ADD_CLIENT_SHIFT_MANAGER = "7";
-    public static final String DELETE_CLIENT_SHIFT_MANAGER = "8";
-    public static final String UPDATE_CLIENT_SHIFT_MANAGER = "9";
-    public static final String VIEW_CLIENT_LIST_SHIFT_MANAGER = "10";
-    public static final String TOTAL_STAFF_HOURS_REPORT_BY_DAY = "11";
+
 
 
 

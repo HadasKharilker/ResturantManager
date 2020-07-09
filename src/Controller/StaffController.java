@@ -61,7 +61,7 @@ public class StaffController {
     }
 
 
-    public boolean deleteStaff(Integer id) {
+    public boolean deleteStaff(int id) {
 
         return this.staffService.deleteStaff(id);
 

@@ -27,8 +27,9 @@ public class MenuView {
         String price = scanner.nextLine();
         System.out.print("enter menu item type(MAIN,DRINK,ALCOHOL,DESERT) :");
         String type = scanner.nextLine();
+        MenuItem item = new MenuItem(Integer.parseInt(id), name,  Double.parseDouble(price), MenuItemType.valueOf(type));
 
-        boolean success = this.menuController.addMenuItem(Integer.parseInt(id), name, Double.parseDouble(price), MenuItemType.valueOf(type));
+        boolean success = this.menuController.addMenuItem(item);
         if (success) {
             System.out.println("Dish " + name + " added successfully");
         } else {
@@ -57,8 +58,9 @@ public class MenuView {
         String price = scanner.nextLine();
         System.out.print("enter menu item type(MAIN,DRINK,ALCOHOL,DESERT:");
         String type = scanner.nextLine();
+        MenuItem item = new MenuItem(Integer.parseInt(id), name, Double.parseDouble(price), MenuItemType.valueOf(type));
 
-        boolean success = this.menuController.editMenuItem(Integer.parseInt(id), name, Double.parseDouble(price), MenuItemType.valueOf(type));
+        boolean success = this.menuController.editMenuItem(item);
         if (success) {
             System.out.println("Dish " + name + " changed successfully");
         } else {

@@ -33,10 +33,8 @@ public class MenuController {
     }
 
 
-    public boolean addMenuItem(Integer itemID, String itemName, Double price, MenuItemType itemType) {
+    public boolean addMenuItem(MenuItem item) {
         // validations
-        MenuItem item = new MenuItem(itemID, itemName, price, itemType);
-
         return this.menuService.addNewItemToMenu(item);
     }
 
@@ -45,8 +43,8 @@ public class MenuController {
         return menu;
     }
 
-    public boolean editMenuItem(Integer itemID, String itemName, Double price, MenuItemType itemType) {
-        MenuItem item = new MenuItem(itemID, itemName, price, itemType);
+    public boolean editMenuItem(MenuItem item) {
+
 
         return this.menuService.editMenuItem(item);
 
@@ -59,7 +57,7 @@ public class MenuController {
     }
 
 
-    public MenuItem find(int itemID) {
+    public MenuItem findItem(int itemID) {
         return  this.menuService.find(itemID);
     }
 }

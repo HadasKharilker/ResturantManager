@@ -85,32 +85,37 @@ public class RestaurantView {
     }
 
     public void login(Scanner scanner, RestaurantView resturantView) throws Exception {
+        try {
+            System.out.print("username: ");
+            String username = scanner.nextLine();
+            System.out.print("password: ");
+            String password = scanner.nextLine();
+
+            boolean login = loginController.login(username, password);
+            if (login) {
+                Staff staff = loginController.getStaffByUserName(username);
+                isClockOut = false;
+                shiftNum = hoursReportView.clockIn(staff);
+
+                if (staff.isManager()) {
+                    System.out.println("You are now logged in as manager");
+                    resturantView.manager(staff, scanner);
+                } else if (staff.isShiftManager()) {
+                    System.out.println("You are now logged in as ShiftManager");
+                    resturantView.shiftManager(staff, scanner);
+
+                } else if (staff.isMinorWorker()) {
+                    System.out.println("You are now logged in as MinorWorker");
+                    resturantView.employee(staff, scanner);
+                }
+            } else
+                System.out.println("User name or password is wrong");
+        }
+        catch (IllegalArgumentException e){
+            System.out.println("Username or password must not be null");
 
 
-        System.out.print("username: ");
-        String username = scanner.nextLine();
-        System.out.print("password: ");
-        String password = scanner.nextLine();
-
-        boolean login = loginController.login(username, password);
-        if (login) {
-            Staff staff = loginController.getStaffByUserName(username);
-            isClockOut = false;
-            shiftNum = hoursReportView.clockIn(staff);
-
-            if (staff.isManager()) {
-                System.out.println("You are now logged in as manager");
-                resturantView.manager(staff, scanner);
-            } else if (staff.isShiftManager()) {
-                System.out.println("You are now logged in as ShiftManager");
-                resturantView.shiftManager(staff, scanner);
-
-            } else if (staff.isMinorWorker()) {
-                System.out.println("You are now logged in as MinorWorker");
-                resturantView.employee(staff, scanner);
-            }
-        } else
-            System.out.println("User name or password is wrong");
+        }
 
 
     }

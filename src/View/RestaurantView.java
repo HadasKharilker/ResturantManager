@@ -62,7 +62,7 @@ public class RestaurantView {
 
         try (Scanner scanner = new Scanner(System.in)) {
 
-            //  staffView.addNewStaff(scanner);
+             // staffView.addNewStaff(scanner);
             while (stayInResturant) {
                 System.out.println("1. login");
                 System.out.println("Q. exit");

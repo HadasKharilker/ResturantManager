@@ -16,6 +16,7 @@ public class Mail {
     private static String from = "resturantmanagerhit@gmail.com";
     private static String host = "smtp.gmail.com";
 
+    /*
     public static void sendMail(String messageToSend, Set<String> mailsTO) throws Exception {
         Properties properties = System.getProperties();
 
@@ -56,7 +57,7 @@ public class Mail {
             throw new Exception("fail to send mails");
         }
     }
-
+*/
     public static void sendMail(String messageToSend, String mailTo)throws Exception {
         Properties properties = System.getProperties();
 
@@ -92,6 +93,8 @@ public class Mail {
 
             Transport.send(message);
             System.out.println("Sent message successfully....");
+
+
 
         } catch (MessagingException mex) {
             throw new Exception("fail to send mails");

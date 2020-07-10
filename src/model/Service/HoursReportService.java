@@ -34,9 +34,8 @@ public class HoursReportService {
             String message = "hello " + staff.getFirstName() + " your salary from month " + month + " is " + totalSalary;
             message += ", The salary went into the account : " + staff.getBankDetails().toString();
 
-            Mail.sendMail(message, staff.getMailAddress());
-
-            return true;
+             Mail.sendMail(message, staff.getMailAddress());
+             return true;
 
         } catch (Exception ex) {
             ex.printStackTrace();

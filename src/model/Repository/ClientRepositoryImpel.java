@@ -43,7 +43,7 @@ public class ClientRepositoryImpel implements ClientRepository {   //for singelt
     }
 
     @Override
-    public void deleteClient(int clientID) throws IOException {
+    public void deleteClient(int clientID) throws Exception {
         Client client = getClient(clientID);
         clients.remove(client);
         this.fileManager.write(this.clients);

@@ -7,6 +7,8 @@ import model.Mail;
 import model.Repository.ClientRepository;
 import model.Repository.ClientRepositoryImpel;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -98,10 +100,14 @@ public class ClientService {
 
             if (clients != null && clients.size() != 0) {
                 for (Client client : clients) {
-                    mails.add(client.getMailAddress());
+                    if (isValidEmailAddress(client.getMailAddress()))
+                        Mail.sendMail(message, client.getMailAddress());
+
+                    else
+                        System.out.println("invalid address to clientID: " + client.getName());
                 }
 
-                Mail.sendMail(message, mails);
+
             }
             return true;
 
@@ -110,18 +116,30 @@ public class ClientService {
         }
     }
 
+    public static boolean isValidEmailAddress(String email) {
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
+    }
+
     public boolean sendClientPush(String message) {
         try {
-            Set<String> mails = new HashSet<String>();
-
             Set<Client> clients = this.clientRepository.getAllClientsPushOn();
 
             if (clients != null) {
                 for (Client client : clients) {
-                    mails.add(client.getMailAddress());
+                    if (isValidEmailAddress(client.getMailAddress()))
+                        Mail.sendMail(message, client.getMailAddress());
+                    else
+                        System.out.println("invalid address to clientID: " + client.getName());
                 }
 
-                Mail.sendMail(message, mails);
+
             }
             return true;
 

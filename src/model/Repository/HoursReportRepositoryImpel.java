@@ -38,10 +38,10 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
     }
 
     @Override
-    public int clockIn(Staff staff) throws IOException {
+    public int clockIn(Staff staff) throws Exception {
         try {
             if (staff == null)
-                new IOException("staff not exist - clock in");
+                new Exception("staff not exist - clock in");
 
             int shiftNum = getNewShiftNumTo(staff.getPersonId());
             StaffHour staffHour = new StaffHour(staff, shiftNum, new Date());
@@ -52,7 +52,7 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
             return shiftNum;
 
         } catch (Exception ex) {
-            throw new IOException("error in clockIn");
+            throw new Exception("error in clockIn");
         }
 
     }
@@ -71,7 +71,7 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
     }
 
     @Override
-    public void clockOut(Staff staff, int numberShift) throws IOException {
+    public void clockOut(Staff staff, int numberShift) throws Exception {
         try {
             for (StaffHour staffHour : staffHours) {
                 if (staffHour.getStaff().getPersonId() == staff.getPersonId() && staffHour.getShiftNum() == numberShift) {
@@ -81,14 +81,14 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
             this.fileManager.write(this.staffHours);
 
         } catch (Exception ex) {
-            throw new IOException("error in clockOut");
+            throw new Exception("error in clockOut");
         }
 
     }
 
 
     @Override
-    public Set<StaffHour> getAllStaffHourByMonth(int month) throws IOException {
+    public Set<StaffHour> getAllStaffHourByMonth(int month) throws Exception {
         try {
             Set<StaffHour> spesificStaffHour = new HashSet<StaffHour>();
 
@@ -103,12 +103,12 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
             return spesificStaffHour;
 
         } catch (Exception ex) {
-            throw new IOException("fail to get all staff hour");
+            throw new Exception("fail to get all staff hour");
         }
     }
 
     @Override
-    public Set<StaffHour> getAllStaffHourToday(LocalDate todayDate) throws IOException {
+    public Set<StaffHour> getAllStaffHourToday(LocalDate todayDate) throws Exception {
         try {
             Set<StaffHour> spesificStaffHour = new HashSet<StaffHour>();
 
@@ -126,12 +126,12 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
             return spesificStaffHour;
 
         } catch (Exception ex) {
-            throw new IOException("fail to get all staff hour");
+            throw new Exception("fail to get all staff hour");
         }
     }
 
     @Override
-    public Set<StaffHour> getStaffHourByStaffID(int staffID) throws IOException {
+    public Set<StaffHour> getStaffHourByStaffID(int staffID) throws Exception {
         try {
             Set<StaffHour> spesificStaffHour = new HashSet<StaffHour>();
 
@@ -143,7 +143,7 @@ public class HoursReportRepositoryImpel implements HoursReportRepository {    //
             return spesificStaffHour;
 
         } catch (Exception ex) {
-            throw new IOException("fail to get hour by staff");
+            throw new Exception("fail to get hour by staff");
         }
     }
 

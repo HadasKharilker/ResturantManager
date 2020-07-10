@@ -89,8 +89,8 @@ public class StaffView {
         viewAllStaff();
         String staffID = scanner.nextLine();
 
-        System.out.print("Enter role (manager/employee):");
-        String role = scanner.nextLine();
+        //System.out.print("Enter role (manager/employee):");
+        //String role = scanner.nextLine();
 
         System.out.print("Enter User Name:");
         String username = scanner.nextLine();
@@ -98,7 +98,7 @@ public class StaffView {
         System.out.print("Enter password:");
         String staffPassword = scanner.nextLine();
 
-        boolean success = this.staffController.editStaff(staffID, role, username, staffPassword);
+        boolean success = this.staffController.editStaff(staffID, username, staffPassword);
 
         if (success) {
             System.out.println("editStaffUserDetails successfully");

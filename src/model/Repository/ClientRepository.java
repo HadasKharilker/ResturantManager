@@ -8,7 +8,7 @@ import java.util.Set;
 public interface ClientRepository {
     void addClient(Client client) throws Exception;
 
-    void deleteClient(int clientID) throws IOException;
+    void deleteClient(int clientID) throws Exception;
 
     Client getClient(int clientID);
 

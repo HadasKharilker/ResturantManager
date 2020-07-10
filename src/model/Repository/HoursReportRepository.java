@@ -10,14 +10,14 @@ import java.util.Date;
 import java.util.Set;
 
 public interface HoursReportRepository {
-    int clockIn(Staff staff) throws IOException;
+    int clockIn(Staff staff) throws Exception;
 
-    void clockOut(Staff staff, int numberShift) throws IOException;
+    void clockOut(Staff staff, int numberShift) throws Exception;
 
-    Set<StaffHour> getAllStaffHourByMonth(int month) throws IOException;
+    Set<StaffHour> getAllStaffHourByMonth(int month) throws Exception;
 
-    Set<StaffHour> getStaffHourByStaffID(int staffID) throws IOException;
+    Set<StaffHour> getStaffHourByStaffID(int staffID) throws Exception;
 
-    Set<StaffHour> getAllStaffHourToday(LocalDate todayDate) throws IOException;
+    Set<StaffHour> getAllStaffHourToday(LocalDate todayDate) throws Exception;
 
 }

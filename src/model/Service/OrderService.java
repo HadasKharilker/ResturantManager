@@ -6,6 +6,7 @@ import View.MenuView;
 import model.*;
 import model.Repository.*;
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.Set;
 

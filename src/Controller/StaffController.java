@@ -84,9 +84,9 @@ public class StaffController {
 
     }
 
-    public boolean editStaff(String StaffID, String role, String username, String staffPassword) {
+    public boolean editStaff(String StaffID, String username, String staffPassword) {
         if (StaffID != "")
-            return this.staffService.editStaff(StaffID, role, username, staffPassword);
+            return this.staffService.editStaff(StaffID, username, staffPassword);
 
         return false;
     }

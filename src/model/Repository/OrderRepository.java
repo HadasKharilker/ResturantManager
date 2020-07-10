@@ -9,7 +9,7 @@ import java.util.Set;
 public interface OrderRepository {
     void addOrder(Order order) throws Exception;
 
-    void deleteOrder(int orderID) throws IOException;
+    void deleteOrder(int orderID) throws Exception;
 
     Order getOrder(int orderID);
 

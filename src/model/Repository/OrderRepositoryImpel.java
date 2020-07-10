@@ -68,18 +68,18 @@ public class OrderRepositoryImpel implements OrderRepository {
     }
 
     @Override
-    public void deleteOrder(int orderID) throws IOException {
+    public void deleteOrder(int orderID) throws Exception {
         try {
             Order order = getOrder(orderID);
 
             if (order == null)
-                throw new IOException("order not exist!");
+                throw new Exception("order not exist!");
 
             orders.remove(order);
             this.fileManager.write(this.orders);
 
-        } catch (IOException ex) {
-            throw new IOException("error in delete order");
+        } catch (Exception ex) {
+            throw new Exception("error in delete order");
         }
     }
 
@@ -87,7 +87,7 @@ public class OrderRepositoryImpel implements OrderRepository {
     public void closeOrder(Order order) throws Exception {
         try {
             if (order == null)
-                throw new IOException("order not exist!");
+                throw new Exception("order not exist!");
 
             for (Order o : orders) {
                 if (o.getOrderID() == order.getOrderID()) {
@@ -99,8 +99,8 @@ public class OrderRepositoryImpel implements OrderRepository {
             this.fileManager.write(this.orders);
 
 
-        } catch (IOException ex) {
-            throw new IOException("error in close order");
+        } catch (Exception ex) {
+            throw new Exception("error in close order");
         }
     }
 

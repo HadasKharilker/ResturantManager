@@ -102,19 +102,19 @@ public class StaffService {
             return true;
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+
             return false;
         }
 
 
     }
 
-    public boolean editStaff(String staffID, String role, String username, String staffPassword) {
+    public boolean editStaff(String staffID, String username, String staffPassword) {
         try {
 
             Staff staff = getStaffByID(Integer.parseInt(staffID));
 
-            UserDetails userDetails = new UserDetails(username, staffPassword, Role.valueOf(role));
+            UserDetails userDetails = new UserDetails(username, staffPassword);
             staff.setUserDetails(userDetails);
 
             this.staffRepository.editStaff(staff);
@@ -122,7 +122,7 @@ public class StaffService {
             return true;
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+
             return false;
         }
 

@@ -21,133 +21,90 @@ public class ClientView {
     }
 
     public void updateClient(Scanner scanner) throws Exception {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
 
-            System.out.println("select client id to edit from list : ");
-            viewAllClients();
+        System.out.println("select client id to edit from list : ");
+        viewAllClients();
+        String clientID = scanner.nextLine();
 
-            String clientID = scanner.nextLine();
-            Client client = this.clientController.getClient(Integer.parseInt(clientID));
+        System.out.println("choose what you want to edit: ");
+        System.out.println("1. name");
+        System.out.println("2. birth date");
+        System.out.println("3. address");
+        System.out.println("4. Credit details");
+        System.out.println("5. mail address");
+        System.out.println("6. notifications");
 
-            System.out.println("choose what you want to edit: ");
-            System.out.println("1. name");
-            System.out.println("2. birth date");
-            System.out.println("3. address");
-            System.out.println("4. Credit details");
-            System.out.println("5. mail address");
-            System.out.println("6. notifications");
+        String selectedOption = scanner.nextLine();
+        Boolean success = false;
+        switch (selectedOption) {
+            case "1":
+                System.out.println("enter first name");
+                String firstName = scanner.nextLine();
+                System.out.println("enter last name");
+                String lastName = scanner.nextLine();
 
-            String selectedOption = scanner.nextLine();
-            switch (selectedOption) {
+                success = this.clientController.editClientName(clientID, firstName, lastName);
+                break;
 
-                case "1":
-                    System.out.println("enter first name");
-                    String firstName = scanner.nextLine();
-                    client.setFirstName(firstName);
+            case "2":
+                System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
+                String date = scanner.nextLine();
+                success = this.clientController.editBdayClient(clientID, date);
+                break;
 
-                    System.out.println("enter last name");
-                    String lastName = scanner.nextLine();
-                    client.setLastName(lastName);
-                    break;
+            case "3":
+                System.out.print("Enter private house number:");
+                String houseNum = scanner.nextLine();
+                System.out.print("Enter house street:");
+                String houseStreet = scanner.nextLine();
+                System.out.print("Enter city:");
+                String city = scanner.nextLine();
+                System.out.print("Enter state:");
+                String state = scanner.nextLine();
 
-                case "2":
-                    System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
-                    String d = scanner.nextLine();
-                    LocalDate date = LocalDate.parse(d, formatter);
+                success = this.clientController.editAddress(clientID, houseStreet, houseNum, city, state);
+                break;
 
-                    client.setBirthDate(date);
-                    break;
+            case "4":
+                System.out.println("Credit details:");
+                System.out.println("enter creditID:");
+                String creditID = scanner.nextLine();
 
-                case "3":
-                    System.out.print("Enter private house number:");
-                    String houseNum = scanner.nextLine();
-                    System.out.print("Enter house street:");
-                    String houseStreet = scanner.nextLine();
-                    System.out.print("Enter city:");
-                    String city = scanner.nextLine();
-                    System.out.print("Enter state:");
-                    String state = scanner.nextLine();
+                System.out.println("enter period in this format (dd/mm/yyyy):");
+                String period = scanner.nextLine();
 
-                    Address address = new Address.AddressBuilder(houseStreet).houseNumber(Integer.parseInt(houseNum)).city(city).state(state).build();
+                System.out.println("enter identificationCode:");
+                String identificationCode = scanner.nextLine();
 
+                success = this.clientController.editCreditCard(clientID, creditID, period, identificationCode);
 
-                    client.setAddress(address);
-                    break;
+                break;
 
-                case "4":
-                    System.out.println("Credit details:");
-                    System.out.println("enter creditID:");
-                    String creditID = scanner.nextLine();
+            case "5":
+                System.out.println("enter mail address:");
+                String mailAddress = scanner.nextLine();
 
-                    System.out.println("enter period in this format (dd/mm/yyyy):");
-                    String period = scanner.nextLine();
-                    LocalDate periodDate = LocalDate.parse(period, formatter);
+                success = this.clientController.editMailAddress(clientID, mailAddress);
+                break;
 
-                    System.out.println("enter identificationCode:");
-                    String identificationCode = scanner.nextLine();
+            case "6":
+                System.out.println("Want to get push? 1-yes 0-no:");
+                String pushOnFromUser = scanner.nextLine();
 
-                    CreditDetails creditDetails = new CreditDetails.CreditDetailsBuilder(creditID).period(periodDate).code(Integer.parseInt(identificationCode)).build();
+                success = this.clientController.editPushOn(clientID, pushOnFromUser);
 
+                break;
+        }
 
-                    client.setCreditDetails(creditDetails);
-                    break;
-
-                case "5":
-                    System.out.println("enter mail address:");
-                    String mailAddress = scanner.nextLine();
-                    client.setMailAddress(mailAddress);
-                    break;
-
-                case "6":
-                    System.out.println("Want to get push? 1-yes 0-no:");
-                    String pushOnFromUser = scanner.nextLine();
-                    Boolean pushOn = false;
-
-                    if (pushOnFromUser.equals("1"))
-                        pushOn = true;
-
-                    client.setPushOn(pushOn);
-                    break;
-
-            }
-
-            boolean success = this.clientController.updateClient(client);
-            if (success) {
-                System.out.println("client update successfully");
-            } else {
-                System.out.println("Failed to update client");
-            }
-
-
-        } catch (Exception ex) {
+        if (success) {
+            System.out.println("client update successfully");
+        } else {
             System.out.println("Failed to update client");
-
         }
+
+
     }
-
-
-    public void addNewClient(Scanner scanner) throws Exception {
-        try {
-            Client newClient = getClientFromUser(scanner);
-
-            boolean success = this.clientController.addNewClient(newClient);
-            if (success) {
-                System.out.println("client added successfully");
-            } else {
-                System.out.println("Failed to add client");
-            }
-
-
-        } catch (Exception ex) {
-            System.out.println("Failed to add new client");
-
-        }
-    }
-
-    private Client getClientFromUser(Scanner scanner) throws Exception {
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
+    public void addNewClient(Scanner scanner) {
 
         System.out.print("Enter person id : ");
         String personId = scanner.nextLine();
@@ -155,11 +112,8 @@ public class ClientView {
         String fName = scanner.nextLine();
         System.out.print("Enter last name : ");
         String lName = scanner.nextLine();
-
         System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
-        String d = scanner.nextLine();
-        LocalDate date = LocalDate.parse(d, formatter);
-
+        String date = scanner.nextLine();
         System.out.print("Enter private house number:");
         String houseNum = scanner.nextLine();
         System.out.print("Enter house street:");
@@ -168,125 +122,78 @@ public class ClientView {
         String city = scanner.nextLine();
         System.out.print("Enter state:");
         String state = scanner.nextLine();
-
-        Address address = new Address.AddressBuilder(houseStreet).houseNumber(Integer.parseInt(houseNum)).city(city).state(state).build();
-
-
         System.out.println("Credit details:");
         System.out.println("enter creditID:");
         String creditID = scanner.nextLine();
-
         System.out.println("enter period in this format (dd/mm/yyyy):");
         String period = scanner.nextLine();
-        LocalDate periodDate = LocalDate.parse(period, formatter);
-
         System.out.println("enter identificationCode:");
-        String identificationCode = scanner.nextLine();
-
-        CreditDetails creditDetails = new CreditDetails.CreditDetailsBuilder(creditID).period(periodDate).code(Integer.parseInt(identificationCode)).build();
-
-
+        String code = scanner.nextLine();
         System.out.println("enter mail address:");
         String mailAddress = scanner.nextLine();
-
         System.out.println("Want to get push? 1-yes 0-no:");
         String pushOnFromUser = scanner.nextLine();
-        Boolean pushOn = false;
 
-        if (pushOnFromUser.equals("1"))
-            pushOn = true;
-
-
-        Client clientFromUser = new Client(Integer.parseInt(personId), fName, lName, date, address, mailAddress, creditDetails, pushOn);
-
-        return clientFromUser;
-    }
-
-    public void deleteClient(Scanner scanner) throws Exception {
-        try {
-            System.out.println("choose Client ID to delete:");
-            int sizeClients = viewAllClients();
-
-            if (sizeClients != 0) {
-                System.out.print("client ID:");
-                String clientID = scanner.nextLine();
-
-                boolean success = this.clientController.deleteClient(Integer.parseInt(clientID));
-                if (success) {
-                    System.out.println("client " + clientID + " delete successfully");
-                } else {
-                    System.out.println("Failed to delete " + clientID);
-                }
-                System.out.println();
-
-            } else {
-                System.out.print("no client to delete");
-            }
-        } catch (Exception ex) {
-            System.out.println("Failed to delete Client");
-
+        boolean success = this.clientController.addNewClient(personId, fName, lName, date, houseNum, houseStreet, city,
+                state, creditID, period, code, mailAddress, pushOnFromUser);
+        if (success) {
+            System.out.println("client added successfully");
+        } else {
+            System.out.println("Failed to add client");
         }
+
+
     }
+    public void deleteClient(Scanner scanner) {
+        System.out.println("choose Client ID to delete:");
+        viewAllClients();
 
-    public int viewAllClients() throws Exception {
-        try {
-            Set<Client> clients = this.clientController.getAllClients();
+        System.out.print("client ID:");
+        String clientID = scanner.nextLine();
 
-            for (Client client : clients) {
-                System.out.println(client);
-            }
-
-            return clients.size();
-        } catch (Exception ex) {
-            System.out.println("Failed to view All Clients");
-
-            return 0;
+        boolean success = this.clientController.deleteClient(clientID);
+        if (success) {
+            System.out.println("client " + clientID + " delete successfully");
+        } else {
+            System.out.println("Failed to delete " + clientID);
         }
+        System.out.println();
+
+
     }
-
-
-    public void sendClientPush(Scanner scanner) throws Exception {
-        try {
-            System.out.print("Enter message to sent : ");
-            String message = scanner.nextLine();
-
-            Set<String> mails = new HashSet<String>();
-
-            Set<Client> clients = clientController.getAllClientsPushOn();
-
-            if (clients != null) {
-                for (Client client : clients) {
-                    mails.add(client.getMailAddress());
-                }
-
-                Mail.sendMail(message, mails);
-            }
-        } catch (Exception ex) {
-            System.out.println("Failed to send Clients Push");
+    public void viewAllClients() {
+        boolean success = this.clientController.printAllClients();
+        if (!success) {
+            System.out.println("Failed to viewAllClients ");
         }
+
+        System.out.println();
     }
+    public void sendClientBirthdayPush() {
+        String message = "מזל טוב ליום הולדתך! הנך מקבל 100 שח מתנה ברשת מסעדות HIT";
 
-    public void sendClientBirthdayPush() throws Exception {
-        try {
-            String message = "מזל טוב ליום הולדתך! הנך מקבל 100 שח מתנה ברשת מסעדות HIT";
-
-            Set<String> mails = new HashSet<String>();
-
-            Set<Client> clients = clientController.getAllClientsBirthday();
-
-            if (clients != null && clients.size() != 0) {
-                for (Client client : clients) {
-                    mails.add(client.getMailAddress());
-                }
-
-                Mail.sendMail(message, mails);
-            }
-        } catch (Exception ex) {
-            System.out.println("Failed to send Client Birthday Push");
+        boolean success = this.clientController.sendClientBirthdayPush(message);
+        if (success) {
+            System.out.println("send Client Birthday push successfully");
+        } else {
+            System.out.println("Failed to Push Birthday ");
         }
+        System.out.println();
     }
+    public void sendClientPush(Scanner scanner) {
+        System.out.print("Enter message to sent : ");
+        String message = scanner.nextLine();
+
+        boolean success = this.clientController.sendClientPush(message);
+        if (success) {
+            System.out.println("send Client Push successfully");
+        } else {
+            System.out.println("Failed to Push ");
+        }
+        System.out.println();
 
 
+    }
 }
 
 

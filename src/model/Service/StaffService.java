@@ -28,7 +28,13 @@ public class StaffService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
             LocalDate date = LocalDate.parse(birthDate, formatter);
 
-            UserDetails userDetails = new UserDetails(username, staffPassword, Role.valueOf(role));
+            Role roleType;
+            if (employeeType.contains(EmployeeType.shiftManager.toString()))
+                roleType = Role.shiftManager;
+            else
+                roleType = Role.minorWorker;
+
+            UserDetails userDetails = new UserDetails(username, staffPassword, roleType);
 
             Staff staff = new Employee(Integer.parseInt(personId), fName, lname, date, address, userDetails, bankDetails, mail, EmployeeType.valueOf(employeeType));
             this.staffRepository.addStaff(staff);

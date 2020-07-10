@@ -37,9 +37,9 @@ public class OrderView {
 
         boolean success = this.orderController.editOrder(orderID, menuItemOrders, clientID);
         if (success) {
-            System.out.println("New order added succesfully ");
+            System.out.println(" order edit succesfully ");
         } else {
-            System.out.println("Failed to add Order ");
+            System.out.println("Failed to edit Order ");
         }
         System.out.println();
 
@@ -65,9 +65,9 @@ public class OrderView {
 
         boolean success = this.orderController.editOrder(orderID, menuItemOrders, clientID);
         if (success) {
-            System.out.println("New order added succesfully ");
+            System.out.println(" order edit succesfully ");
         } else {
-            System.out.println("Failed to add Order ");
+            System.out.println("Failed to edit Order ");
         }
         System.out.println();
 
@@ -205,9 +205,9 @@ public class OrderView {
 
         boolean success = this.orderController.deleteOrder(orderID);
         if (success) {
-            System.out.println("New order added succesfully ");
+            System.out.println("order deleted succesfully ");
         } else {
-            System.out.println("Failed to add Order ");
+            System.out.println("Failed to delete Order ");
         }
     }
 }

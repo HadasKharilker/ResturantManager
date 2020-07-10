@@ -89,9 +89,15 @@ public class OrderRepositoryImpel implements OrderRepository {
             if (order == null)
                 throw new IOException("order not exist!");
 
+            for (Order o : orders) {
+                if (o.getOrderID() == order.getOrderID()) {
+                    o.setClosed(true);
+                }
+            }
 
-            deleteOrder(order.getOrderID());
-            addOrder(order);
+
+            this.fileManager.write(this.orders);
+
 
         } catch (IOException ex) {
             throw new IOException("error in close order");
@@ -163,10 +169,8 @@ public class OrderRepositoryImpel implements OrderRepository {
         } else {
             for (Order o : orders) {
                 if (o.getOrderID() == order.getOrderID()) {
-                    deleteOrder(o.getOrderID());
-                    addOrder(o);
-                    //o.setMenuItems(order.getMenuItems());
-                    //o.setTotalOrderPrice(order.getTotalOrderPrice());
+                    o.setMenuItems(order.getMenuItems());
+                    o.setClientID(order.getClientID());
                 }
             }
 

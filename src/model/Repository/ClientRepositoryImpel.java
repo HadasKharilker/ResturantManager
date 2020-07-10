@@ -38,10 +38,6 @@ public class ClientRepositoryImpel implements ClientRepository {   //for singelt
 
     @Override
     public void addClient(Client client) throws Exception {
-        if (client == null) {
-            throw new Exception("must have a value");
-        }
-
         this.clients.add(client);
         this.fileManager.write(this.clients);
     }

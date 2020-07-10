@@ -82,6 +82,9 @@ public class OrderService {
             String menuItemID = menuItemOrder.getMenuItemID();
             MenuItem menuItem = menuRepository.getMenuByID(Integer.parseInt(menuItemID));
 
+            if (menuItem == null) {
+                System.out.println("menuItem not exist");
+            }
             double menuItemPrice = menuItem.getPrice();
             int numberOfItems = menuItemOrder.getNumberOfItem();
 
@@ -108,17 +111,17 @@ public class OrderService {
 
         try {
             Order orderToClose = this.orderRepository.getOrder(Integer.parseInt(orderID));
-            orderToClose.setClosed(true);
             System.out.println("Total Order price: " + getTotalPriceOrder(orderToClose));
 
-            Client clientOrder = this.clientRepository.getClient(orderToClose.getClientID());
-            orderRepository.closeOrder(orderToClose);
-
             String messageClosed = "order closed , total price:" + getTotalPriceOrder(orderToClose);
-            messageClosed += "credit details :" + clientOrder.getCreditDetails().toString();
-            Mail.sendMail(messageClosed, clientOrder.getMailAddress());
 
+            if (orderToClose.getClientID() != 0) {
+                Client clientOrder = this.clientRepository.getClient(orderToClose.getClientID());
+                messageClosed += "credit details :" + clientOrder.getCreditDetails().toString();
+                Mail.sendMail(messageClosed, clientOrder.getMailAddress());
+            }
 
+            orderRepository.closeOrder(orderToClose);
             return true;
 
         } catch (Exception e) {
@@ -133,11 +136,21 @@ public class OrderService {
             Order newOrder;
 
             for (MenuItemOrder menuItemOrder : menuItemOrders) {
-                String menuItem=menuItemOrder.getMenuItemID();
+                String menuItem = menuItemOrder.getMenuItemID();
+                int menuItemID = Integer.parseInt(menuItem);
 
-                if(menuRepository.getMenuByID(Integer.parseInt(menuItem))==null)
+                if (menuRepository.getMenuByID(menuItemID) == null) {
+                    System.out.println("item " + menuItem + "not exist");
                     return false;
+                }
             }
+
+            if (clientID != "")
+                if (clientRepository.getClient(Integer.parseInt(clientID)) == null) {
+                    System.out.println("client not exist");
+                    return false;
+                }
+
 
             if (clientID != "")
                 newOrder = new Order(staff.getPersonId(), menuItemOrders, Integer.parseInt(clientID));
@@ -148,22 +161,27 @@ public class OrderService {
 
             return true;
 
+
         } catch (Exception e) {
 
             return false;
         }
-
     }
 
     public boolean updateOrder(String orderID, Set<MenuItemOrder> menuItemOrders, String clientID) {
         try {
             Order editOrder = this.orderRepository.getOrder(Integer.parseInt(orderID));
 
-            editOrder.setClientID(Integer.parseInt(clientID));
+            int clientIDInt = 0;
+            if (clientID != "")
+                clientIDInt = Integer.parseInt(clientID);
+
+            editOrder.setClientID(clientIDInt);
             editOrder.setMenuItems(menuItemOrders);
 
             this.orderRepository.updateOrder(editOrder);
             return true;
+
         } catch (Exception e) {
 
             return false;

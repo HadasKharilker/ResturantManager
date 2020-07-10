@@ -30,27 +30,24 @@ public class OrderController {
         return INSTANCE;
     }
 
-    public Boolean closeOrder(Order order, Client clientOrder) throws Exception {
-        return this.orderService.closeOrder(order, clientOrder);
-    }
-
-    public Order getOrder(int orderID) {
-        return this.orderService.getOrder(orderID);
-    }
-
-
     public boolean viewAllOpenOrders() {
         return this.orderService.viewAllOpenOrders();
     }
 
     public boolean addOrder(Staff staff, Set<MenuItemOrder> menuItemOrders, String clientID) {
-        return this.orderService.addNewOrder(staff, menuItemOrders, clientID);
+        if (staff != null)
+            return this.orderService.addNewOrder(staff, menuItemOrders, clientID);
+
+        return false;
 
 
     }
 
     public boolean viewAllOpenOrdersByStaff(Staff staff) {
-        return this.orderService.viewAllOpenOrdersByStaff(staff);
+        if (staff != null)
+            return this.orderService.viewAllOpenOrdersByStaff(staff);
+
+        return false;
     }
 
 
@@ -59,26 +56,27 @@ public class OrderController {
     }
 
     public boolean deleteOrder(String orderID) {
-        return this.orderService.deleteOrder(orderID);
+        if (orderID != "")
+            return this.orderService.deleteOrder(orderID);
 
+        return false;
 
     }
 
     public boolean editOrder(String orderID, Set<MenuItemOrder> menuItemOrders, String clientID) {
+        if (orderID != "")
+            return this.orderService.updateOrder(orderID, menuItemOrders, clientID);
 
-        return this.orderService.updateOrder(orderID,menuItemOrders,clientID);
-
-    }
-
-    public Set<Order> getAllStaffOpenOrders(int staffID) {
-
-        return this.orderService.getAllStaffOpenOrders(staffID);
+        return false;
 
     }
+
 
     public boolean closeOrder(String orderID) {
+        if (orderID != "")
+            return this.orderService.closeOrder(orderID);
 
-        return this.orderService.closeOrder(orderID);
+        return false;
 
     }
 

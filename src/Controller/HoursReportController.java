@@ -64,11 +64,17 @@ public class HoursReportController {
     }
 
     public boolean clockOut(Staff staff, int shiftNum) {
-        return hoursReportService.clockOut(staff, shiftNum);
+        if (shiftNum != 0 && staff != null)
+            return hoursReportService.clockOut(staff, shiftNum);
+
+        return false;
     }
 
     public int clockIn(Staff staff) {
-        return hoursReportService.clockIn(staff);
+        if (staff != null)
+            return hoursReportService.clockIn(staff);
+
+        return 0;
     }
 
 }

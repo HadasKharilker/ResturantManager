@@ -33,18 +33,25 @@ public class MenuController {
 
 
     public boolean addMenuItem(String menuID, String name, String price, String type) {
-        // validations
-        return this.menuService.addNewItemToMenu(menuID, name, price, type);
+        if (menuID != "")
+            return this.menuService.addNewItemToMenu(menuID, name, price, type);
+
+        return false;
     }
 
 
     public boolean editMenuItem(String menuID, String name, String price, String type) {
-        return this.menuService.editMenuItem(menuID, name, price, type);
+        if (menuID != "")
+            return this.menuService.editMenuItem(menuID, name, price, type);
+
+        return false;
     }
 
     public boolean deleteMenuItem(String itemID) {
+        if (itemID != "")
+            return this.menuService.deleteMenuItem(itemID);
 
-        return this.menuService.deleteMenuItem(itemID);
+        return false;
 
     }
 
@@ -53,7 +60,11 @@ public class MenuController {
     }
 
     public MenuItem findItem(int itemID) {
-        return this.menuService.find(itemID);
+        if (itemID != 0)
+            return this.menuService.find(itemID);
+
+
+        return null;
     }
 }
 

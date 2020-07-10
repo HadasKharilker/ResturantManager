@@ -172,7 +172,7 @@ public class HoursReportService {
 
     public boolean clockOut(Staff staff, int shiftNum) {
         try {
-            this.hoursReportRepository.clockOut(staff, shiftNum);
+            this.hoursReportRepository.clockOut(staff,shiftNum);
             return true;
 
         } catch (Exception e) {

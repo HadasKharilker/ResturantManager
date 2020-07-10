@@ -50,7 +50,7 @@ public class MenuItemRepositoryImpel implements MenuRepository {
     @Override
     public void deleteMenuItem(int itemID) throws Exception {
 
-        MenuItem menuItem = find(itemID);
+        MenuItem menuItem = getMenuByID(itemID);
 
         if (menuItem == null) {
             throw new Exception("item does'nt exists!");
@@ -84,7 +84,7 @@ public class MenuItemRepositoryImpel implements MenuRepository {
     }
 
     @Override
-    public MenuItem find(int itemID) {
+    public MenuItem getMenuByID(int itemID) {
 
         for (MenuItem m : menu) {
             if (m.getItemID() == itemID) {
@@ -97,7 +97,7 @@ public class MenuItemRepositoryImpel implements MenuRepository {
     }
 
     @Override
-    public Set<MenuItem> findAll() {
+    public Set<MenuItem> getAllMenu() {
 
         return this.menu;
     }

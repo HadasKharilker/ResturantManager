@@ -74,44 +74,9 @@ public class ClientService {
 
     }
 
-    public Set<Client> getAllClients() {
-        try {
-            return this.clientRepository.getAllClients();
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return null;
-        }
-
-    }
-
-    public Set<Client> getAllClientsPushOn() {
-        try {
-            return this.clientRepository.getAllClientsPushOn();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return null;
-        }
-
-    }
-
-    public Set<Client> getAllClientsBirthday() {
-        try {
-            return this.clientRepository.getAllClientsBirthday();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return null;
-        }
-
-    }
-
     public boolean printAllClients() {
         try {
-            Set<Client> clients = getAllClients();
+            Set<Client> clients = this.clientRepository.getAllClients();
 
             for (Client client : clients) {
                 System.out.println(client);
@@ -130,7 +95,7 @@ public class ClientService {
 
             Set<String> mails = new HashSet<String>();
 
-            Set<Client> clients = getAllClientsBirthday();
+            Set<Client> clients = this.clientRepository.getAllClientsBirthday();
 
             if (clients != null && clients.size() != 0) {
                 for (Client client : clients) {
@@ -150,7 +115,7 @@ public class ClientService {
         try {
             Set<String> mails = new HashSet<String>();
 
-            Set<Client> clients = getAllClientsPushOn();
+            Set<Client> clients = this.clientRepository.getAllClientsPushOn();
 
             if (clients != null) {
                 for (Client client : clients) {

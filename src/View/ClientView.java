@@ -20,7 +20,7 @@ public class ClientView {
         this.clientController = ClientController.getInstance();
     }
 
-    public void updateClient(Scanner scanner) throws Exception {
+    public void updateClient(Scanner scanner) {
 
         System.out.println("select client id to edit from list : ");
         viewAllClients();
@@ -104,6 +104,7 @@ public class ClientView {
 
 
     }
+
     public void addNewClient(Scanner scanner) {
 
         System.out.print("Enter person id : ");
@@ -144,6 +145,7 @@ public class ClientView {
 
 
     }
+
     public void deleteClient(Scanner scanner) {
         System.out.println("choose Client ID to delete:");
         viewAllClients();
@@ -161,6 +163,7 @@ public class ClientView {
 
 
     }
+
     public void viewAllClients() {
         boolean success = this.clientController.printAllClients();
         if (!success) {
@@ -169,6 +172,7 @@ public class ClientView {
 
         System.out.println();
     }
+
     public void sendClientBirthdayPush() {
         String message = "מזל טוב ליום הולדתך! הנך מקבל 100 שח מתנה ברשת מסעדות HIT";
 
@@ -180,6 +184,7 @@ public class ClientView {
         }
         System.out.println();
     }
+
     public void sendClientPush(Scanner scanner) {
         System.out.print("Enter message to sent : ");
         String message = scanner.nextLine();

@@ -71,9 +71,8 @@ public class MenuTest {
     //test 3: Checking success  valid menuItem addition
     public void addValidMenuItem() throws Exception {
         Assertions.assertThrows(Exception.class, () -> {
-            MenuItem menuItem = new MenuItem.MenuItemBuilder(15).itemName("TOFI").price(12.0).itemType(MenuItemType.valueOf("DESERT")).build();
 
-            boolean result = menuController.addMenuItem(menuItem);
+            boolean result = menuController.addMenuItem("15", "TOFI", "12.0", "DESERT");
             System.out.println(result);
             Assertions.assertTrue(result);
 
@@ -85,7 +84,7 @@ public class MenuTest {
     public void RemoveValidMenuItem() throws Exception {
         Assertions.assertThrows(Exception.class, () -> {
 
-            boolean result = menuController.deleteMenuItem(15);
+            boolean result = menuController.deleteMenuItem("15");
             System.out.println(result);
             Assertions.assertTrue(result);
 

@@ -14,9 +14,9 @@ public interface MenuRepository {
 	void updateMenuItem(MenuItem menuItem) throws Exception;
 
 	
-	MenuItem find(int id);
+	MenuItem getMenuByID(int id);
 	
-	Set<MenuItem> findAll();
+	Set<MenuItem> getAllMenu();
 	//edit 
 	
 	

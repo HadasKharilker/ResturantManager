@@ -146,7 +146,7 @@ public class StaffRepositoryImpel implements StaffRepository {
 
 
     @Override
-    public Set<Staff> findAll() {
+    public Set<Staff> getAllStaff() {
 
         return this.staffSet;
 

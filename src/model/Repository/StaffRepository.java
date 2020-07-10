@@ -19,7 +19,7 @@ public interface StaffRepository {
 
         Staff getStaffByID(int id);
 
-        Set<Staff> findAll();
+        Set<Staff> getAllStaff();
 
         boolean isExist(int id);
 

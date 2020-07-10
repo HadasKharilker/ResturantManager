@@ -38,30 +38,35 @@ public class OrderController {
         return this.orderService.getOrder(orderID);
     }
 
-    public Set<Order> getAllOpenOrders() {
-        Set<Order> order = this.orderService.getAllOpenOrders();
-        return order;
+
+    public boolean viewAllOpenOrders() {
+        return this.orderService.viewAllOpenOrders();
     }
 
-    public Set<Order> getAllClosedOrders() {
-        return this.orderService.getAllClosedOrders();
-    }
-
-    public boolean addOrder(Order newOrder) {
-        return this.orderService.addNewOrder(newOrder);
+    public boolean addOrder(Staff staff, Set<MenuItemOrder> menuItemOrders, String clientID) {
+        return this.orderService.addNewOrder(staff, menuItemOrders, clientID);
 
 
     }
 
-    public boolean deleteOrder(int orderID) {
+    public boolean viewAllOpenOrdersByStaff(Staff staff) {
+        return this.orderService.viewAllOpenOrdersByStaff(staff);
+    }
+
+
+    public boolean viewTotalOrderReport() {
+        return this.orderService.viewTotalOrderReport();
+    }
+
+    public boolean deleteOrder(String orderID) {
         return this.orderService.deleteOrder(orderID);
 
 
     }
 
-    public boolean editOrder(Order editOrder, String orderID) {
-        editOrder.setOrderID(Integer.parseInt(orderID));
-        return this.orderService.updateOrder(editOrder);
+    public boolean editOrder(String orderID, Set<MenuItemOrder> menuItemOrders, String clientID) {
+
+        return this.orderService.updateOrder(orderID,menuItemOrders,clientID);
 
     }
 
@@ -70,5 +75,12 @@ public class OrderController {
         return this.orderService.getAllStaffOpenOrders(staffID);
 
     }
+
+    public boolean closeOrder(String orderID) {
+
+        return this.orderService.closeOrder(orderID);
+
+    }
+
 
 }

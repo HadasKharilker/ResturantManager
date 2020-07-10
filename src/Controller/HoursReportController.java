@@ -36,19 +36,31 @@ public class HoursReportController {
     }
 
     public boolean viewStaffHouerWage(String staffID) {
-        return this.hoursReportService.viewStaffHouerWage(staffID);
+        if (staffID != "")
+            return this.hoursReportService.viewStaffHouerWage(staffID);
+
+        return false;
     }
 
     public boolean viewMyHoursReport(Staff staff) {
-        return this.hoursReportService.viewMyHoursReport(staff);
+        if (staff != null)
+            return this.hoursReportService.viewMyHoursReport(staff);
+
+        return false;
     }
 
     public boolean viewAllStaffHoursReportsByMonth(String month) {
-        return this.hoursReportService.viewAllStaffHoursReportsByMonth(month);
+        if (month != "")
+            return this.hoursReportService.viewAllStaffHoursReportsByMonth(month);
+
+        return false;
     }
 
     public boolean paySalaryToStaffID(String staffID, String month) {
-        return this.hoursReportService.paySalaryToStaffID(staffID, month);
+        if (month != "" && staffID != "")
+            return this.hoursReportService.paySalaryToStaffID(staffID, month);
+
+        return false;
     }
 
     public boolean clockOut(Staff staff, int shiftNum) {

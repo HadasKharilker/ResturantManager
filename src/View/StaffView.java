@@ -18,233 +18,166 @@ public class StaffView {
         this.staffController = StaffController.getInstance();
     }
 
-
     public void addNewStaff(Scanner scanner) {
-        try {
-            System.out.print("Enter staff id : ");
-            String staffId = scanner.nextLine();
-            System.out.print("Entr first name : ");
-            String fName = scanner.nextLine();
-            System.out.print("Enter last name : ");
-            String lName = scanner.nextLine();
-            System.out.print("Enter mail address : ");
-            String mailAddress = scanner.nextLine();
-            System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
-            String birthDate = scanner.nextLine();
+        boolean success;
 
-            System.out.print("Enter private house number:");
-            String houseNum = scanner.nextLine();
-            System.out.print("Enter house street:");
-            String houseStreet = scanner.nextLine();
-            System.out.print("Enter city:");
-            String city = scanner.nextLine();
-            System.out.print("Enter state:");
-            String state = scanner.nextLine();
-            System.out.print("Enter User Name:");
-            String username = scanner.nextLine();
-            System.out.print("Enter password:");
-            String staffPassword = scanner.nextLine();
+        System.out.print("Enter staff id : ");
+        String staffId = scanner.nextLine();
+        System.out.print("Entr first name : ");
+        String fName = scanner.nextLine();
+        System.out.print("Enter last name : ");
+        String lName = scanner.nextLine();
+        System.out.print("Enter mail address : ");
+        String mailAddress = scanner.nextLine();
+        System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
+        String birthDate = scanner.nextLine();
 
-            System.out.println("BankDetails:");
-            System.out.println("enter bank Account Number:");
-            String bankAccountNumber = scanner.nextLine();
+        System.out.print("Enter private house number:");
+        String houseNum = scanner.nextLine();
+        System.out.print("Enter house street:");
+        String houseStreet = scanner.nextLine();
+        System.out.print("Enter city:");
+        String city = scanner.nextLine();
+        System.out.print("Enter state:");
+        String state = scanner.nextLine();
 
-            System.out.println("brunch Number:");
-            String brunchNumber = scanner.nextLine();
+        System.out.print("Enter User Name:");
+        String username = scanner.nextLine();
+        System.out.print("Enter password:");
+        String staffPassword = scanner.nextLine();
 
-            Address address = new Address.AddressBuilder(houseStreet).houseNumber(Integer.parseInt(houseNum)).city(city).state(state).build();
-            BankDetails bankDetails = new BankDetails(bankAccountNumber, Integer.parseInt(brunchNumber));
+        System.out.println("BankDetails:");
+        System.out.println("enter bank Account Number:");
+        String bankAccountNumber = scanner.nextLine();
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-            LocalDate date = LocalDate.parse(birthDate, formatter);
-            UserDetails userDetails = new UserDetails(username, staffPassword);
+        System.out.println("brunch Number:");
+        String brunchNumber = scanner.nextLine();
 
+        System.out.print("Enter role (manager/employee):");
+        String role = scanner.nextLine();
 
-            Staff staff;
-            System.out.print("Enter role (manager/employee):");
-            String roleUser = scanner.nextLine();
+        if (role.equals("employee")) {
+            System.out.print("Enter employee type (shiftManager,waiter,hostess,massacre):");
+            String employeeType = scanner.nextLine();
 
-            if (roleUser.equals("employee")) {
-                EmployeeType employeeType;
+            success = this.staffController.addNewEmployee(staffId, fName, lName, birthDate, houseNum,
+                    houseStreet, city, username, staffPassword, role,
+                    state, bankAccountNumber, brunchNumber, mailAddress, employeeType);
 
-                System.out.print("Enter employee type (shiftManager,minorWorker):");
-                roleUser = scanner.nextLine();
+        } else {
+            System.out.print("Enter License number:");
+            String licenseNum = scanner.nextLine();
 
-                if (roleUser.equals("minorWorker")) {
-                    System.out.print("Enter employee type (waiter,hostess,massacre):");
-                    String employeeTypeUser = scanner.nextLine();
-                    employeeType = EmployeeType.valueOf(employeeTypeUser);
-
-                    userDetails.setRole(Role.minorWorker);
-                } else {
-                    employeeType = EmployeeType.shiftManager;
-                    userDetails.setRole(Role.shiftManager);
-                }
-                staff = new Employee(Integer.parseInt(staffId), fName, lName, date, address, userDetails, bankDetails, mailAddress, employeeType);
-
-
-            } else {
-                userDetails.setRole(Role.manager);
-
-                System.out.print("Enter License number:");
-                String licenseNum = scanner.nextLine();
-
-                staff = new Manager(Integer.parseInt(staffId), fName, lName, date, address, userDetails, bankDetails, mailAddress, licenseNum);
-            }
-
-            boolean success = this.staffController.addNewStaff(staff);
-            if (success) {
-                System.out.println("Staff " + fName + " added successfully");
-            } else {
-                System.out.println("Failed to add " + fName);
-            }
-            System.out.println();
-        } catch (Exception ex) {
-            System.out.println("Failed to add new staff");
+            success = this.staffController.addNewManager(staffId, fName, lName, birthDate, houseNum,
+                    houseStreet, city, username, staffPassword, role,
+                    state, bankAccountNumber, brunchNumber, mailAddress, licenseNum);
         }
-    }
 
-    public void viewAllStaff() {
-        try {
-            Set<Staff> staffSet = this.staffController.getAllStaff();
-            System.out.println("List of Staff members:");
-            for (Staff s : staffSet) {
-                System.out.println(s);
-
-            }
-        } catch (Exception ex) {
-            System.out.println("Failed to view all staff");
+        if (success) {
+            System.out.println("Staff " + fName + " added successfully");
+        } else {
+            System.out.println("Failed to add " + fName);
         }
-    }
+        System.out.println();
 
-    public void deleteStaff(Scanner scanner) {
-        try {
-            System.out.println("Enter staff id you want to remove (number): ");
-            viewAllStaff();
-            String id = scanner.nextLine();
-
-            boolean success = this.staffController.deleteStaff(Integer.parseInt(id));
-
-            if (success) {
-                System.out.println("Staff  removed successfully");
-            } else {
-                System.out.println("Failed to remove ");
-            }
-            System.out.println();
-        } catch (Exception ex) {
-            System.out.println("Failed to delete Staff");
-        }
-    }
-
-    public void editStaffPersonalDetails(Scanner scanner) {
-        try {
-            System.out.println("Enter Staff id you want to edit (number): ");
-            viewAllStaff();
-            String id = scanner.nextLine();
-
-            Staff staff = this.staffController.getStaffByID(Integer.parseInt(id));
-
-            if (staff == null) {
-                System.out.print("Staff does not exists!");
-
-            } else {
-                System.out.print("Enter first name : ");
-                String fName = scanner.nextLine();
-                System.out.print("Enter last name : ");
-                String lName = scanner.nextLine();
-                System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
-                String birthDate = scanner.nextLine();
-
-                System.out.print("Enter private house number:");
-                String houseNum = scanner.nextLine();
-                System.out.print("Enter house street:");
-                String houseStreet = scanner.nextLine();
-                System.out.print("Enter city:");
-                String city = scanner.nextLine();
-                System.out.print("Enter state:");
-                String state = scanner.nextLine();
-
-                System.out.println("BankDetails:");
-                System.out.println("enter bank Account Number:");
-                String bankAccountNumber = scanner.nextLine();
-
-                System.out.println("brunch Number:");
-                String brunchNumber = scanner.nextLine();
-
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-                LocalDate date = LocalDate.parse(birthDate, formatter);
-
-                staff.setFirstName(fName);
-                staff.setLastName(lName);
-                staff.setBirthDate(date);
-
-                Address address = new Address.AddressBuilder(houseStreet).houseNumber(Integer.parseInt(houseNum)).city(city).state(state).build();
-
-                staff.setAddress(address);
-                BankDetails bankDetails = new BankDetails(bankAccountNumber, Integer.parseInt(brunchNumber));
-                staff.setBankDetails(bankDetails);
-
-                boolean success = this.staffController.editStaff(staff);
-                if (success) {
-                    System.out.println("Staff " + fName + " updated successfully");
-                } else {
-                    System.out.println("Failed to update " + fName);
-                }
-                System.out.println();
-            }
-        } catch (Exception ex) {
-            System.out.println("Failed to update Staff");
-        }
     }
 
 
     public void editStaffUserDetails(Scanner scanner) {
-        try {
-            System.out.println("Enter Staff id you want to edit (number): ");
-            viewAllStaff();
-            String id = scanner.nextLine();
 
-            Staff staffEdit = staffController.getStaffByID(Integer.parseInt(id));
+        System.out.println("Enter Staff id you want to edit (number): ");
+        viewAllStaff();
+        String staffID = scanner.nextLine();
 
-            if (staffEdit == null) {
-                System.out.print("Staff does not exists!");
+        System.out.print("Enter role (manager/employee):");
+        String role = scanner.nextLine();
 
-            } else {
-                Role role;
-                System.out.print("Enter role (manager/employee):");
-                String roleUser = scanner.nextLine();
+        System.out.print("Enter User Name:");
+        String username = scanner.nextLine();
 
-                if (roleUser.equals("employee")) {
-                    System.out.print("Enter employee type (shiftManager,minorWorker):");
-                    roleUser = scanner.nextLine();
-                }
-                role = Role.valueOf(roleUser);
+        System.out.print("Enter password:");
+        String staffPassword = scanner.nextLine();
 
-                System.out.print("Enter User Name:");
-                String username = scanner.nextLine();
+        boolean success = this.staffController.editStaff(staffID, role, username, staffPassword);
 
-                System.out.print("Enter password:");
-                String staffPassword = scanner.nextLine();
-
-                UserDetails userDetails = new UserDetails(username, staffPassword, role);
-                staffEdit.setUserDetails(userDetails);
-
-                boolean success = this.staffController.editStaff(staffEdit);
-
-                if (success) {
-                    System.out.println("Staff " + id + " updated successfully");
-                } else {
-                    System.out.println("Failed to update " + id);
-                }
-
-                System.out.println();
-
-
-            }
-        } catch (Exception ex) {
+        if (success) {
+            System.out.println("editStaffUserDetails successfully");
+        } else {
             System.out.println("Failed to editStaffUserDetails");
         }
+
+        System.out.println();
+
+
+    }
+
+    public void viewAllStaff() {
+
+        boolean success = this.staffController.printAllStaff();
+        if (!success) {
+            System.out.println("Failed to viewAllStaff ");
+        }
+
+        System.out.println();
+
+
+    }
+
+    public void deleteStaff(Scanner scanner) {
+        System.out.println("Enter staff id you want to remove (number): ");
+        viewAllStaff();
+
+        String staffID = scanner.nextLine();
+
+        boolean success = this.staffController.deleteStaff(staffID);
+        if (success) {
+            System.out.println("staff " + staffID + " delete successfully");
+        } else {
+            System.out.println("Failed to delete staff " + staffID);
+        }
+        System.out.println();
+
+    }
+
+    public void editStaffPersonalDetails(Scanner scanner) {
+
+        System.out.println("Enter Staff id you want to edit (number): ");
+        viewAllStaff();
+        String id = scanner.nextLine();
+
+        System.out.print("Enter first name : ");
+        String fName = scanner.nextLine();
+        System.out.print("Enter last name : ");
+        String lName = scanner.nextLine();
+        System.out.print("Enter birth date in this format (dd/mm/yyyy) :");
+        String birthDate = scanner.nextLine();
+        System.out.print("Enter private house number:");
+        String houseNum = scanner.nextLine();
+        System.out.print("Enter house street:");
+        String houseStreet = scanner.nextLine();
+        System.out.print("Enter city:");
+        String city = scanner.nextLine();
+        System.out.print("Enter state:");
+        String state = scanner.nextLine();
+        System.out.println("Enter mail :");
+        String mail = scanner.nextLine();
+
+        System.out.println("BankDetails:");
+        System.out.println("enter bank Account Number:");
+        String bankAccountNumber = scanner.nextLine();
+
+        System.out.println("brunch Number:");
+        String brunchNumber = scanner.nextLine();
+
+        boolean success = this.staffController.editStaff(id, fName, lName, birthDate, houseNum, houseStreet, city,
+                state, bankAccountNumber, brunchNumber, mail);
+
+        if (success) {
+            System.out.println("Staff PersonalDetails " + fName + " updated successfully");
+        } else {
+            System.out.println("Failed to update PersonalDetails-" + fName);
+        }
+        System.out.println();
     }
 }
 

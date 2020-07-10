@@ -41,11 +41,8 @@ public class StaffTest {
     public void FailAddNewMinorEmployeeWithOccupiedID() {
 
         Assertions.assertThrows(Exception.class, () -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-            LocalDate date = LocalDate.parse("12/03/1990", formatter);
-            Address address = new Address.AddressBuilder("12").houseNumber(Integer.parseInt("12")).city("test").state("test").build();
+            boolean result = staffController.addNewEmployee("1", "Test", "Test", "12/03/1990", "12", "12", "test", "test", "test", "manager", "manager", "99999", "99999", "test@test.com", "waiter");
 
-            boolean result = staffController.addNewStaff(new Employee(1, "Test", "Test", date, address, new UserDetails("test", "test", Role.valueOf("manager")), new BankDetails("99999", 99999), "test@test.com", EmployeeType.valueOf("waiter")));
             System.out.println(result);
             Assertions.assertFalse(result);
 
@@ -58,15 +55,8 @@ public class StaffTest {
     public void FailAddNewManagerWithOccupiedID() {
 
         Assertions.assertThrows(Exception.class, () -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-            LocalDate date = LocalDate.parse("12/03/1990", formatter);
+            boolean result = staffController.addNewManager("1", "Test", "Test", "12/03/1990", "12", "12", "test", "test", "test", "manager", "manager", "99999", "99999", "test@test.com", "1234");
 
-            Address address = new Address.AddressBuilder("12").houseNumber(Integer.parseInt("12")).city("test").state("test").build();
-            UserDetails userDetails = new UserDetails("test", "test", Role.valueOf("manager"));
-            BankDetails bankDetails = new BankDetails("99999", 99999);
-
-            Staff manager = new Manager(1, "Test", "Test", date, address, userDetails, bankDetails, "test@test.com", "1234");
-            boolean result = staffController.addNewStaff(manager);
             System.out.println(result);
             Assertions.assertFalse(result);
 
@@ -79,9 +69,8 @@ public class StaffTest {
     public void FailRemoveManagerWithInvalidID() {
 
         Assertions.assertThrows(Exception.class, () -> {
-            LocalDate.parse("11/11/1990", DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH));
 
-            boolean result = staffController.deleteStaff(29999);
+            boolean result = staffController.deleteStaff("29999");
             Assertions.assertFalse(result);
 
 
@@ -92,15 +81,10 @@ public class StaffTest {
     public void SuccessAddNewMinorEmployeeWithValidID() {
 
         Assertions.assertThrows(Exception.class, () -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-            LocalDate date = LocalDate.parse("12/03/1990", formatter);
-            Address address = new Address.AddressBuilder("12").houseNumber(Integer.parseInt("12")).city("test").state("test").build();
+            boolean result = staffController.addNewEmployee("1", "Test", "Test", "12/03/1990", "12", "12", "test", "test", "employee", "test", "manager", "99999", "99999", "test@test.com", "waiter");
 
-            boolean result = staffController.addNewStaff(new Employee(1, "Test", "Test", date, address, new UserDetails("test", "test", Role.valueOf("manager")), new BankDetails("99999", 99999), "test@test.com", EmployeeType.valueOf("waiter")));
             System.out.println(result);
             Assertions.assertTrue(result);
-
-
         });
     }
 
@@ -108,11 +92,7 @@ public class StaffTest {
     public void SuccessAddNewShiftManagerEmployeeWithValidID() {
 
         Assertions.assertThrows(Exception.class, () -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-            LocalDate date = LocalDate.parse("12/03/1990", formatter);
-            Address address = new Address.AddressBuilder("12").houseNumber(Integer.parseInt("12")).city("test").state("test").build();
-
-            boolean result = staffController.addNewStaff(new Employee(1, "Test", "Test", date, address, new UserDetails("test", "test", Role.valueOf("manager")), new BankDetails("99999", 99999), "test@test.com", EmployeeType.valueOf("shiftManager")));
+            boolean result = staffController.addNewEmployee("1", "Test", "Test", "12/03/1990", "12", "12", "test", "test", "test", "employee", "manager", "99999", "99999", "test@test.com", "shiftManager");
             System.out.println(result);
             Assertions.assertTrue(result);
 

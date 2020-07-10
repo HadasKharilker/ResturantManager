@@ -22,7 +22,6 @@ public class OrderTest {
     private OrderController orderController;
 
 
-
     @BeforeEach
     public void setup() throws Exception {
         orderController = OrderController.getInstance();
@@ -33,7 +32,7 @@ public class OrderTest {
     public void tearDown() {
         System.out.println("OrderTestsEnded");
     }
-
+/*
     @Test
 
 
@@ -61,22 +60,10 @@ public class OrderTest {
 
 
 
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
+*/
 
 
 }
+
 
 

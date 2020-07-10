@@ -37,44 +37,58 @@ public class StaffController {
         return INSTANCE;
     }
 
-    public boolean addNewStaff(Staff staff) {
-        return this.staffService.addNewStaff(staff);
+    public boolean addNewEmployee(String personId, String fName, String lname, String date, String houseNum,
+                                  String houseStreet, String city, String username, String staffPassword, String role,
+                                  String state, String bankAccountNumber, String brunchNumber, String mail, String employeeType) {
+        if (personId != "")
+            return this.staffService.addNewEmployee(personId, fName, lname, date, houseNum,
+                    houseStreet, city, username, staffPassword, role,
+                    state, bankAccountNumber, brunchNumber, mail, employeeType);
+
+        return false;
+    }
+
+    public boolean addNewManager(String personId, String fName, String lname, String date, String houseNum,
+                                 String houseStreet, String city, String username, String staffPassword, String role,
+                                 String state, String bankAccountNumber, String brunchNumber, String mail, String licenseNum) {
+
+        if (personId != "")
+
+            return this.staffService.addNewManager(personId, fName, lname, date, houseNum,
+                    houseStreet, city, username, staffPassword, role,
+                    state, bankAccountNumber, brunchNumber, mail, licenseNum);
+
+        return false;
     }
 
 
-    public Set<Staff> getAllStaff() {
-        Set<Staff> staff = this.staffService.getAllStaff();
-        return staff;
+    public boolean deleteStaff(String id) {
+        if (id != "")
+            return this.staffService.deleteStaff(id);
+
+        return false;
     }
 
-
-    public boolean deleteStaff(int id) {
-
-        return this.staffService.deleteStaff(id);
-
+    public boolean printAllStaff() {
+        return staffService.printAllStaff();
     }
 
-    public boolean editStaff(Staff staff) {
+    public boolean editStaff(String personId, String fName, String lname, String date, String houseNum, String houseStreet, String city,
+                             String state, String bankAccountNumber, String brunchNumber, String mail) {
+        if (personId != "")
+            return this.staffService.editStaff(personId, fName, lname, date, houseNum, houseStreet, city,
+                    state, bankAccountNumber, brunchNumber, mail);
 
-        return this.staffService.editStaff(staff);
-
-
-    }
-
-
-    public Staff getStaffByID(int id) {
-
-        return this.staffService.getStaffByID(id);
+        return false;
 
 
     }
 
+    public boolean editStaff(String StaffID, String role, String username, String staffPassword) {
+        if (StaffID != "")
+            return this.staffService.editStaff(StaffID, role, username, staffPassword);
 
-    public boolean isExist(Integer id) {
-
-        return this.staffService.isExist(id);
-
+        return false;
     }
-
 
 }

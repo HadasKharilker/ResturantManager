@@ -32,32 +32,39 @@ public class MenuController {
     }
 
 
-    public boolean addMenuItem(MenuItem item) {
-        // validations
-        return this.menuService.addNewItemToMenu(item);
+    public boolean addMenuItem(String menuID, String name, String price, String type) {
+        if (menuID != "")
+            return this.menuService.addNewItemToMenu(menuID, name, price, type);
+
+        return false;
     }
 
-    public Set<MenuItem> getAllMenuItems() {
-        Set<MenuItem> menu = this.menuService.getAllMenuItems();
-        return menu;
+
+    public boolean editMenuItem(String menuID, String name, String price, String type) {
+        if (menuID != "")
+            return this.menuService.editMenuItem(menuID, name, price, type);
+
+        return false;
     }
 
-    public boolean editMenuItem(MenuItem item) {
+    public boolean deleteMenuItem(String itemID) {
+        if (itemID != "")
+            return this.menuService.deleteMenuItem(itemID);
 
-
-        return this.menuService.editMenuItem(item);
-
-
-    }
-    public boolean deleteMenuItem(Integer itemID) {
-
-        return this.menuService.deleteMenuItem(itemID);
+        return false;
 
     }
 
+    public boolean printAllMenu() {
+        return menuService.printAllMenu();
+    }
 
     public MenuItem findItem(int itemID) {
-        return  this.menuService.find(itemID);
+        if (itemID != 0)
+            return this.menuService.find(itemID);
+
+
+        return null;
     }
 }
 

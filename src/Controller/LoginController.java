@@ -13,7 +13,6 @@ public class LoginController {
     private static final Object lockObject = new Object();
 
 
-
     private final LoginService loginService;
     //signup
     //forgot password
@@ -38,9 +37,10 @@ public class LoginController {
     }
 
     public Staff getStaffByUserName(String username) throws Exception {
-        return loginService.getStaffByUserName(username);
+        if (username != null)
+            return loginService.getStaffByUserName(username);
 
-
+        return null;
     }
 
 
@@ -49,8 +49,7 @@ public class LoginController {
             throw new IllegalArgumentException("Username or password must not be null");
         }
         boolean isUserCorrect = false;
-
-
+        
         Staff staff = this.getStaffByUserName(username);
 
         if (staff != null)

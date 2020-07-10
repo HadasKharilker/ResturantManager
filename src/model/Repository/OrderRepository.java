@@ -19,7 +19,7 @@ public interface OrderRepository {
 
     void updateOrder(Order order) throws Exception;
 
-    public void closeOrder(Order order, Client clientOrder) throws IOException, Exception;
+    void closeOrder(Order order) throws  Exception;
 
-    public Set<Order> getAllClosedOrders();
+    Set<Order> getAllClosedOrders();
 }

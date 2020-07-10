@@ -3,16 +3,16 @@ package model;
 import java.io.Serializable;
 
 public class MenuItemOrder implements Serializable {
-    private MenuItem menuItem;
+    private String menuItemID;
     private int numberOfItem;
 
-    public MenuItemOrder(MenuItem menuItem,int numberOfItem){
-        this.menuItem=menuItem;
-        this.numberOfItem=numberOfItem;
+    public MenuItemOrder(String menuItemID, int numberOfItem) {
+        this.menuItemID = menuItemID;
+        this.numberOfItem = numberOfItem;
     }
 
-    public MenuItem getMenuItem() {
-        return menuItem;
+    public String getMenuItemID() {
+        return menuItemID;
     }
 
     public int getNumberOfItem() {
@@ -22,7 +22,7 @@ public class MenuItemOrder implements Serializable {
     @Override
     public String toString() {
 
-        return "[menuItem=" + menuItem + ", numberOfItem=" + numberOfItem + "]";
+        return "[menuItem=" + menuItemID + ", numberOfItem=" + numberOfItem + "]";
 
     }
 

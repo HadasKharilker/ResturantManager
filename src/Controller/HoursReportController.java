@@ -31,25 +31,50 @@ public class HoursReportController {
         return INSTANCE;
     }
 
-    public Set<StaffHour> getStaffHourBy(int staffID) {
-        return hoursReportService.getStaffHourByStaffID(staffID);
+    public boolean viewAllStaffHoursReportsToday() {
+        return this.hoursReportService.viewAllStaffHoursReportsToday();
+    }
 
+    public boolean viewStaffHouerWage(String staffID) {
+        if (staffID != "")
+            return this.hoursReportService.viewStaffHouerWage(staffID);
+
+        return false;
+    }
+
+    public boolean viewMyHoursReport(Staff staff) {
+        if (staff != null)
+            return this.hoursReportService.viewMyHoursReport(staff);
+
+        return false;
+    }
+
+    public boolean viewAllStaffHoursReportsByMonth(String month) {
+        if (month != "")
+            return this.hoursReportService.viewAllStaffHoursReportsByMonth(month);
+
+        return false;
+    }
+
+    public boolean paySalaryToStaffID(String staffID, String month) {
+        if (month != "" && staffID != "")
+            return this.hoursReportService.paySalaryToStaffID(staffID, month);
+
+        return false;
     }
 
     public boolean clockOut(Staff staff, int shiftNum) {
-        return hoursReportService.clockOut(staff, shiftNum);
+        if (shiftNum != 0 && staff != null)
+            return hoursReportService.clockOut(staff, shiftNum);
+
+        return false;
     }
 
     public int clockIn(Staff staff) {
-        return hoursReportService.clockIn(staff);
-    }
+        if (staff != null)
+            return hoursReportService.clockIn(staff);
 
-    public Set<StaffHour> getAllStaffHourByMonth(int month) {
-        return hoursReportService.getAllStaffHourByMonth(month);
-    }
-
-    public Set<StaffHour> getAllStaffHourToday(LocalDate todayDate) {
-        return hoursReportService.getAllStaffHourToday(todayDate);
+        return 0;
     }
 
 }

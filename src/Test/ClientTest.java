@@ -42,8 +42,8 @@ public class ClientTest {
 
         Assertions.assertThrows(Exception.class, () -> {
 
-            Client client = new Client(Integer.parseInt(""), "test", "test", date, new Address.AddressBuilder("test").houseNumber(Integer.parseInt("12")).state("test").city("test").build(), "test", new CreditDetails.CreditDetailsBuilder("12345").period(date).code(123).build(), false);
-            Boolean result = clientController.addNewClient(client);
+
+            Boolean result = clientController.addNewClient("", "test", "test", "01/01/2001", "test", "12", "test", "test", "test", "12345", "01/01/2001", "123", "0");
             Assertions.assertFalse(result);
 
         });
@@ -55,8 +55,8 @@ public class ClientTest {
         LocalDate date = LocalDate.parse("01/01/2001", formatter);
 
         Assertions.assertThrows(Exception.class, () -> {
-            Client client = new Client(999, "test", "test", date, new Address.AddressBuilder("test").houseNumber(Integer.parseInt("12")).state("test").city("test").build(), "test", new CreditDetails.CreditDetailsBuilder("12345").period(date).code(123).build(), false);
-            Boolean result = clientController.addNewClient(client);
+
+            Boolean result = clientController.addNewClient("999", "test", "test", "01/01/2001", "test", "12", "test", "test", "test", "12345", "01/01/2001", "123", "0");
             Assertions.assertTrue(result);
 
         });
@@ -68,7 +68,7 @@ public class ClientTest {
 
         Assertions.assertThrows(Exception.class, () -> {
 
-            Boolean result = clientController.deleteClient(999);
+            Boolean result = clientController.deleteClient("999");
             Assertions.assertTrue(result);
 
         });

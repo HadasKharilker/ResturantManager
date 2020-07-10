@@ -30,45 +30,55 @@ public class OrderController {
         return INSTANCE;
     }
 
-    public Boolean closeOrder(Order order, Client clientOrder) throws Exception {
-        return this.orderService.closeOrder(order, clientOrder);
+    public boolean viewAllOpenOrders() {
+        return this.orderService.viewAllOpenOrders();
     }
 
-    public Order getOrder(int orderID) {
-        return this.orderService.getOrder(orderID);
-    }
+    public boolean addOrder(Staff staff, Set<MenuItemOrder> menuItemOrders, String clientID) {
+        if (staff != null)
+            return this.orderService.addNewOrder(staff, menuItemOrders, clientID);
 
-    public Set<Order> getAllOpenOrders() {
-        Set<Order> order = this.orderService.getAllOpenOrders();
-        return order;
-    }
-
-    public Set<Order> getAllClosedOrders() {
-        return this.orderService.getAllClosedOrders();
-    }
-
-    public boolean addOrder(Order newOrder) {
-        return this.orderService.addNewOrder(newOrder);
+        return false;
 
 
     }
 
-    public boolean deleteOrder(int orderID) {
-        return this.orderService.deleteOrder(orderID);
+    public boolean viewAllOpenOrdersByStaff(Staff staff) {
+        if (staff != null)
+            return this.orderService.viewAllOpenOrdersByStaff(staff);
 
+        return false;
+    }
+
+
+    public boolean viewTotalOrderReport() {
+        return this.orderService.viewTotalOrderReport();
+    }
+
+    public boolean deleteOrder(String orderID) {
+        if (orderID != "")
+            return this.orderService.deleteOrder(orderID);
+
+        return false;
 
     }
 
-    public boolean editOrder(Order editOrder, String orderID) {
-        editOrder.setOrderID(Integer.parseInt(orderID));
-        return this.orderService.updateOrder(editOrder);
+    public boolean editOrder(String orderID, Set<MenuItemOrder> menuItemOrders, String clientID) {
+        if (orderID != "")
+            return this.orderService.updateOrder(orderID, menuItemOrders, clientID);
+
+        return false;
 
     }
 
-    public Set<Order> getAllStaffOpenOrders(int staffID) {
 
-        return this.orderService.getAllStaffOpenOrders(staffID);
+    public boolean closeOrder(String orderID) {
+        if (orderID != "")
+            return this.orderService.closeOrder(orderID);
+
+        return false;
 
     }
+
 
 }

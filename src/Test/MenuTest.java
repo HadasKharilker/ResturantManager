@@ -42,9 +42,8 @@ public class MenuTest {
     public void addMenuItemWithInvalidMenuitemID() {
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            MenuItem menuItem = new MenuItem.MenuItemBuilder(99999).itemName("xxx").price(12.0).itemType(MenuItemType.valueOf("manager")).build();
 
-            boolean result = menuController.addMenuItem(menuItem);
+            boolean result = menuController.addMenuItem("99999", "xxx", "12.0", "manager");
             System.out.println(result);
             Assertions.assertFalse(result);
 
@@ -57,9 +56,8 @@ public class MenuTest {
     public void addMenuItemWithInvalidMenuitemType() {
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            MenuItem menuItem = new MenuItem.MenuItemBuilder(1).itemName("xxx").price(12.0).itemType(MenuItemType.valueOf("koko")).build();
 
-            boolean result = menuController.addMenuItem(menuItem);
+            boolean result = menuController.addMenuItem("1", "xxx", "12.0", "koko");
             System.out.println(result);
             Assertions.assertFalse(result);
 
@@ -71,9 +69,8 @@ public class MenuTest {
     //test 3: Checking success  valid menuItem addition
     public void addValidMenuItem() throws Exception {
         Assertions.assertThrows(Exception.class, () -> {
-            MenuItem menuItem = new MenuItem.MenuItemBuilder(15).itemName("TOFI").price(12.0).itemType(MenuItemType.valueOf("DESERT")).build();
 
-            boolean result = menuController.addMenuItem(menuItem);
+            boolean result = menuController.addMenuItem("15", "TOFI", "12.0", "DESERT");
             System.out.println(result);
             Assertions.assertTrue(result);
 
@@ -85,7 +82,7 @@ public class MenuTest {
     public void RemoveValidMenuItem() throws Exception {
         Assertions.assertThrows(Exception.class, () -> {
 
-            boolean result = menuController.deleteMenuItem(15);
+            boolean result = menuController.deleteMenuItem("15");
             System.out.println(result);
             Assertions.assertTrue(result);
 

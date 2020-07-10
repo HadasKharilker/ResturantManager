@@ -58,14 +58,6 @@ public class MenuController {
     public boolean printAllMenu() {
         return menuService.printAllMenu();
     }
-
-    public MenuItem findItem(int itemID) {
-        if (itemID != 0)
-            return this.menuService.find(itemID);
-
-
-        return null;
-    }
 }
 
 

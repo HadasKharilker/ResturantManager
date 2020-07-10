@@ -103,17 +103,6 @@ public class OrderService {
 
     }
 
-    public Order getOrder(int orderID) {
-        try {
-            return this.orderRepository.getOrder(orderID);
-
-        } catch (Exception e) {
-
-            return null;
-        }
-
-    }
-
 
     public boolean closeOrder(String orderID) {
 
@@ -142,13 +131,21 @@ public class OrderService {
     public boolean addNewOrder(Staff staff, Set<MenuItemOrder> menuItemOrders, String clientID) {
         try {
             Order newOrder;
+
+            for (MenuItemOrder menuItemOrder : menuItemOrders) {
+                String menuItem=menuItemOrder.getMenuItemID();
+
+                if(menuRepository.getMenuByID(Integer.parseInt(menuItem))==null)
+                    return false;
+            }
+
             if (clientID != "")
                 newOrder = new Order(staff.getPersonId(), menuItemOrders, Integer.parseInt(clientID));
-
             else
                 newOrder = new Order(staff.getPersonId(), menuItemOrders);
 
             this.orderRepository.addOrder(newOrder);
+
             return true;
 
         } catch (Exception e) {
@@ -173,16 +170,5 @@ public class OrderService {
         }
     }
 
-    public Set<Order> getAllStaffOpenOrders(int staffID) {
-        try {
-            return this.orderRepository.getAllStaffOpenOrders(staffID);
 
-
-        } catch (Exception e) {
-
-            return null;
-
-        }
-
-    }
 }

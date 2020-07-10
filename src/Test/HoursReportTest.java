@@ -22,14 +22,14 @@ public class HoursReportTest {
 
     }
 
-/*
+
     @Test
-    public void FailGetStaffHourByEmptyIdTest() {
+    public void FailGetStaffHourWageByEmptyIdTest() {
 
         Assertions.assertThrows(Exception.class, () -> {
 
-            Set<StaffHour> result = hoursReportController.getStaffHourBy(12);
-            Assertions.assertNull(result);
+            boolean result = hoursReportController.viewStaffHouerWage("");
+            Assertions.assertFalse(result);
 
         });
     }
@@ -40,13 +40,23 @@ public class HoursReportTest {
 
         Assertions.assertThrows(Exception.class, () -> {
 
-            Set<StaffHour> result = hoursReportController.getAllStaffHourByMonth(15);
+            boolean result = hoursReportController.viewAllStaffHoursReportsByMonth("");
+            Assertions.assertNull(result);
+
+        });
+    }
+    @Test
+
+    public void FailgetAllStaffHourByWrongMonthTest() {
+
+        Assertions.assertThrows(Exception.class, () -> {
+
+            boolean result = hoursReportController.viewAllStaffHoursReportsByMonth("22");
             Assertions.assertNull(result);
 
         });
     }
 
 
-*/
 
 }

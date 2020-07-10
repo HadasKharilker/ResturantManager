@@ -85,12 +85,6 @@ public class StaffRepositoryImpel implements StaffRepository {
 
     }
 
-    @Override
-    public void editStaffUserDetails(int staffID, UserDetails userDetails) throws Exception {
-
-    }
-
-
     /*
     @Override
     public void editStaff(Staff staff1) throws Exception {
@@ -152,14 +146,6 @@ public class StaffRepositoryImpel implements StaffRepository {
 
     }
 
-    @Override
-    public boolean isExist(int id) {
-        Staff staffInstance=getStaffByID(id);
-
-        return staffSet.contains(staffInstance);
-
-
-    }
 
 }
 

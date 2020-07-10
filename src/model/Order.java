@@ -40,20 +40,7 @@ public class Order implements Serializable {
         return isClosed;
     }
 
-    public double getTotalPriceOrder() {
 
-        double totalPrice = 0;
-        for (MenuItemOrder menuItemOrder : menuItems) {
-            MenuItem menuItem = menuItemOrder.getMenuItem();
-            double menuItemPrice = menuItem.getPrice();
-            int numberOfItems = menuItemOrder.getNumberOfItem();
-
-            totalPrice += menuItemPrice * numberOfItems;
-        }
-
-        return totalPrice;
-
-    }
 
     public int getStaffID() {
         return staffID;
@@ -92,7 +79,7 @@ public class Order implements Serializable {
             toPrint += menuItemOrder.toString();
         }
 
-        toPrint += " total price=" + getTotalPriceOrder() + "]";
+        //toPrint += " total price=" + getTotalPriceOrder() + "]";
 
         return toPrint;
 

@@ -140,8 +140,7 @@ public class OrderView {
 
             while (!menuItemID.equals("-1")) {
 
-                MenuItem menuItem = menuController.findItem(Integer.parseInt(menuItemID));
-                MenuItemOrder menuItemOrder = new MenuItemOrder(menuItem, Integer.parseInt(numberOfItem));
+                MenuItemOrder menuItemOrder = new MenuItemOrder(menuItemID, Integer.parseInt(numberOfItem));
                 menuItems.add(menuItemOrder);
 
                 System.out.print("menu item " + indexMenuItem++ + ".");

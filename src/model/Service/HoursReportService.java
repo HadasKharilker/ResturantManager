@@ -25,17 +25,6 @@ public class HoursReportService {
         this.staffRepository = StaffRepositoryImpel.getInstance();
     }
 
-    public Set<StaffHour> getStaffHourByStaffID(int staffID) {
-        try {
-            return this.hoursReportRepository.getStaffHourByStaffID(staffID);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
-
     public boolean paySalaryToStaffID(String staffID, String month) {
         try {
 
@@ -172,11 +161,11 @@ public class HoursReportService {
 
     public boolean clockOut(Staff staff, int shiftNum) {
         try {
-            this.hoursReportRepository.clockOut(staff,shiftNum);
+            this.hoursReportRepository.clockOut(staff, shiftNum);
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
+
             return false;
         }
 
@@ -186,7 +175,7 @@ public class HoursReportService {
         try {
             return this.hoursReportRepository.clockIn(staff);
         } catch (Exception e) {
-            e.printStackTrace();
+
             return 0;
         }
 

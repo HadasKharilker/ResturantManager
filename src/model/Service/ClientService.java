@@ -27,7 +27,6 @@ public class ClientService {
             return this.clientRepository.getClient(clientID);
 
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
 
@@ -56,7 +55,7 @@ public class ClientService {
 
         } catch (Exception e) {
 
-            e.printStackTrace();
+
             return false;
         }
 
@@ -68,7 +67,7 @@ public class ClientService {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
+
             return false;
         }
 

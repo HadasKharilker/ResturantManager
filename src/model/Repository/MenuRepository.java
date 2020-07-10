@@ -13,12 +13,8 @@ public interface MenuRepository {
 
 	void updateMenuItem(MenuItem menuItem) throws Exception;
 
-	
 	MenuItem getMenuByID(int id);
 	
 	Set<MenuItem> getAllMenu();
-	//edit 
-	
-	
 
 }

@@ -35,7 +35,7 @@ public class StaffService {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
+
             return false;
         }
     }
@@ -57,7 +57,7 @@ public class StaffService {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
+
             return false;
         }
     }
@@ -67,7 +67,7 @@ public class StaffService {
             this.staffRepository.deleteStaff(Integer.parseInt(staffID));
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+
             return false;
         }
     }
@@ -147,7 +147,7 @@ public class StaffService {
             return this.staffRepository.getStaffByID(id);
 
         } catch (Exception e) {
-            e.printStackTrace();
+
             return null;
         }
     }

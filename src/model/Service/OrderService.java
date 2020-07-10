@@ -3,14 +3,8 @@ package model.Service;
 import Controller.ClientController;
 import Controller.MenuController;
 import View.MenuView;
-import model.Client;
-import model.MenuItemOrder;
-import model.Order;
-import model.Repository.ClientRepository;
-import model.Repository.ClientRepositoryImpel;
-import model.Repository.OrderRepositoryImpel;
-import model.Repository.OrderRepository;
-import model.Staff;
+import model.*;
+import model.Repository.*;
 
 import java.util.Scanner;
 import java.util.Set;
@@ -19,10 +13,12 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final ClientRepository clientRepository;
+    private final MenuRepository menuRepository;
 
     public OrderService() throws Exception {
         orderRepository = OrderRepositoryImpel.getInstance();
         clientRepository = ClientRepositoryImpel.getInstance();
+        menuRepository = MenuItemRepositoryImpel.getInstance();
     }
 
 
@@ -66,7 +62,7 @@ public class OrderService {
 
             for (Order o : orders) {
                 System.out.println(o);
-                sumReport += o.getTotalPriceOrder();
+                sumReport += getTotalPriceOrder(o);
             }
             System.out.println("total orders price:" + sumReport);
             return true;
@@ -78,12 +74,30 @@ public class OrderService {
         }
     }
 
+    public double getTotalPriceOrder(Order order) {
+
+        double totalPrice = 0;
+
+        for (MenuItemOrder menuItemOrder : order.getMenuItems()) {
+            String menuItemID = menuItemOrder.getMenuItemID();
+            MenuItem menuItem = menuRepository.getMenuByID(Integer.parseInt(menuItemID));
+
+            double menuItemPrice = menuItem.getPrice();
+            int numberOfItems = menuItemOrder.getNumberOfItem();
+
+            totalPrice += menuItemPrice * numberOfItems;
+        }
+
+        return totalPrice;
+
+    }
+
     public boolean deleteOrder(String orderID) {
         try {
             this.orderRepository.deleteOrder(Integer.parseInt(orderID));
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+
             return false;
         }
 
@@ -94,21 +108,8 @@ public class OrderService {
             return this.orderRepository.getOrder(orderID);
 
         } catch (Exception e) {
-            e.printStackTrace();
+
             return null;
-        }
-
-    }
-
-    public Boolean closeOrder(Order order, Client clientOrder) throws Exception {
-        try {
-            this.orderRepository.closeOrder(order, clientOrder);
-            return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-
         }
 
     }
@@ -119,15 +120,20 @@ public class OrderService {
         try {
             Order orderToClose = this.orderRepository.getOrder(Integer.parseInt(orderID));
             orderToClose.setClosed(true);
-            System.out.println("Total Order price: " + orderToClose.getTotalPriceOrder());
+            System.out.println("Total Order price: " + getTotalPriceOrder(orderToClose));
 
-            Client client = this.clientRepository.getClient(orderToClose.getClientID());
-            orderRepository.closeOrder(orderToClose, client);
+            Client clientOrder = this.clientRepository.getClient(orderToClose.getClientID());
+            orderRepository.closeOrder(orderToClose);
+
+            String messageClosed = "order closed , total price:" + getTotalPriceOrder(orderToClose);
+            messageClosed += "credit details :" + clientOrder.getCreditDetails().toString();
+            Mail.sendMail(messageClosed, clientOrder.getMailAddress());
+
 
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
+
             return false;
         }
     }
@@ -146,7 +152,7 @@ public class OrderService {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
+
             return false;
         }
 
@@ -162,7 +168,7 @@ public class OrderService {
             this.orderRepository.updateOrder(editOrder);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+
             return false;
         }
     }
@@ -173,7 +179,7 @@ public class OrderService {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+
             return null;
 
         }

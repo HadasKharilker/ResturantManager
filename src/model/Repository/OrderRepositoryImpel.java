@@ -84,16 +84,11 @@ public class OrderRepositoryImpel implements OrderRepository {
     }
 
     @Override
-    public void closeOrder(Order order, Client clientOrder) throws Exception {
+    public void closeOrder(Order order) throws Exception {
         try {
             if (order == null)
                 throw new IOException("order not exist!");
 
-            if (clientOrder != null) {
-                String messageClosed = "order closed , total price:" + order.getTotalPriceOrder();
-                messageClosed += "credit details :" + clientOrder.getCreditDetails().toString();
-                Mail.sendMail(messageClosed, clientOrder.getMailAddress());
-            }
 
             deleteOrder(order.getOrderID());
             addOrder(order);

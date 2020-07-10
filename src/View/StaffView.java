@@ -53,7 +53,6 @@ public class StaffView {
         System.out.println("brunch Number:");
         String brunchNumber = scanner.nextLine();
 
-
         System.out.print("Enter role (manager/employee):");
         String role = scanner.nextLine();
 

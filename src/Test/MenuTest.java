@@ -42,9 +42,8 @@ public class MenuTest {
     public void addMenuItemWithInvalidMenuitemID() {
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            MenuItem menuItem = new MenuItem.MenuItemBuilder(99999).itemName("xxx").price(12.0).itemType(MenuItemType.valueOf("manager")).build();
 
-            boolean result = menuController.addMenuItem(menuItem);
+            boolean result = menuController.addMenuItem("99999", "xxx", "12.0", "manager");
             System.out.println(result);
             Assertions.assertFalse(result);
 
@@ -57,9 +56,8 @@ public class MenuTest {
     public void addMenuItemWithInvalidMenuitemType() {
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            MenuItem menuItem = new MenuItem.MenuItemBuilder(1).itemName("xxx").price(12.0).itemType(MenuItemType.valueOf("koko")).build();
 
-            boolean result = menuController.addMenuItem(menuItem);
+            boolean result = menuController.addMenuItem("1", "xxx", "12.0", "koko");
             System.out.println(result);
             Assertions.assertFalse(result);
 

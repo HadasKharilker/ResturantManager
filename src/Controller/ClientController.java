@@ -31,18 +31,14 @@ public class ClientController {
         return INSTANCE;
     }
 
-
-    public Client getClient(int clientID) {
-        return clientService.getClient(clientID);
-
-    }
-
-
     public boolean addNewClient(String personId, String fName, String lname, String date, String houseNum, String houseStreet, String city,
                                 String state, String creditID, String period, String code, String mailAddress, String pushOnFromUser) {
 
-        return clientService.addNewClient(personId, fName, lname, date, houseNum, houseStreet, city,
-                state, creditID, period, code, mailAddress, pushOnFromUser);
+        if (personId != "")
+            return clientService.addNewClient(personId, fName, lname, date, houseNum, houseStreet, city,
+                    state, creditID, period, code, mailAddress, pushOnFromUser);
+
+        return false;
     }
 
     public boolean deleteClient(String clientID) {
@@ -57,35 +53,61 @@ public class ClientController {
     }
 
     public boolean sendClientBirthdayPush(String message) {
-        return clientService.sendClientBirthdayPush(message);
+
+        if (message != "")
+            return clientService.sendClientBirthdayPush(message);
+
+        return false;
     }
 
     public boolean sendClientPush(String message) {
-        return clientService.sendClientPush(message);
+
+        if (message != "")
+            return clientService.sendClientPush(message);
+
+        return false;
     }
 
     public boolean editClientName(String clientID, String firstName, String lastName) {
-        return clientService.editClientName(clientID, firstName, lastName);
+        if (clientID != "")
+            return clientService.editClientName(clientID, firstName, lastName);
+
+        return false;
     }
 
     public boolean editBdayClient(String clientID, String bDay) {
-        return clientService.editBdayClient(clientID, bDay);
+        if (clientID != "")
+            return clientService.editBdayClient(clientID, bDay);
+
+        return false;
     }
 
     public boolean editAddress(String clientID, String houseStreet, String houseNum, String city, String state) {
-        return clientService.editAddress(clientID, houseStreet, houseNum, city, state);
+        if (clientID != "")
+            return clientService.editAddress(clientID, houseStreet, houseNum, city, state);
+
+        return false;
     }
 
     public boolean editCreditCard(String clientID, String creditID, String period, String identificationCode) {
-        return clientService.editCreditCard(clientID, creditID, period, identificationCode);
+        if (clientID != "")
+            return clientService.editCreditCard(clientID, creditID, period, identificationCode);
+        return false;
     }
 
     public boolean editMailAddress(String clientID, String mail) {
-        return clientService.editMail(clientID, mail);
+        if (clientID != "")
+            return clientService.editMail(clientID, mail);
+
+        return false;
     }
 
     public boolean editPushOn(String clientID, String pushOn) {
-        return clientService.editPushOn(clientID, pushOn);
+        if (clientID != "")
+            return clientService.editPushOn(clientID, pushOn);
+
+
+        return false;
     }
 
 

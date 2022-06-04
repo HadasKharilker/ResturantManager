@@ -2,8 +2,10 @@ package model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
-public class Person implements Serializable {
+public abstract class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -11,22 +13,20 @@ public class Person implements Serializable {
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
+    private String mailAddress;
     private Address address;
 
     //c'tor
-
-
-
-    public Person(Integer personId, String firstName, String lastName, LocalDate birthDate, Integer houseNumber, String street, String city, String state){
+    public Person(Integer personId, String firstName, String lastName, LocalDate birthDate, Address address, String mailAddress) {
         super();
         this.personId = personId;
         this.firstName = firstName;
-        this.lastName  = lastName;
-        this.birthDate= birthDate;
-        this.address=new Address( houseNumber,street,city,state);
-
-
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.address = address;
+        this.mailAddress = mailAddress;
     }
+
 
     public Person(Integer personId) {
         super();
@@ -38,7 +38,14 @@ public class Person implements Serializable {
     }
 
 
-// getter's and setter's
+    // getter's and setter's
+    public void setMailAddress(String mailAddress) {
+        this.mailAddress = mailAddress;
+    }
+
+    public String getMailAddress() {
+        return mailAddress;
+    }
 
     public int getPersonId() {
         return personId;
@@ -46,6 +53,10 @@ public class Person implements Serializable {
 
     public void setPersonId(int personId) {
         this.personId = personId;
+    }
+
+    public String getName() {
+        return firstName + " " + lastName;
     }
 
     public String getFirstName() {
@@ -80,7 +91,16 @@ public class Person implements Serializable {
         this.address = address;
     }
 
+    public boolean isBirthday() {
+        Date date = new Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
+        int todayMonth = localDate.getMonthValue();
+        if (this.birthDate.getMonthValue() == todayMonth)
+            return true;
+
+        return false;
+    }
 
     @Override
     public int hashCode() {
@@ -103,8 +123,6 @@ public class Person implements Serializable {
             return false;
         return true;
     }
-
-
 
 
 }
